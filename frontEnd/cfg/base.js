@@ -29,7 +29,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+
     alias: {
+      router: `${defaultSettings.srcPath}/router/`,
       actions: `${defaultSettings.srcPath}/actions/`,
       components: `${defaultSettings.srcPath}/components/`,
       sources: `${defaultSettings.srcPath}/sources/`,
