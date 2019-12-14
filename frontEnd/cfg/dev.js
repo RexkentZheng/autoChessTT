@@ -7,6 +7,8 @@ let defaultSettings = require('./defaults');
 
 // Add needed plugins here
 let BowerWebpackPlugin = require('bower-webpack-plugin');
+// Todo 下面这个插件不知道有没有用
+let AutoDllPlugin = require('autodll-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
   entry: [
@@ -21,6 +23,9 @@ let config = Object.assign({}, baseConfig, {
     new webpack.NoErrorsPlugin(),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"dev"'
     })
   ],
   module: defaultSettings.getDefaultModules()

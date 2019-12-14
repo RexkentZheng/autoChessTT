@@ -32,8 +32,17 @@ function addControllers(router, dir) {
   }).forEach((f) => {
     console.log(`process controller: ${f}...`);
     let mapping = require(__dirname + '/' + dir + '/' + f);
-    addMapping(router, mapping);
+    addMapping(router, addPrefix(mapping));
   });
+}
+
+function addPrefix(mapping) {
+  let newMapping = {}
+  Object.keys(mapping).map((k) => {
+    newMapping[`${k.split(' ')[0]} /api${k.split(' ')[1]}`] = mapping[k];
+  })
+  console.log(newMapping);
+  return newMapping;
 }
 
 module.exports = function(dir) {

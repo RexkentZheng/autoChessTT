@@ -25,12 +25,19 @@ module.exports = {
     hot: true,
     port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
-    noInfo: false
+    noInfo: false,
+    host: 'localhost',
+    proxy: [{
+      context: '/api',
+      target: 'http://localhost:8987/',
+      changeOrigin: true
+    }]
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
 
     alias: {
+      lib: `${defaultSettings.srcPath}/lib/`,
       router: `${defaultSettings.srcPath}/router/`,
       actions: `${defaultSettings.srcPath}/actions/`,
       components: `${defaultSettings.srcPath}/components/`,
