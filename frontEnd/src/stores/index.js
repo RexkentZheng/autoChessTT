@@ -1,3 +1,4 @@
 export default {
-  homeStore: require('./home')
+  globalStore: require('./globalStore'),
+  homeStore: require('./homeStore')
 };
