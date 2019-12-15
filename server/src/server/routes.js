@@ -41,7 +41,6 @@ function addPrefix(mapping) {
   Object.keys(mapping).map((k) => {
     newMapping[`${k.split(' ')[0]} /api${k.split(' ')[1]}`] = mapping[k];
   })
-  console.log(newMapping);
   return newMapping;
 }
 
