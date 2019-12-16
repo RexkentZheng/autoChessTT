@@ -1,16 +1,23 @@
-const Koa = require('koa')
+import Koa from 'koa'
 const app = new Koa()
-const views = require('koa-views')
-const json = require('koa-json')
-const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
-const routes = require('./src/server/routes');
+import views from 'koa-views'
+import json from 'koa-json'
+import onerror from 'koa-onerror'
+import bodyparser from 'koa-bodyparser'
+import logger from 'koa-logger'
+import routes from './src/server/routes'
+import resBeautiful from './src/lib/resBeautiful'
 
 // error handler
 onerror(app)
 
 // middlewares
+app.on("error",(error,ctx)=>{
+  ctx.response.body = resBeautiful.error(
+    -1, 
+    error.message
+  )
+});
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))

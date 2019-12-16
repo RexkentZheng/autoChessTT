@@ -31,7 +31,7 @@ let responseBeautifier = new class{
           return {
               code,
               data,
-              msg:msg||'Unresolvable Status Code :'+code
+              msg:msg ||'Unresolvable Status Code :'+code
           }
       }
   }
@@ -40,7 +40,7 @@ let responseBeautifier = new class{
           return {
               code,
               data:{},
-              msg:this.StatusCode.get(code)
+              msg:msg || this.StatusCode.get(code)
           }
       }else{
           // log Something ,here is an unique code
@@ -55,6 +55,4 @@ let responseBeautifier = new class{
 
 responseBeautifier.registeStatusCodes(config.resStatus);
 
-module.exports = {
-  responseBeautifier
-};
+export default responseBeautifier;

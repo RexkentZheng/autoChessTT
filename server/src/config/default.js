@@ -30,7 +30,9 @@ const config = {
   'mailUrl': 'http://127.0.0.1:8987/register',
   'resStatus': [
     [404,'NotFound'],
-    [1,'Waitting']
+    [1,'Waitting'],
+    [-1, 'Server Error'],
+    [10001, 'System Error']
   ]
 };
 

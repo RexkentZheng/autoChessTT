@@ -15,16 +15,12 @@ export default class Home extends Component {
     res: null
   };
   componentDidMount() {
-    this.homeStore.getHomeRes().then(() => {
-      this.setState({
-        res: this.homeStore.res
-      })
-    })
+    this.homeStore.getHomeRes();
   }
   render() {
     return(
       <Spin spinning={this.globalStore.isLoading('HomeStore/getHomeRes')}>
-        {/* <p>{this.state.res}</p> */}
+        <p>{this.homeStore.res ? this.homeStore.res.a : ''}</p>
         <p>{this.homeStore.aloha}</p>
         <p>Here is Home Page</p>
         <Link to='/test'>Jump to Test Page</Link>

@@ -12,8 +12,8 @@ class HomeStore extends Base {
   @request(config.urls.root, 'GET')
   getHomeRes(opts) {
     return this.http(opts).then((res) => {
-      // Todo此处的Res状态有些问题
       this.res = res;
+      return res;
     })
   }
 }
