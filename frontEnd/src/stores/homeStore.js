@@ -7,12 +7,11 @@ class HomeStore extends Base {
   @observable info = {};
   @observable line = {};
   @observable aloha = 'Hi, Rex';
-  @observable res = null;
 
-  @request(config.urls.root, 'GET')
-  getHomeRes(opts) {
+  @request(config.urls.getHeroes, 'GET')
+  getHeroes(opts) {
+    opts.params.number = 5;
     return this.http(opts).then((res) => {
-      this.res = res;
       return res;
     })
   }

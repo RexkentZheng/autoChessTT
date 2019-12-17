@@ -32,14 +32,15 @@ function addControllers(router, dir) {
   }).forEach((f) => {
     console.log(`process controller: ${f}...`);
     let mapping = require(__dirname + '/' + dir + '/' + f);
-    addMapping(router, addPrefix(mapping));
+    addMapping(router, addPrefix(mapping, f.split('.')[0]));
   });
 }
 
-function addPrefix(mapping) {
+function addPrefix(mapping, filename) {
   let newMapping = {}
+  const routerName = filename === 'index' ? '' : `/${filename}`
   Object.keys(mapping).map((k) => {
-    newMapping[`${k.split(' ')[0]} /api${k.split(' ')[1]}`] = mapping[k];
+    newMapping[`${k.split(' ')[0]} /api${routerName}${k.split(' ')[1]}`] = mapping[k];
   })
   return newMapping;
 }
