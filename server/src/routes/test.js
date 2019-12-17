@@ -1,18 +1,13 @@
-const model = require('../models');
+import model from '../models';
+import resBeautiful from './../lib/resBeautiful';
 const { test:Test } = model;
-
-const catchError = (ctx, err) => {
-  console.log(err);
-  ctx.resError = err;
-}
 
 const test = async (ctx, next) => {
   try {
     const testList = await Test.findAll();
-    ctx.response.status = 200;
-    ctx.response.body = testList;
+    ctx.response.body = resBeautiful.set(testList);
   } catch (error) {
-    catchError(ctx, error);
+    ctx.app.emit('error', error, ctx);
   }
 }
 
