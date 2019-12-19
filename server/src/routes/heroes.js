@@ -2,6 +2,16 @@ import model from '../models';
 import resBeautiful from './../lib/resBeautiful';
 const { heroes:Hero } = model;
 import _ from 'lodash';
+import config from '../config/default'
+import { getRateResult } from '../lib/utils';
+
+const heroes = {
+  hero1: _.filter(config.heroes, (hero) => hero.price === 1 && hero.season_id === '2'),
+  hero2: _.filter(config.heroes, (hero) => hero.price === 2 && hero.season_id === '2'),
+  hero3: _.filter(config.heroes, (hero) => hero.price === 3 && hero.season_id === '2'),
+  hero4: _.filter(config.heroes, (hero) => hero.price === 4 && hero.season_id === '2'),
+  hero5: _.filter(config.heroes, (hero) => hero.price === 5 && hero.season_id === '2') 
+}
 
 const list = async (ctx, next) => {
   try {
@@ -49,8 +59,24 @@ const getRandomHeroes = async (ctx, next) => {
   }
 }
 
+const getRealRandomHeroes = async (ctx, next) => {
+  try {
+    const pickResult = [];
+    const { level, number } = ctx.query;
+    const rateArr = _.values(config.pickRate[level]);
+    for (let i = 0; i<number; i++) {
+      const star = getRateResult(rateArr);
+      pickResult.push(_.sample(heroes[`hero${star}`]))
+    }
+    ctx.response.body = resBeautiful.set(pickResult);
+  } catch (error) {
+    ctx.app.emit('error', error, ctx);
+  }
+}
+
 module.exports = {
   'GET /' : list,
   'POST /update' : updateHeroList,
   'GET /randomHeroes' : getRandomHeroes,
+  'GET /getRealRandomHeroes' : getRealRandomHeroes,
 }

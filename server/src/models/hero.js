@@ -38,9 +38,9 @@ module.exports = function(sequelize, DataTypes) {
       set(value) {
         this.setDataValue('level', JSON.stringify(value))
       },
-      get() {
-        return JSON.parse(this.getDataValue('level'));
-      }
+      // get() {
+      //   return JSON.parse(this.getDataValue('level')) || {} 
+      // }
     },
     otherjob: {
       type: DataTypes.INTEGER,
@@ -57,7 +57,7 @@ module.exports = function(sequelize, DataTypes) {
     price: {
       type: DataTypes.STRING,
       allowNull: false,
-      get: function(value) {
+      get() {
         return parseInt(this.getDataValue('price'));
       }
     },
@@ -68,9 +68,9 @@ module.exports = function(sequelize, DataTypes) {
     season_id: {
       type: DataTypes.STRING,
       allowNull: false,
-      get: function(value) {
-        return parseInt(this.getDataValue('season_id'));
-      }
+      // get() {
+      //   return parseInt(this.getDataValue('season_id'));
+      // }
     },
     skill_introduce: {
       type: DataTypes.STRING,
@@ -79,9 +79,9 @@ module.exports = function(sequelize, DataTypes) {
     skill_name: {
       type: DataTypes.STRING,
       allowNull: false,
-      get: function(value) {
-        return parseInt(this.getDataValue('skill_name'));
-      }
+      // get() {
+      //   return parseInt(this.getDataValue('skill_name'));
+      // }
     },
     skill_num: {
       type: DataTypes.STRING,
@@ -98,9 +98,9 @@ module.exports = function(sequelize, DataTypes) {
     special_heroid: {
       type: DataTypes.STRING,
       allowNull: false,
-      get: function(value) {
-        return parseInt(this.getDataValue('special_heroid'));
-      }
+      // get() {
+      //   return parseInt(this.getDataValue('special_heroid'));
+      // }
     },
     createdAt: {
       type: DataTypes.DATE,

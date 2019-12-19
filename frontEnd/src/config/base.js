@@ -2,7 +2,8 @@ export default {
   urls: {
     root: '/',
     test: '/test',
-    getHeroes: '/heroes/randomHeroes'
+    getHeroes: '/heroes/randomHeroes',
+    getRealHeroes: '/heroes/getRealRandomHeroes'
   },
   raceImg: {
     '1': 'demon',

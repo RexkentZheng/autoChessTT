@@ -25,17 +25,35 @@ export default class HeroList extends Component {
     })
   }
 
+  refreshRealHeroes() {
+    this.homeStore.getRealHeroes({
+      number: 5
+    }).then((res) => {
+      this.setState({
+        allHeroes: res
+      })
+    })
+  }
+  
+
+  updateLevel(type) {
+    this.homeStore.updateLevel(type);
+  }
+
   render() {
     return(
       <div className="hero-list">
-        <Button onClick={this.refreshHeroes.bind(this)}>刷新</Button>
+        <Button onClick={this.refreshRealHeroes.bind(this)}>刷新</Button>
         <Spin spinning={this.globalStore.isLoading('HomeStore/getHeroes')}>
           <div className="champions">
             <div className="champion-list">
               {
-                _.map(this.state.allHeroes, (hero) => {
+                _.map(this.state.allHeroes, (hero, index) => {
+                  if (!hero) {
+                    return '';
+                  }
                   return (
-                    <div key={hero.id} className={`champion cost${hero.price}`}>
+                    <div key={`${index}${hero.id}`} className={`champion cost${hero.price}`}>
                       <div className="triangle"></div>
                       <div className="pic-shadow"></div>
                       <div className="synergies">
@@ -51,6 +69,11 @@ export default class HeroList extends Component {
             </div>
           </div>
         </Spin>
+        <div>
+          <p>{this.homeStore.level}</p>
+          <Button onClick={this.updateLevel.bind(this, 'add')}>+</Button>
+          <Button onClick={this.updateLevel.bind(this, '')}>-</Button>
+        </div>
       </div>
     )
   }

@@ -20,7 +20,6 @@ let responseBeautifier = new class{
         }
     }
     set(data,code=0,msg){
-        console.log(data)
         if(this.StatusCode.has(code)){
             return {
                 code,
