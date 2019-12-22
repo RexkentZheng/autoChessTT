@@ -1,10 +1,30 @@
+.clearfix {
+  height: 1%;
+  overflow: hidden;
+}
+.hero-main {
+  width: 80%;
+  margin: 0 auto;
+}
+body {
+  background: url(./../../images/wide-bg.jpg) no-repeat;
+  background-size: 100% 100%;
+}
 .hero-list {
+  position: absolute;
+  bottom: 0;
+  left: 15%;
   .champions {
     position: relative;
     width: 100%;
   }
   .champion-list {
-    width: 100%;
+    // width: 80%;
+    // height: 50%;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-around;
     .cost1 p {
       background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
       background-position: 0 -220px;
@@ -29,12 +49,30 @@
       background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
       background-position: 0 -260px;
     }
+    .champion-info {
+      position: relative;
+      float: left;
+      width: 180px;
+      height: 154px;
+      margin: 0 20px 5px 0;
+      cursor: pointer;
+      overflow: hidden;
+      .refresh {
+        height: 75px;
+      }
+      .level {
+        height: 75px;
+      }
+      > div {
+        border: 1px solid black;
+      }
+    }
     .champion {
       position: relative;
       float: left;
       width: 224px;
       height: 154px;
-      margin: 0 20px 35px 0;
+      margin: 0 20px 5px 0;
       cursor: pointer;
       overflow: hidden;
       p {
@@ -116,4 +154,80 @@
       z-index: 2;
     }
   }
+}
+.box-wrapper {
+  margin-top: 120px;
+}
+.board-box {
+  position: relative;
+  width: 720px;
+  height: 280px;
+  margin: 0px auto;
+  .grid {
+    user-select: none;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    width: 82px;
+    height: 70px;
+    margin: 0 14px 0px 0;
+    background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+    background-position: -540px -30px;
+    &:nth-child(8) {
+      margin-left: 48px;
+    }
+    &:nth-child(22) {
+      margin-left: 48px;
+    }
+  }
+  .grid-champion {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    width: 60px;
+    height: 70px;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 70px;
+      z-index: 3;
+    }
+    img {
+      margin: 1px;
+      width: 58px;
+      height: 68px;
+      object-fit: cover;
+      -webkit-clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+      clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    }
+  }
+  .grid-items {
+    width: 18px;
+    margin-top: 6px;
+  }
+  .equipment {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 2px;
+    background-color: #e1e1e1;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+.move-img {
+  margin: 1px;
+  width: 58px;
+  height: 68px;
+  object-fit: cover;
+  -webkit-clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+
+.hidden {
+  display: none;
 }

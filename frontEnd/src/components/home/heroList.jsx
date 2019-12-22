@@ -35,25 +35,52 @@ export default class HeroList extends Component {
     })
   }
   
-
   updateLevel(type) {
     this.homeStore.updateLevel(type);
+  }
+
+  dragStart = (hero) => e => {
+    e.dataTransfer.setData('hero', JSON.stringify(hero));
+    let img = new Image();
+    img.src = `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`;
+    img.className = 'move-img hidden'
+    e.dataTransfer.setDragImage(img, 10, 10);
+  }
+
+  dragging = () => e => {
+    // console.log('dragging')
   }
 
   render() {
     return(
       <div className="hero-list">
-        <Button onClick={this.refreshRealHeroes.bind(this)}>刷新</Button>
         <Spin spinning={this.globalStore.isLoading('HomeStore/getHeroes')}>
           <div className="champions">
-            <div className="champion-list">
+            <div className="champion-list clearfix">
+              <div className="champion-info">
+                <div className="refresh">
+                  <Button onClick={this.refreshRealHeroes.bind(this)}>刷新</Button>
+                </div>
+                <div className="level">
+                  <p>等级：{this.homeStore.level}</p>
+                  <Button onClick={this.updateLevel.bind(this, 'add')}>+</Button>
+                  <Button onClick={this.updateLevel.bind(this, '')}>-</Button>
+                </div>
+              </div>
               {
                 _.map(this.state.allHeroes, (hero, index) => {
                   if (!hero) {
                     return '';
                   }
                   return (
-                    <div key={`${index}${hero.id}`} className={`champion cost${hero.price}`}>
+                    <div
+                      key={`${index}${hero.id}`}
+                      className={`champion cost${hero.price}`}
+                      onDragStart={this.dragStart(hero)}
+                      onDrag={this.dragging()}
+                      draggable="true"
+                    >
+                      <img className="hidden" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`} alt=""/>
                       <div className="triangle"></div>
                       <div className="pic-shadow"></div>
                       <div className="synergies">
@@ -69,11 +96,6 @@ export default class HeroList extends Component {
             </div>
           </div>
         </Spin>
-        <div>
-          <p>{this.homeStore.level}</p>
-          <Button onClick={this.updateLevel.bind(this, 'add')}>+</Button>
-          <Button onClick={this.updateLevel.bind(this, '')}>-</Button>
-        </div>
       </div>
     )
   }
