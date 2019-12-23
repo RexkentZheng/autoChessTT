@@ -13,25 +13,9 @@ export default class HeroList extends Component {
     this.globalStore = props.globalStore.default;
   }
 
-  state = {
-    allHeroes: []
-  }
-
-  refreshHeroes() {
-    this.homeStore.getHeroes().then((res) => {
-      this.setState({
-        allHeroes: res
-      })
-    })
-  }
-
   refreshRealHeroes() {
     this.homeStore.getRealHeroes({
       number: 5
-    }).then((res) => {
-      this.setState({
-        allHeroes: res
-      })
     })
   }
   
@@ -39,16 +23,9 @@ export default class HeroList extends Component {
     this.homeStore.updateLevel(type);
   }
 
-  dragStart = (hero) => e => {
-    e.dataTransfer.setData('hero', JSON.stringify(hero));
-    let img = new Image();
-    img.src = `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`;
-    img.className = 'move-img hidden'
-    e.dataTransfer.setDragImage(img, 10, 10);
-  }
-
-  dragging = () => e => {
-    // console.log('dragging')
+  buyHero(delIndex, hero) {
+    this.homeStore.updateHeroList(null, delIndex);
+    this.homeStore.updateHeroWaitting('add', hero);
   }
 
   render() {
@@ -68,17 +45,17 @@ export default class HeroList extends Component {
                 </div>
               </div>
               {
-                _.map(this.state.allHeroes, (hero, index) => {
+                _.map(this.homeStore.heroList, (hero, index) => {
                   if (!hero) {
-                    return '';
+                    return (
+                      <div key={`heroList${index}null`} className="champion champion-saled"></div>
+                    );
                   }
                   return (
                     <div
-                      key={`${index}${hero.id}`}
+                      key={`heroList${index}${hero.id}`}
                       className={`champion cost${hero.price}`}
-                      onDragStart={this.dragStart(hero)}
-                      onDrag={this.dragging()}
-                      draggable="true"
+                      onClick={this.buyHero.bind(this, index,hero)}
                     >
                       <img className="hidden" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`} alt=""/>
                       <div className="triangle"></div>
