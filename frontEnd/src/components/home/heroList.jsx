@@ -13,30 +13,77 @@ export default class HeroList extends Component {
     this.globalStore = props.globalStore.default;
   }
 
+  /**
+   * @description: 刷新list列表
+   * @return: void
+   */
   refreshRealHeroes() {
-    this.homeStore.getRealHeroes({
-      number: 5
-    })
+    if (this.homeStore.money >= 2) {
+      this.homeStore.getRealHeroes({
+        number: 5
+      })
+    }
   }
   
+  /**
+   * @description: 更新等级
+   * @param {string} type 更新类型
+   * @return: vodi
+   */
   updateLevel(type) {
     this.homeStore.updateLevel(type);
   }
 
-  buyHero(delIndex, hero) {
-    this.homeStore.updateHeroList(null, delIndex);
-    this.homeStore.updateHeroWaitting('add', hero);
+  /**
+   * @description: 购买英雄
+   * @param {number} index list顺序
+   * @param {object} hero 英雄信息
+   * @return: void
+   */
+  buyHero(index, hero) {
+    this.homeStore.buyHero(hero, index);
+  }
+
+  /**
+   * @description: 允许drop定义方法
+   */
+  allowDrop(event) {
+    event.preventDefault();
+  }
+
+  /**
+   * @description: 拖拽放置
+   * 拿到传递过来的hero, index, from参数
+   * 如果来自waitting，去掉waitting中hero，更新金钱
+   * @param {DropEvent} e 拖拽事件
+   * @return: void
+   */
+  drop = () => e => {
+    e.preventDefault()
+    const { hero, index, from } = JSON.parse(e.dataTransfer.getData('info'));
+    if (from === 'waitting') {
+      this.props.homeStore.default.updateHeroWaitting(null, index);
+      this.props.homeStore.default.updateMoney(hero.price)
+    }
   }
 
   render() {
     return(
       <div className="hero-list">
         <Spin spinning={this.globalStore.isLoading('HomeStore/getHeroes')}>
-          <div className="champions">
+          <div
+            className="champions"
+            onDrop={this.drop()}
+            onDragOver={this.allowDrop.bind(this)}
+          >
             <div className="champion-list clearfix">
               <div className="champion-info">
                 <div className="refresh">
-                  <Button onClick={this.refreshRealHeroes.bind(this)}>刷新</Button>
+                  <p>金钱：{this.homeStore.money}</p>
+                  <Button
+                    disabled={this.homeStore.money < 2}
+                    onClick={this.refreshRealHeroes.bind(this)}
+                  >刷新</Button>
                 </div>
                 <div className="level">
                   <p>等级：{this.homeStore.level}</p>
