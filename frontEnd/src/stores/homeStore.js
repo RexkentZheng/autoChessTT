@@ -72,7 +72,7 @@ class HomeStore extends Base {
   }
 
   /**
-   * @description: 合并Hero数组中相同的hero，index靠前的升级，其余的干掉
+   * @description: 合并Hero数组中相同的hero，index靠前的升级并且更新状态，其余的干掉
    * @param {string} type 数组类型
    * @param {object} hero 待合并的英雄
    * @return: void
@@ -82,7 +82,15 @@ class HomeStore extends Base {
     this[`hero${type}`] = this[`hero${type}`].map((item) => {
       if (this.compareHero(item, hero) && !hasChange) {
         hasChange = true;
-        return _.extend(item, {grade : hero.grade + 1})
+        return _.extend(item, {
+          grade : hero.grade + 1,
+          info: {
+            ...item.info,
+            damage: +item.info.damage * 1.8,
+            health: +item.info.health * 1.8
+          },
+          leftHealth: +item.info.health * 1.8
+        })
       } else if (this.compareHero(item, hero)){
         return null;
       } else {

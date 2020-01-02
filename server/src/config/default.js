@@ -1,3 +1,26 @@
+// 'CR': '25%',
+// 暴击   critical strike
+// 'Mana': '75',
+// 法力
+// 'StartingMana': '0',
+// 初始法力值
+// 'armor': '20',
+// 护甲
+// 'damage': '25',
+// 物攻
+// 'dps': '16',
+// 每秒输出伤害
+// 'health': '500',
+// 声明
+// 'magic_res': '20',
+// 魔抗
+// 'name': '1',
+// 级别
+// 'range': '3',
+// 攻击距离
+// 'speed': '0.65'
+// 攻速
+
 import devDB from './dev';
 
 const config = {

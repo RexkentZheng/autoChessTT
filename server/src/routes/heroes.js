@@ -68,7 +68,12 @@ const getRealRandomHeroes = async (ctx, next) => {
       const star = getRateResult(rateArr);
       pickResult.push(_.sample(heroes[`hero${star}`]))
     }
-    ctx.response.body = resBeautiful.set(pickResult);
+    ctx.response.body = resBeautiful.set(_.map(pickResult, (hero) => ({
+      ..._.omit(hero, 'level'),
+      info: hero.level[0],
+      leftHealth: hero.level[0].health,
+      leftMama: hero.level[0].StartingMana
+    })));
   } catch (error) {
     ctx.app.emit('error', error, ctx);
   }
