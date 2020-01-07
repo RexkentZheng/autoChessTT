@@ -4,9 +4,20 @@
     "stage-0",
     "react"
   ],
-  "plugins": [
-    "transform-decorators-legacy",
-    "react-hot-loader/babel",
-    ["import", { "libraryName": "antd", "libraryDirectory": "lib"}, "ant"]
-  ]
+  "env": {
+		"development": {
+			"plugins": [
+        "transform-decorators-legacy",
+        "react-hot-loader/babel",
+        ["import", { "libraryName": "antd", "libraryDirectory": "lib"}, "ant"],
+        ["react-transform", {
+          "transforms": [{
+            "transform": "react-transform-hmr",
+            "imports": ["react"],
+            "locals": ["module"]
+          }]
+        }]
+      ]
+		}
+	}
 }
