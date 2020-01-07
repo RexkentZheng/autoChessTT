@@ -4,7 +4,6 @@ import { Provider } from 'mobx-react';
 import Home from 'components/home';
 import Test from 'components/test';
 import stores from 'stores';
-import { hot } from 'react-hot-loader/root';
 
 function Routers() {
   return (
@@ -19,4 +18,4 @@ function Routers() {
   );
 }
 
-export default hot(Routers);
+export default Routers;

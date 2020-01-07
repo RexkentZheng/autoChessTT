@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Spin } from 'antd';
+import { Spin, Tooltip } from 'antd';
 import _ from 'lodash';
 import config from 'config';
 
@@ -71,6 +71,40 @@ export default class HeroList extends Component {
     return(
       <div className="hero-list">
         <Spin spinning={this.globalStore.isLoading('HomeStore/getHeroes')}>
+          <div className="player-info">
+            <div className="level">
+              <div className="level-bg"></div>
+              <div className="level-info">
+                <p>等级：{this.homeStore.level}</p>
+                <p>0/10</p>
+              </div>
+            </div>
+            <div className="money">
+              <Tooltip
+                placement="right"
+                title={(
+                  <div className="hover-tooltip heroListMoney">
+                    <div className="first">
+                      连胜
+                    </div>
+                    <div className="second">
+                      每回合基于你连续胜利或失败的回合数来获得额外的金币。
+                    </div>
+                    <div className="third">
+                      <span><span>2-3</span><span>+1</span></span>
+                      <span><span>4-6</span><span>+2</span></span>
+                      <span><span>7+</span><span>+3</span></span>
+                    </div>
+                  </div>
+                )}
+              >
+                <div className="money-bg"></div>
+                <div className="money-info">
+                  <p>{this.homeStore.money}</p>
+                </div>
+              </Tooltip>
+            </div>
+          </div>
           <div
             className="champions"
             onDrop={this.drop()}
@@ -78,24 +112,25 @@ export default class HeroList extends Component {
           >
             <div className="champion-list clearfix">
               <div className="champion-info">
-                <div className="refresh">
-                  <p>金钱：{this.homeStore.money}</p>
-                  <Button
-                    disabled={this.homeStore.money < 2}
-                    onClick={this.refreshRealHeroes.bind(this)}
-                  >刷新</Button>
+                <div
+                  className="refresh"
+                  onClick={this.refreshRealHeroes.bind(this)}
+                >
                 </div>
-                <div className="level">
-                  <p>等级：{this.homeStore.level}</p>
-                  <Button onClick={this.updateLevel.bind(this, 'add')}>+</Button>
-                  <Button onClick={this.updateLevel.bind(this, '')}>-</Button>
+                <div
+                  className="level"
+                  onClick={this.updateLevel.bind(this, 'add')}
+                >
+                  {/* <Button onClick={this.updateLevel.bind(this, '')}>-</Button> */}
                 </div>
               </div>
               {
                 _.map(this.homeStore.heroList, (hero, index) => {
                   if (!hero) {
                     return (
-                      <div key={`heroList${index}null`} className="champion champion-saled"></div>
+                      <div key={`heroList${index}null`} className="champion champion-saled">
+                        <div className="position"></div>
+                      </div>
                     );
                   }
                   return (

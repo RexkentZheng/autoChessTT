@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react'
+import { Tooltip } from 'antd';
 
 @inject('homeStore')
 @observer
@@ -77,7 +78,28 @@ export default class HeroWaittingItem extends Component {
         onDragOver={this.allowDrop.bind(this)}
         draggable="true"
       >
-        <img src={this.props.hero ? `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${this.props.hero.heroId}.png` : ''} alt=""/>
+        {
+          this.props.hero ?
+          <div>
+            <Tooltip
+              placement="top"
+              title={(
+                <div className="hover-tooltip heroTableHover">
+                  <div className="skill-img">
+                    <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
+                  </div>
+                  <div className="skill-introduce">
+                    <p>{this.props.hero.skill_name}</p>
+                    <p>{this.props.hero.skill_introduce}</p>
+                  </div>
+                </div>
+              )}
+            >
+              <img src={this.props.hero ? `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${this.props.hero.heroId}.png` : ''} alt=""/>
+            </Tooltip>
+          </div>
+          : null
+        }
       </div>
     )
   }

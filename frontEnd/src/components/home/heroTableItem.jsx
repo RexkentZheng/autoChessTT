@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { inject, observer } from 'mobx-react'
-import { Progress, Popover } from 'antd';
+import { Progress, Popover, Tooltip } from 'antd';
 import config from 'config';
 
 @inject('homeStore')
@@ -79,35 +79,74 @@ export default class HeroTableItem extends Component {
           this.props.hero ?
           <Popover
             title={`${this.props.hero.hero_name} - ${this.props.hero.hero_tittle}`}
+            trigger="click"
             content={(
               <div className="hero-hover">
-                <div className="main">
+                <div className={`main cost${this.props.hero.price}`}>
                   <div className="img">
+                    <div className="pic-shadow"></div>
                     <div className="synergies">
                       <span className={config.raceImg2[this.props.hero.race]}>{window.TFTrace_List[this.props.hero.race].race_name}</  span>
                       <span className={config.jobImg2[this.props.hero.job]}>{window.TFTjob_List[this.props.hero.job].job_name}</span>
                     </div>
+                    <p className={`star star${this.props.hero.grade}`}></p>
+                    <p className="price">{this.props.hero.price}</p>
+                    <p className="name">{this.props.hero.hero_tittle}</p>
                     <img src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/600x345/${this.props.hero.heroId}.jpg`} alt=""/>
                     <Progress
-                      className=""
+                      className="hover-health"
                       percent={+this.props.hero.leftHealth / +this.props.hero.info.health * 100}
                       showInfo={false}
-                      strokeColor="#87d068" />
+                      strokeColor="#0E8E3E"
+                      strokeLinecap="square"
+                      strokeWidth={14}
+                    />
                     <Progress
-                      className=""
+                      className="hover-mana"
                       percent={+this.props.hero.leftMana / +this.props.hero.info.Mana * 100}
                       showInfo={false}
-                      strokeColor="#108ee9" />
+                      strokeColor="#194d61"
+                      strokeLinecap="square"
+                      strokeWidth={16}
+                    />
                   </div>
                   <div className="skill-equip">
-                    <div className="skill">
-                      <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
-                    </div>
+                    <Tooltip
+                      placement="bottom"
+                      title={(
+                        <div className="hover-tooltip">
+                          <p className="first">
+                            <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
+                            <span>{this.props.hero.skill_name}</span>
+                          </p>
+                          <p className="second">
+                            {this.props.hero.skill_introduce}
+                          </p>
+                          <div className="third">
+                            {
+                              _.map(this.props.hero.skill_num.split('；'), (sentence) => (
+                                <p key={sentence}>
+                                  {
+                                    _.map(sentence.split('：'), (words, index) => (
+                                      <span key={words} className={index === 0 ? 'greenWords' : ''}>{words}</span>
+                                    ))
+                                  }
+                                </p>
+                              ))
+                            }
+                          </div>
+                        </div>
+                      )}
+                    >
+                      <div className="skill">
+                        <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
+                      </div>
+                    </Tooltip>
                     <div className="equipment">
                       {
                         _.map(this.props.hero.equipment ? this.props.hero.equipment.split(',') : [], (item, index) => {
                           return (
-                            <div key={`equipmentHeroListHover${this.props.hero.heroId}${item}${index}`} className="equipment">
+                            <div key={`equipmentHeroListHover${this.props.hero.heroId}${item}${index}`} className="equipment-item">
                               <img draggable="false" src={`https://game.gtimg.cn/images/lol/tft/items/${item}.png`} alt="" />
                             </div>
                           )
@@ -118,36 +157,32 @@ export default class HeroTableItem extends Component {
                 </div>
                 <div className="info">
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">攻击力：</span>
                     <span>{this.props.hero.info.damage}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">不造：</span>
                     <span>{this.props.hero.info.damage}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">护甲：</span>
                     <span>{this.props.hero.info.armor}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">魔抗：</span>
                     <span>{this.props.hero.info.magic_res}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">攻速：</span>
                     <span>{this.props.hero.info.speed}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">攻击范围：</span>
                     <span>{this.props.hero.info.range}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
+                    <span className="icon">暴击：</span>
                     <span>{this.props.hero.info.CR}</span>
-                  </div>
-                  <div className="property">
-                    <span className="icon">攻击力</span>
-                    <span>{this.props.hero.info.damage}</span>
                   </div>
                   <div className="property">
                     <span className="icon">攻击力</span>
