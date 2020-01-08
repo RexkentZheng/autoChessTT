@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable, computed, autorun, reaction, values } from 'mobx'
 import { request } from 'lib/decorators';
 import config from 'config';
 import Base from './base';
@@ -6,10 +6,13 @@ import _ from 'lodash';
 
 class HomeStore extends Base {
   @observable level = 1;
-  @observable heroList = [];
+  @observable heroList = _.map(_.range(5), () => null);;
   @observable heroWaitting = _.map(_.range(9), () => null);
   @observable heroTable = _.map(_.range(28), () => null);
   @observable money = 9999;
+  @observable jobRelations = {};
+  @observable raceRelations = {};
+  @observable relations = [];
 
   /**
    * @description: 根据等级随机获取英雄
@@ -206,9 +209,71 @@ class HomeStore extends Base {
    * @return: void
    */
   updateMoney(num) {
-    this.money += num;
+    this.money = this.money += num;
   }
 
+  /**
+   * @description: 获取不重复的英雄列表
+   * @param {Array[object]} heroes 英雄列表
+   * @return: 不重复的英雄列表
+   */
+  getUniqHeroes(heroes) {
+    let uniqHeroes = [];
+    _.forEach(_.groupBy(heroes, 'id'), (value) => uniqHeroes.push(_.first(value)))
+    return uniqHeroes;
+  }
+
+  /**
+   * @description: 获取英雄中的关系被动
+   * @param {Array[object]} heroes 英雄列表
+   * @param {string} type 关系类型
+   * @return: 英雄关系对象
+   */
+  getRelationsObj(heroes, type) {
+    let relations = {};
+    _.map(heroes, (hero) => {
+      if (hero) {
+        if (relations[+hero[type]]) {
+          relations[+hero[type]].num += 1;
+        } else {
+          relations[+hero[type]] = {
+            ...window[`TFT${type}_List`][hero[type]],
+            num: 1,
+            type
+          }
+        }
+      }
+    })
+    return relations;
+  }
+
+  /**
+   * @description: 获取英雄被动数组
+   * @param {Array[object]} relationObj 英雄关系对象
+   * @return: 英雄关系数组
+   */
+  getRelationsArr(relationObj) {
+    let relations = [];
+    _.forIn(relationObj, (value, key) => {
+      relations.push({
+        ...value,
+        id: key
+      })
+    })
+    return relations;
+  }
+
+  /**
+   * @description: 更新关系数组，每当heroTable有变动时会自动触发
+   * @return: void
+   */
+  heroRelation = autorun(() => {
+    const uniqHeroes = this.getUniqHeroes(this.heroTable);
+    this.relations = _.sortBy(_.concat(
+      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'job')),
+      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'race'))
+    ), ['num']);
+  });
 }
 
 export default new HomeStore();

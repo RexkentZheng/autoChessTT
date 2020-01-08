@@ -20,9 +20,9 @@ export default class HeroTable extends Component {
 
     return(
       <div className="box-wrapper">
-        {/* <div className="board-box editor">
+        <div className="board-box editor">
           {generateHexagon()}
-        </div> */}
+        </div>
         <div className="board-box editor">
           {generateHexagon()}
         </div>

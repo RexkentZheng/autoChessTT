@@ -75,7 +75,6 @@
     "antd": "^3.26.2",
     "core-js": "^2.0.0",
     "debug": "^4.1.1",
-    "http-proxy-middleware": "^0.20.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mobx": "^5.15.0",

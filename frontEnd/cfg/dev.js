@@ -18,6 +18,20 @@ let config = Object.assign({}, baseConfig, {
   ],
   cache: true,
   devtool: 'eval-source-map',
+  devServer: {
+    contentBase: './src/',
+    historyApiFallback: true,
+    hot: true,
+    port: defaultSettings.port,
+    publicPath: defaultSettings.publicPath,
+    noInfo: false,
+    host: 'localhost',
+    proxy: [{
+      context: '/api',
+      target: 'http://localhost:8987/',
+      changeOrigin: true
+    }]
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),

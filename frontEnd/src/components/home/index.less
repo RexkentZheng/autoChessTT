@@ -1,3 +1,6 @@
+body {
+  background: grey !important;
+}
 .clearfix {
   height: 1%;
   overflow: hidden;
@@ -13,7 +16,6 @@
   background-color: rgba(0, 0, 0, 0) !important;
 }
 .hover-tooltip {
-  // border: 2px solid #000000;
   width: 600px;
   background-color: rgba(0, 0, 0, 0.75);
   padding: 15px;
@@ -95,6 +97,49 @@
     }
   }
 }
+.hover-relations {
+  width: 500px;
+  .relation-name {
+    font-size: 20px;
+    font-weight: bold;
+    background-position-y: -20px;
+  }
+  .relation-status {
+    display: flex;
+    flex-direction: column;
+    .disable {
+      color: #464b4f;
+    }
+  }
+  .relation-hero {
+    div {
+      display: inline-block;
+      margin: 5px 10px;
+      &.cost1 {
+        border: 2px solid #454f5c;
+      }
+      &.cost2 {
+        border: 2px solid #287d45;
+      }
+      &.cost3 {
+        border: 2px solid #296ba1;
+      }
+      &.cost4 {
+        border: 2px solid #8b1878;
+      }
+      &.cost5 {
+        border: 2px solid #b27c1a;
+      }
+    }
+    img {
+      width: 60px;
+      height: 60px;
+      &.disabled {
+        filter: grayscale(100%);
+      }
+    }
+  }
+}
 .hero-main {
   width: 80%;
   margin: 0 auto;
@@ -129,7 +174,7 @@
         z-index: 1;
       }
       .level-info {
-        z-index: 9999;
+        z-index: 3;
         height: 50px;
         width: 150px;
         position: absolute;
@@ -162,7 +207,7 @@
         z-index: 1;
       }
       .money-info {
-        z-index: 9999;
+        z-index: 3;
         position: absolute;
         left: 26%;
         top: 10%;
@@ -189,8 +234,6 @@
     border: 3px solid #6a5b3a;
   }
   .champion-list {
-    // width: 80%;
-    // height: 50%;
     display: flex;
     padding: 15px 0 10px 0;
     align-items: center;
@@ -608,6 +651,9 @@
   width: 720px;
   height: 280px;
   margin: 0px auto;
+  @media screen and (max-width: 1400px) {
+    zoom: 0.8;    
+  }
   .grid {
     user-select: none;
     position: relative;
@@ -775,6 +821,9 @@
   margin: 10px auto 0;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 1400px) {
+    zoom: 0.8;    
+  }
   .hero-waitting-item {
     width: 100px;
     height: 100px;
@@ -824,6 +873,88 @@
       height: 14px;
       background: url(./../../images/stars.png) no-repeat;
       background-position: 0 -25px;
+    }
+  }
+}
+.hero-relations {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  overflow: hidden;
+  .bg-top {
+    width: 60px;
+    height: 60px;
+    transform: rotate(30deg);
+    position: absolute;
+    left: -21px;
+    top: 30px;
+    background: #162021;
+    z-index: 1;
+    border: 2px solid #4e3d2b;
+  }
+  .bg-middle {
+    width: 50px;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    bottom: 70px;
+    background: #162021;
+    border-right: 2px solid #4e3d2b;
+    z-index: 2;
+  }
+  .bg-bottom {
+    width: 60px;
+    height: 60px;
+    transform: rotate(-30deg);
+    position: absolute;
+    left: -21px;
+    bottom: 50px;
+    background: #162021;
+    z-index: 1;
+    border: 2px solid #4e3d2b;
+  }
+  .relations-list {
+    margin: 60px 0 80px 5px;
+    z-index: 3;
+    min-width: 60px;
+    min-height: 50px;
+    > div {
+      > div {
+        z-index: 2;
+        position: relative;
+        display: flex;
+        width: auto;
+        text-align: left;
+        font-size: 9px;
+        color: #fcfcfc;
+        margin: 10px 0;
+        background-color: rgba(0, 0, 0, 0.55);
+        border-radius: 10px;
+        .num {
+          font-size: 20px;
+          background-color: rgba(0, 0, 0, 0.75);
+          margin: auto;
+          margin-left: 0;
+          margin-right: 10px;
+          padding: 0 7px 0 8px;
+          border-radius: 5px;
+        }
+        > p {
+          margin: 3px 9px 3px 0;
+          display: flex;
+          flex-direction: column;
+        }
+        &:before {
+          content: '';
+          vertical-align: top;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin: 2px 6px 0px 5px;
+          background-position-y: -60px;
+          zoom: 1.7;
+        }
+      }
     }
   }
 }

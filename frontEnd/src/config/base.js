@@ -1,4 +1,7 @@
+import heroes from './heroes';
+
 export default {
+  heroes,
   urls: {
     root: '/',
     test: '/test',
