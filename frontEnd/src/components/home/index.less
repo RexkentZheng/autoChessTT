@@ -654,6 +654,12 @@ body {
   @media screen and (max-width: 1400px) {
     zoom: 0.8;    
   }
+  &.enemy {
+    .grid {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: -540px -100px;
+    }
+  }
   .grid {
     user-select: none;
     position: relative;
@@ -664,6 +670,24 @@ body {
     margin: 0 14px 0px 0;
     background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
     background-position: -540px -30px;
+    .radius-180 {
+      position: absolute;
+      left: -40px;
+      top: -50px;
+      width: 180px;
+      height: 180px;
+      border: 2px solid red;
+      border-radius: 50%;
+    }
+    .radius-420 {
+      position: absolute;
+      left: -160px;
+      top: -160px;
+      width: 420px;
+      height: 420px;
+      border: 2px solid red;
+      border-radius: 50%;
+    }
     &:nth-child(8) {
       margin-left: 48px;
     }

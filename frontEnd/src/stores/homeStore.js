@@ -9,6 +9,7 @@ class HomeStore extends Base {
   @observable heroList = _.map(_.range(5), () => null);;
   @observable heroWaitting = _.map(_.range(9), () => null);
   @observable heroTable = _.map(_.range(28), () => null);
+  @observable heroTableEnemy = _.map(_.range(28), () => null);
   @observable money = 9999;
   @observable jobRelations = {};
   @observable raceRelations = {};
@@ -164,6 +165,10 @@ class HomeStore extends Base {
    */
   updateHeroTable(hero, index) {
     return this.updateHeroTableAndListAndWaitting('Table')(hero, index);
+  }
+
+  updateHeroTableEnemy(hero, index) {
+    return this.updateHeroTableAndListAndWaitting('TableEnemy')(hero, index);
   }
 
   /**

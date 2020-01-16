@@ -14,17 +14,17 @@ export default class HeroTable extends Component {
 
   render() {
 
-    const generateHexagon = () => {
-      return _.map(this.homeStore.heroTable, (hero, index) => (<HeroTableItem hero={hero} index={index} key={index}/>));
+    const generateHexagon = (heroes, type = '') => {
+      return _.map(heroes, (hero, index) => (<HeroTableItem type={type} hero={hero} index={index} key={index}/>));
     }
 
     return(
       <div className="box-wrapper">
-        <div className="board-box editor">
-          {generateHexagon()}
+        <div className="board-box enemy editor">
+          {generateHexagon(this.homeStore.heroTableEnemy, 'enemy')}
         </div>
         <div className="board-box editor">
-          {generateHexagon()}
+          {generateHexagon(this.homeStore.heroTable)}
         </div>
       </div>
     )
