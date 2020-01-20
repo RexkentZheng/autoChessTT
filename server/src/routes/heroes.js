@@ -72,7 +72,7 @@ const getRealRandomHeroes = async (ctx, next) => {
       ..._.omit(hero, 'level'),
       info: hero.level[0],
       leftHealth: hero.level[0].health,
-      leftMama: hero.level[0].StartingMana
+      leftMana: hero.level[0].StartingMana
     })));
   } catch (error) {
     ctx.app.emit('error', error, ctx);

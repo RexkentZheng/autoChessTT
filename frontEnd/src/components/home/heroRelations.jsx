@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { toJS } from 'mobx';
-import { Tooltip } from 'antd';
+import { Tooltip, Button } from 'antd';
 import _ from 'lodash';
 import config from 'config';
 
-@inject('homeStore')
+@inject('homeStore', 'battleStore')
 @observer
 export default class HeroRelations extends Component {
   constructor(props) {
     super(props);
     this.homeStore = props.homeStore.default;
+    this.battleStore = props.battleStore.default;
   }
 
   getRelationStatus (num, level) {
@@ -85,9 +85,22 @@ export default class HeroRelations extends Component {
     )
   }
 
+  updateStatus (type) {
+    this.homeStore.updateStatus(type);
+    if (type === 'battling') {
+      this.battleStore.updateHero(this.homeStore.heroTable, this.homeStore.heroTableEnemy)
+    } else {
+      this.battleStore.updateHero([], [])
+    }
+  }
+
   render() {
     return (
       <div className="hero-relations">
+        <div>
+          <Button onClick={this.updateStatus.bind(this, 'battling')}> Start </Button>
+          <Button onClick={this.updateStatus.bind(this, 'end')}> End </Button>
+        </div>
         <div className="bg-top"></div>
         <div className="bg-middle"></div>
         <div className="relations-list">

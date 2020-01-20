@@ -3,13 +3,13 @@ import HeroTableItem from './heroTableItem';
 import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
 
-@inject('homeStore')
+@inject('battleStore')
 @observer
-export default class HeroTable extends Component {
+export default class HeroTableBattle extends Component {
 
   constructor(props) {
     super(props);
-    this.homeStore = this.props.homeStore.default;
+    this.battleStore = this.props.battleStore.default;
   }
 
   render() {
@@ -27,11 +27,12 @@ export default class HeroTable extends Component {
 
     return(
       <div className="box-wrapper">
+        <p style={{float: 'left'}}>Battle Filed</p>
         <div className="board-box enemy editor">
-          {generateHexagon(this.homeStore.heroTableEnemy, _.range(1, 29, 1), 'enemy')}
+          {generateHexagon(_.slice(this.battleStore.allHeroes, 0, 28), _.range(1, 29, 1), 'enemy')}
         </div>
         <div className="board-box editor">
-          {generateHexagon(this.homeStore.heroTable, _.range(29, 57, 1))}
+          {generateHexagon(_.slice(this.battleStore.allHeroes, 28, 56), _.range(29, 57, 1))}
         </div>
       </div>
     )

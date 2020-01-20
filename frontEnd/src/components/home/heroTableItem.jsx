@@ -31,17 +31,29 @@ export default class HeroTableItem extends Component {
     if (from === 'table') {
       if (this.props.type === 'enemy') {
         this.props.homeStore.default.updateHeroTableEnemy(null, index);
-        this.props.homeStore.default.updateHeroTableEnemy(hero, this.props.index);
+        this.props.homeStore.default.updateHeroTableEnemy({
+          ...hero,
+          locationId: this.props.rangeIndex
+        }, this.props.index);
       } else {
         this.props.homeStore.default.updateHeroTable(null, index);
-        this.props.homeStore.default.updateHeroTable(hero, this.props.index);
+        this.props.homeStore.default.updateHeroTable({
+          ...hero,
+          locationId: this.props.rangeIndex
+        }, this.props.index);
       }
     } else {
       this.props.homeStore.default.updateHeroWaitting(null, index);
       if (this.props.type === 'enemy') {
-        this.props.homeStore.default.updateHeroTableEnemy(hero, this.props.index);
+        this.props.homeStore.default.updateHeroTableEnemy({
+          ...hero,
+          locationId: this.props.rangeIndex
+        }, this.props.index);
       } else {
-        this.props.homeStore.default.updateHeroTable(hero, this.props.index);
+        this.props.homeStore.default.updateHeroTable({
+          ...hero,
+          locationId: this.props.rangeIndex
+        }, this.props.index);
       }
     }
   }

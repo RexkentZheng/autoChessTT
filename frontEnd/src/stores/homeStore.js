@@ -1,4 +1,4 @@
-import { observable, computed, autorun, reaction, values } from 'mobx'
+import { observable, autorun } from 'mobx'
 import { request } from 'lib/decorators';
 import config from 'config';
 import Base from './base';
@@ -14,6 +14,7 @@ class HomeStore extends Base {
   @observable jobRelations = {};
   @observable raceRelations = {};
   @observable relations = [];
+  @observable status = 'waitting';
 
   /**
    * @description: 根据等级随机获取英雄
@@ -279,6 +280,15 @@ class HomeStore extends Base {
       this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'race'))
     ), ['num']);
   });
+
+  /**
+   * @description: 更新当前状态，判断是否在战斗中
+   * @param {string} type 更新后的状态
+   */
+  updateStatus(type) {
+    this.status = type;
+  }
+
 }
 
 export default new HomeStore();

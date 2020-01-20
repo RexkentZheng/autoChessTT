@@ -42,8 +42,8 @@ const getLength = ({x, y}) => {
  * @param {number} unit 半径倍数
  * @return {Array} 在圆形范围内六边形的index
  */
-export const culAttackWidth = (index, unit) => {
-  const all = _.range(1, 29, 1);
+export const culAttackWidth = (index, unit, max) => {
+  const all = _.range(1, max, 1);
   const res = []
   const { xL: indexXX, yL: indexYY } = getLength(getLocation(index));
   _.map(all, (item) => {
