@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import { Tooltip, Button } from 'antd';
-import _ from 'lodash';
+import { Button, Tooltip } from 'antd';
 import config from 'config';
+import _ from 'lodash';
+import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react';
 
 @inject('homeStore', 'battleStore')
 @observer

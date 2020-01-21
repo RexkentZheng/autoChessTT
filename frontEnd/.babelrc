@@ -1,23 +1,36 @@
 {
   "presets": [
-    "es2015",
-    "stage-0",
-    "react"
+    [
+      "@babel/preset-env", {
+        "modules": false,
+        "loose": true,
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 11"]
+        },
+      }
+    ],
+    // "@babel/env",
+    "@babel/react"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
   ],
   "env": {
-		"development": {
-			"plugins": [
-        "transform-decorators-legacy",
-        "react-hot-loader/babel",
-        ["import", { "libraryName": "antd", "libraryDirectory": "lib"}, "ant"],
-        ["react-transform", {
-          "transforms": [{
-            "transform": "react-transform-hmr",
-            "imports": ["react"],
-            "locals": ["module"]
-          }]
-        }]
+    "development": {
+      "plugins": [
+        ["import", { "libraryName": "antd", "libraryDirectory": "lib"}, "ant"]
       ]
-		}
-	}
+    }
+  }
 }

@@ -23,7 +23,7 @@ export function request(url, verb='GET') {
       this.debug(
         `${logPrefix} request called: ${JSON.stringify(opts)}`,
         opts,
-        args,
+        args
       );
       if (promise && promise.then) {
         return promise

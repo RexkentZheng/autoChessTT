@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import 'antd/dist/antd.css';
+
 import { Spin, Tooltip } from 'antd';
-import _ from 'lodash';
 import config from 'config';
+import _ from 'lodash';
+import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react';
 
 @inject('homeStore', 'globalStore')
 @observer

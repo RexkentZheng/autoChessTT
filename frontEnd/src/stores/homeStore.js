@@ -1,8 +1,9 @@
-import { observable, autorun } from 'mobx'
-import { request } from 'lib/decorators';
 import config from 'config';
-import Base from './base';
+import { request } from 'lib/decorators';
 import _ from 'lodash';
+import { autorun, observable } from 'mobx'
+
+import Base from './base';
 
 class HomeStore extends Base {
   @observable level = 1;

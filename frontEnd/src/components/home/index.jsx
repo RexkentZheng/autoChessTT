@@ -1,13 +1,14 @@
-import React, { Component }     from 'react'
-import HeroList                 from './heroList';
-import HeroTable                from './heroTable';
-import HeroWaitting             from './heroWaitting';
-import HeroRelations            from './heroRelations';
-import HeroTableBattle          from './heroTableBattle';
-import { inject, observer }     from 'mobx-react';
-
 import './index.less';
 import './raceAndJob.less';
+
+import { inject, observer }     from 'mobx-react';
+import React, { Component }     from 'react'
+
+import HeroList                 from './heroList';
+import HeroRelations            from './heroRelations';
+import HeroTable                from './heroTable';
+import HeroTableBattle          from './heroTableBattle';
+import HeroWaitting             from './heroWaitting';
 
 @inject('homeStore')
 @observer

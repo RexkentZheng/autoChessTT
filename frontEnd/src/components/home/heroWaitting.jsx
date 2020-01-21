@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import HeroWaittingItem from './heroWaittingItem';
-import { inject, observer } from 'mobx-react';
 import _ from 'lodash';
+import { inject, observer } from 'mobx-react';
+import React, { Component } from 'react';
+
+import HeroWaittingItem from './heroWaittingItem';
 
 @inject('homeStore')
 @observer

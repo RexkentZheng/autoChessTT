@@ -37,9 +37,9 @@ bower_components/
 *po~
 */npm-debug.log
 
-./vs_code
+.vscode
 
 server/src/config/dev.js
 
-# */package-lock.json
+*/package-lock.json
 

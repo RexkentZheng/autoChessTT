@@ -1,8 +1,9 @@
-import { observable, computed } from 'mobx';
-import Base from './base';
+import { Message, Notification } from 'lib/notification';
 import { culAttackWidth } from 'lib/utils';
 import _ from 'lodash';
-import { Message, Notification } from 'lib/notification';
+import { computed, observable } from 'mobx';
+
+import Base from './base';
 
 class BattleStore extends Base {
   @observable allHeroes = [];

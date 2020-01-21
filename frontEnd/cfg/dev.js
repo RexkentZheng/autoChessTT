@@ -4,13 +4,11 @@ let path = require('path');
 let webpack = require('webpack');
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
-
-// Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
-// Todo 下面这个插件不知道有没有用
-let AutoDllPlugin = require('autodll-webpack-plugin');
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 let config = Object.assign({}, baseConfig, {
+  mode: 'development',
   entry: [
     'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
     'webpack/hot/only-dev-server',
@@ -18,7 +16,27 @@ let config = Object.assign({}, baseConfig, {
   ],
   cache: true,
   devtool: 'eval-source-map',
+  optimization: {
+    minimizer: [
+      new ParallelUglifyPlugin({ // 多进程压缩
+        cacheDir: '.cache/',
+        uglifyJS: {
+          output: {
+            comments: false,
+            beautify: false
+          },
+          compress: {
+            warnings: false,
+            drop_console: true,
+            collapse_vars: true,
+            reduce_vars: true
+          }
+        }
+      })
+    ]
+  },
   devServer: {
+    stats: 'errors-only',
     contentBase: './src/',
     historyApiFallback: true,
     hot: true,
@@ -34,23 +52,27 @@ let config = Object.assign({}, baseConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    }),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"dev"'
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        port: defaultSettings.port
+      }
+    }),
+    new ProgressBarPlugin({
+      complete: '>'
     })
   ],
   module: defaultSettings.getDefaultModules()
 });
 
-// Add needed loaders to the defaults here
-config.module.loaders.push({
+config.module.rules.push({
   test: /\.(js|jsx)$/,
   loader: 'babel-loader',
+  exclude: /node_modules/,
   include: [].concat(
-    config.additionalPaths,
     [ path.join(__dirname, '/../src') ]
   )
 });

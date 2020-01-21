@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import { Popover, Progress, Tooltip } from 'antd';
+import config from 'config';
 import _ from 'lodash';
 import { inject, observer } from 'mobx-react'
-import { Progress, Popover, Tooltip } from 'antd';
-import config from 'config';
+import React, { Component } from 'react';
 
 @inject('homeStore')
 @observer
