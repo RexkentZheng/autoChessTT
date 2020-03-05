@@ -21,13 +21,13 @@ export default class Home extends Component {
     return(
       <div className="hero-main">
         <HeroRelations />
-        {
-          this.homeStore.status === 'battling' ?
-          <HeroTableBattle />   :
-          <HeroTable />
-        }
-        {/* <HeroTable />
-        <HeroTableBattle /> */}
+        <div className="hero-table-wrapper">
+          {
+            this.homeStore.status === 'battling' ?
+            <HeroTableBattle />   :
+            <HeroTable />
+          }
+        </div>
         <HeroWaitting />
         <HeroList />
       </div>

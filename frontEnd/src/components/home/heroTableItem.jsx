@@ -87,9 +87,12 @@ export default class HeroTableItem extends Component {
   }
 
   render() {
+
+    const hasBattling = this.props.homeStore.default.status && this.props.hero;
+
     return(
       <div
-        className="grid"
+        className={`grid ${hasBattling ? 'battling' : ''}`}
         onDrop={this.drop()}
         onDragOver={this.allowDrop.bind(this)}
         onDragStart={this.dragStart()}
@@ -182,8 +185,8 @@ export default class HeroTableItem extends Component {
                     <span>{this.props.hero.info.damage}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">不造：</span>
-                    <span>{this.props.hero.info.damage}</span>
+                    <span className="icon">法强：</span>
+                    <span>100%</span>
                   </div>
                   <div className="property">
                     <span className="icon">护甲：</span>
@@ -206,8 +209,8 @@ export default class HeroTableItem extends Component {
                     <span>{this.props.hero.info.CR}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击力</span>
-                    <span>{this.props.hero.info.damage}</span>
+                    <span className="icon">暴击伤害：</span>
+                    <span>150%</span>
                   </div>
                 </div>
               </div>

@@ -143,6 +143,34 @@ body {
 .hero-main {
   width: 80%;
   margin: 0 auto;
+  .hero-table-wrapper {
+    margin-top: -20px;
+    .box-wrapper {
+      transform: scale(0.95);
+      .board-box:nth-child(1) {
+        transform: scale(0.88);
+        perspective: 900px;
+        perspective-origin: 50% 130%;
+      }
+      .board-box:nth-child(2) {
+        perspective: 900px;
+      }
+      .grid {
+        transition: .5s all ease;
+        transform: rotateX(40deg);
+        perspective: 900px;
+        animation: entry 1s linear 1;
+        &:hover {
+          transform: rotate(0deg) scale(1);
+          transition: .5s all ease;
+        }
+      }
+      .battling {
+        transform: rotate(0deg) scale(1);
+        transition: .5s all ease;
+      }
+    }
+  }
 }
 // body {
 //   background: url(./../../images/wide-bg.jpg) no-repeat;

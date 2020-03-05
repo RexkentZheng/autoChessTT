@@ -41,7 +41,7 @@ class BattleStore extends Base {
       return hero;
     });
     if (!_.isEmpty(armyHeroes)) {
-      this.allHeroes = _.cloneDeep(newArmyHeroes.concat(newEnemyHeroes));
+      this.allHeroes = _.cloneDeep(newEnemyHeroes.concat(newArmyHeroes));
       this.roundBattle();
     } else {
       clearInterval(this.timer);
@@ -67,8 +67,9 @@ class BattleStore extends Base {
           targetHero = this.getTargetHero(this.cleanAllHeroes, hero);
           if (targetHero) {
             const { xMove, yMove } = this.getMovedLocation(targetHero, hero);
+            //  如果将要移动的位置已有英雄存在，位置+1，以此类推，是一个递归
+            const locationId = this.getLoopLocation(tmpHeroes, hero.locationId + xMove + yMove * 7);
             tmpHeroes[index] = null;
-            const locationId = hero.locationId + xMove + yMove * 7
             tmpHeroes[locationId - 1] = _.extend(
               hero,
               {
@@ -94,7 +95,7 @@ class BattleStore extends Base {
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
           hero.leftHealth = this.getLeftHealth(allDps, hero);
-          if (hero.leftMana >= +hero.info.Mana) {
+          if (hero.leftMana >= +hero.info.Mana && +hero.info.Mana !== 0) {
             Notification('success', 'Success', `${hero.hero_name}已施放技能`);
             hero.leftMana = 0;
           }
@@ -134,14 +135,14 @@ class BattleStore extends Base {
    * @return: 英雄剩余生命值
    */
   getLeftHealth(dps, hero) {
-    return dps[hero.role][hero.id] ? hero.leftHealth - dps[hero.role][hero.id]: hero.leftHealth;
+    return dps[hero.role][hero.id] ? +hero.leftHealth - dps[hero.role][hero.id]: +hero.leftHealth;
   }
 
   /**
-   * @description: 当前Hero根据目标Hero进行合理位
+   * @description: 当前Hero根据目标Hero进行合理位移
    * 当在目标Hero和当前Hero中处在边界时，均为最大值7
    * x轴方向根据二者大小选择左右移动
-   * y轴方向因为目前不选择同行Hero进行战斗，所以必须保持一行的距离
+   * y轴方向因为目前不选择同行Hero进行战斗，所以必须保持一行的距离（此句注释有问题）
    * @param {Object} targetHero 目标Hero
    * @param {Object} hero 当前Hero
    * @return: x轴和y轴的位移
@@ -176,13 +177,27 @@ class BattleStore extends Base {
   getTargetHero(targets, hero, rangeIds = null) {
     let allEnemies = _.filter(targets, (targetItem) => targetItem.role !== hero.role);
     if (rangeIds) {
-      allEnemies = _.filter(allEnemies, (enemyItem) => _.indexOf(rangeIds, enemyItem.locationId) > 0);
+      allEnemies = _.filter(allEnemies, (enemyItem) => _.indexOf(rangeIds, enemyItem.locationId) >= 0);
     }
     if (allEnemies.length > 0) {
       const sortedEnemy = _.sortBy(allEnemies, (enemyItem) => Math.abs(enemyItem.locationId - hero.locationId));
       return _.first(sortedEnemy);
     }
     return null;
+  }
+
+  /**
+   * @description: 位置迭代变动，判断目标位置是否已有英雄，若有，增位置加1，持续迭代，否则直接返回位置
+   * @param {Array<Object>} tmpHeroes 全场英雄列表
+   * @param {Number} targetLocation 目标即将跳转位置
+   * @return: 没有影响占用的位置
+   */
+  getLoopLocation(tmpHeroes, targetLocation) {
+    if (tmpHeroes[targetLocation - 1]) {
+      return this.getLoopLocation(tmpHeroes, targetLocation + 1);
+    } else {
+      return targetLocation;
+    }
   }
 
 }

@@ -36,8 +36,7 @@ const getLength = ({x, y}) => {
  * @description: 计算以目标六边形中心点位圆形，半径为六边形对角线长度的圆能覆盖多少六边形
  * 想象一张平面直角坐标系，X轴在上方，Y轴在左侧，获取到目标点和每个点的绝对距离，根据勾股定理
  * 得出两个六边形中心点的距离，判断此距离是否小于原的半径，得出小于则可以覆盖
- * PS：1. 同行的六边形暂时不要
- *     2. 六边形一边的长度暂定为2，圆半径的一个单位长度为2倍√3
+ * PS：1. 六边形一边的长度暂定为2，圆半径的一个单位长度为2倍√3
  * @param {number} index 中心点
  * @param {number} unit 半径倍数
  * @return {Array} 在圆形范围内六边形的index
@@ -48,10 +47,6 @@ export const culAttackWidth = (index, unit, max) => {
   const { xL: indexXX, yL: indexYY } = getLength(getLocation(index));
   _.map(all, (item) => {
     const { xL: itemXX, yL: itemYY } = getLength(getLocation(item));
-    //  同一行的先不要
-    if (itemYY === indexYY) {
-      return;
-    }
     // 求绝对距离
     const absDistance = Math.sqrt((Math.pow(Math.abs(indexXX - itemXX), 2) + Math.pow(Math.abs(indexYY - itemYY), 2)));
     // 比较距离

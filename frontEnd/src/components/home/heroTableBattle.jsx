@@ -28,7 +28,7 @@ export default class HeroTableBattle extends Component {
 
     return(
       <div className="box-wrapper">
-        <p style={{float: 'left'}}>Battle Filed</p>
+        {/* <p style={{float: 'left'}}>Battle Filed</p> */}
         <div className="board-box enemy editor">
           {generateHexagon(_.slice(this.battleStore.allHeroes, 0, 28), _.range(1, 29, 1), 'enemy')}
         </div>
