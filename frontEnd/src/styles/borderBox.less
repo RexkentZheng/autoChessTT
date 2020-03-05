@@ -1,0 +1,181 @@
+.board-box {
+  position: relative;
+  width: 720px;
+  height: 280px;
+  margin: 0px auto;
+  @media screen and (max-width: 1400px) {
+    zoom: 0.8;    
+  }
+  &.enemy {
+    .grid {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: -540px -100px;
+    }
+  }
+  .grid {
+    user-select: none;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    width: 82px;
+    height: 70px;
+    margin: 0 14px 0px 0;
+    background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+    background-position: -540px -30px;
+    .radius-180 {
+      position: absolute;
+      left: -40px;
+      top: -50px;
+      width: 180px;
+      height: 180px;
+      border: 2px solid red;
+      border-radius: 50%;
+    }
+    .radius-420 {
+      position: absolute;
+      left: -160px;
+      top: -160px;
+      width: 420px;
+      height: 420px;
+      border: 2px solid red;
+      border-radius: 50%;
+    }
+    &:nth-child(8) {
+      margin-left: 48px;
+    }
+    &:nth-child(22) {
+      margin-left: 48px;
+    }
+    .health-percent {
+      position: absolute;
+      top: -18px;
+      left: 18px;
+      width: 75%;
+      .ant-progress-bg {
+        height: 5px !important;
+      }
+      .ant-progress-inner {
+        background-color: gray;
+      }
+    }
+    .mana-percent {
+      position: absolute;
+      top: -12px;
+      left: 18px;
+      width: 75%;
+      .ant-progress-bg {
+        height: 3px !important;
+      }
+      .ant-progress-inner {
+        background-color: gray;
+      }
+    }
+  }
+  .grid-champion {
+    position: absolute;
+    top: 0;
+    right: 2px;
+    width: 60px;
+    height: 70px;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 70px;
+      z-index: 3;
+    }
+    img {
+      margin: 1px;
+      width: 58px;
+      height: 68px;
+      object-fit: cover;
+      -webkit-clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+      clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    }
+    .star1 {
+      &::before {
+        content: '';
+        position: absolute;
+        left: 23px;
+        top: 5px;
+        width: 14px;
+        height: 14px;
+        background: url(./../images/stars.png) no-repeat;
+        background-position: 0 -25px;
+        z-index: 999;
+      }
+    }
+    .star2 {
+      &::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 8px;
+        width: 29px;
+        height: 14px;
+        background: url(./../images/stars.png) no-repeat;
+        background-position: 0 -25px;
+        z-index: 999;
+      }
+    }
+    .star3 {
+      &::before {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 5px;
+        width: 44px;
+        height: 24px;
+        background: url(./../images/stars.png) no-repeat;
+        background-position: 0 0px;
+        z-index: 999;
+      }
+    }
+  }
+  .grid-items {
+    width: 18px;
+    margin-top: 6px;
+  }
+  .equipment {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 2px;
+    // background-color: #e1e1e1;
+    img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  .cost1 {
+    &::before {
+      background: url(//game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: 0px -30px;
+    }
+  }
+  .cost2 {
+    &::before {
+      background: url(//game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: 0px -30px;
+    }
+  }
+  .cost3 {
+    &::before {
+      background: url(//game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: 0px -30px;
+    }
+  }
+  .cost4 {
+    &::before {
+      background: url(//game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: 0px -30px;
+    }
+  }
+  .cost5 {
+    &::before {
+      background: url(//game.gtimg.cn/images/lol/guides/tft/spr-simulator.png) no-repeat;
+      background-position: 0px -30px;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import './index.less';
+import './../../styles/index.less';
 import './raceAndJob.less';
 
 import { inject, observer }     from 'mobx-react';

@@ -1,0 +1,262 @@
+.hero-list {
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  @media screen and (max-width: 1400px) {
+    zoom: 0.7;    
+  }
+  .player-info {
+    position: relative;
+    height: 50px;
+    color: #c0bdb2;
+    .level {
+      position: absolute;
+      left: 0;
+      .level-bg {
+        position: absolute;
+        top: 0px;
+        right: -185px;
+        border-left: 0px solid transparent;   //控制梯形腰的斜度，像素越大，底角越小，如125px
+        border-right: 25px solid transparent;
+        border-bottom: 50px solid #162021;
+        height: 0;
+        width: 185px;
+        z-index: 1;
+      }
+      .level-info {
+        z-index: 3;
+        height: 50px;
+        width: 150px;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        > p:nth-child(1) {
+          font-size: 22px;
+          font-weight: bold;
+          margin: 5px 0 0 5px;
+        }
+        > p:nth-child(2) {
+          margin: 20px 0 0 0;
+        }
+      }
+    }
+    .money {
+      position: absolute;
+      left: 45%;
+      height: 50px;
+      width: 150px;
+      .money-bg {
+        position: absolute;
+        top: 0px;
+        right: -25px;
+        border-left: 25px solid transparent;   //控制梯形腰的斜度，像素越大，底角越小，如125px
+        border-right: 25px solid transparent;
+        border-bottom: 50px solid #162021;
+        height: 0;
+        width: 185px;
+        z-index: 1;
+      }
+      .money-info {
+        z-index: 3;
+        position: absolute;
+        left: 26%;
+        top: 10%;
+        font-size: 22px;
+        font-weight: bold;
+        p {
+          &:before {
+            content: '';
+            display: inline-block;
+            margin: 0 3px 0 0;
+            width: 20px;
+            height: 18px;
+            background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-icon.png) no-repeat;
+            background-position: -480px -20px;
+          }
+        }
+      }
+    }
+  }
+  .champions {
+    position: relative;
+    width: 100%;
+    background-color: #081110;
+    border: 3px solid #6a5b3a;
+  }
+  .champion-list {
+    display: flex;
+    padding: 15px 0 10px 0;
+    align-items: center;
+    justify-content: space-around;
+    .cost1 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -220px;
+    }
+    .cost2 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -180px;
+    }
+    .cost3 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -140px;
+    }
+    .cost4 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -100px;
+    }
+    .cost5 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -60px;
+    }
+    .cost7 p {
+      background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-border.png) no-repeat;
+      background-position: 0 -260px;
+    }
+    .champion-info {
+      position: relative;
+      float: left;
+      width: 200px;
+      height: 154px;
+      margin: 0 0px 5px 0;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      .refresh {
+        height: 70px;
+        width: 180px;
+        // margin: 0 auto;
+        background-image: url(./../images/refresh-hero.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+      .level {
+        height: 65px;
+        width: 180px;
+        // margin: 0 auto;
+        background-image: url(./../images/get-Exp.png);
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+      > div {
+        border: 1px solid black;
+      }
+    }
+    .champion-saled {
+      background: #050a0a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .position {
+        border: 2px solid #122121;
+        background: #081110;
+        width: 90%;
+        height: 80%;
+        margin-left: 13px;
+      }
+    }
+    .champion {
+      position: relative;
+      float: left;
+      width: 224px;
+      height: 154px;
+      margin: 0 20px 5px 0;
+      cursor: pointer;
+      overflow: hidden;
+      &.cost1 {
+        border: 2px solid #454f5c;
+      }
+      &.cost2 {
+        border: 2px solid #287d45;
+      }
+      &.cost3 {
+        border: 2px solid #296ba1;
+      }
+      &.cost4 {
+        border: 2px solid #8b1878;
+      }
+      &.cost5 {
+        border: 2px solid #b27c1a;
+      }
+      p {
+        width: 100%;
+        height: 38px;
+        line-height: 38px;
+        margin-top: 116px;
+        padding: 0 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #f0e6d2;
+        span {
+          float: right;
+          height: 38px;
+          font-size: 24px;
+          &:before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url(https://game.gtimg.cn/images/lol/guides/tft/spr-icon.png) no-repeat;
+            background-position: -480px -20px;
+          }
+        }
+      }
+    }
+    .triangle {
+      position: absolute;
+      top: -12px;
+      left: -2px;
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-right: 12px solid transparent;
+      transform: rotate(45deg);
+      z-index: 9;
+    }
+    .pic-shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 224px;
+      height: 116px;
+      background: url(//game.gtimg.cn/images/lol/guides/tft/champion-shadow.png) no-repeat;
+      z-index: 3;
+    }
+    .synergies {
+      position: absolute;
+      bottom: 48px;
+      left: 12px;
+      z-index: 4;
+      span {
+        position: relative;
+        display: block;
+        width: auto;
+        height: 30px;
+        line-height: 30px;
+        text-align: left;
+        font-size: 12px;
+        color: #fcfcfc;
+        &::before {
+          content: '';
+          vertical-align: top;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin: 5px;
+          background-position-y: -60px;
+        }
+      }
+    }
+    .champion img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      height: 116px;
+      z-index: 2;
+    }
+  }
+}
