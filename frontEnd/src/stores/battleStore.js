@@ -12,6 +12,7 @@ class BattleStore extends Base {
     army: {}
   };
   @observable timer = null;
+  @observable damageItems = [];
 
   /**
    * @description: 得出没有null值的所有hero
@@ -23,7 +24,7 @@ class BattleStore extends Base {
 
   /**
    * @description: 更新战斗状态下的所有Hero，先给Hero增加role属性，
-   * 之后放到allHeroes中，开始战斗或者重置timer
+   * 之后放到allHeroes中，开始战斗或者重置timer和单位伤害
    * @param {Array<Object>} armyHeroes 己方Heroes
    * @param {Array<Object>} enemyHeroes 敌方Heroes
    */
@@ -45,6 +46,7 @@ class BattleStore extends Base {
       this.roundBattle();
     } else {
       clearInterval(this.timer);
+      this.damageItems = [];
     }
   }
 
@@ -56,13 +58,15 @@ class BattleStore extends Base {
     this.damageHeroes.army = {};
     this.damageHeroes.enemy = {};
     let tmpHeroes = [];
+    this.damageItems = [];
     tmpHeroes = _.cloneDeep(this.allHeroes);
     _.map(this.allHeroes, (hero, index) => {
       if (hero) {
-        const rangeIds = culAttackWidth(hero.locationId, +hero.info.range, 49);
+        const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
         let targetHero = this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
         if (targetHero) {
-          this.damageHeroes[targetHero.role][targetHero.id] = this.damageHeroes[targetHero.role][targetHero.id] ? this.damageHeroes[targetHero.role][targetHero.id] + +hero.info.dps : +hero.info.dps;
+          this.damageHeroes[targetHero.role][targetHero.chessId] = this.damageHeroes[targetHero.role][targetHero.chessId] ? this.damageHeroes[targetHero.role][targetHero.chessId] + +hero.attack : +hero.attack;
+          this.damageItems.push([index + 1, targetHero.locationId])
         } else {
           targetHero = this.getTargetHero(this.cleanAllHeroes, hero);
           if (targetHero) {
@@ -94,14 +98,13 @@ class BattleStore extends Base {
       const allDps = this.getAllDps();
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
-          hero.leftHealth = this.getLeftHealth(allDps, hero);
-          if (hero.leftMana >= +hero.info.Mana && +hero.info.Mana !== 0) {
-            Notification('success', 'Success', `${hero.hero_name}已施放技能`);
-            hero.leftMana = 0;
+          hero.leftLife = this.getLeftHealth(allDps, hero);
+          if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
+            Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
+            hero.leftMagic = 0;
           }
-          hero.leftMana = +hero.leftMana + 10;
-          // hero.leftMana = hero.leftMana >= +hero.info.Mana ? 0 : +hero.leftMana + 10;
-          if (hero.leftHealth <= 0) {
+          hero.leftMagic = +hero.leftMagic + 10;
+          if (hero.leftLife <= 0) {
             return null;
           }
         }
@@ -125,6 +128,7 @@ class BattleStore extends Base {
       Message('error', 'Aloha', 'You lose');
       clearInterval(this.timer);
     }
+    this.damageItems = [];
   }
 
   /**
@@ -135,7 +139,7 @@ class BattleStore extends Base {
    * @return: 英雄剩余生命值
    */
   getLeftHealth(dps, hero) {
-    return dps[hero.role][hero.id] ? +hero.leftHealth - dps[hero.role][hero.id]: +hero.leftHealth;
+    return dps[hero.role][hero.chessId] ? +hero.leftLife - dps[hero.role][hero.chessId]: +hero.leftLife;
   }
 
   /**

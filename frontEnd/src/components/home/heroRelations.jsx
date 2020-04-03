@@ -13,10 +13,10 @@ export default class HeroRelations extends Component {
     this.battleStore = props.battleStore.default;
   }
 
-  getRelationStatus (num, level) {
+  getRelationStatus (relation, key) {
     return (
-      <span key={encodeURI(level.name)} className={num >= +level.name ? 'normal' : 'disable'}>
-        {`(${level.name})  ${level.describe}`}
+      <span key={`${relation.TFTID}-${relation.id}`} className={relation.num >= key ? 'normal' : 'disable'}>
+        {`(${key}) +${relation.level[key]}`}
       </span>
     )
   }
@@ -24,17 +24,17 @@ export default class HeroRelations extends Component {
   getTooltipHeroes (relation) {
     const relationHeroes =_.sortBy(_.compact(_.map(config.heroes, (hero) => {
       if (relation.type === 'job') {
-        return +hero.job === +relation.id ? hero : null;
+        return +hero.jobIds === +relation.id ? hero : null;
       }
-      return +hero.race === +relation.id ? hero : null;
+      return +hero.raceIds === +relation.id ? hero : null;
     })), ['price']);
     return _.map(relationHeroes, (hero) => {
-      const className = this.homeStore.heroTable.find( item => item ? +item.heroId === +hero.heroId : false) ? '' : 'disabled';
+      const className = this.homeStore.heroTable.find( item => item ? +item.chessId === +hero.chessId : false) ? '' : 'disabled';
       return (
-        <div key={`hero-relation-hero-${relation.id}-${hero.id}`} className={`cost${hero.price}`}>
+        <div key={`hero-relation-hero-${relation.TFTID}-${hero.chessId}`} className={`cost${hero.price}`}>
           <img
             className={className}
-            src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`}
+            src={`https://game.gtimg.cn/images/lol/act/img/tft/champions/${hero.name}`}
           />
         </div>
       )
@@ -44,17 +44,17 @@ export default class HeroRelations extends Component {
   getTooltipContent (relation) {
     return (
       <div className="hover-tooltip hover-relations">
-        <p className={`${config.raceImg2[relation.id] || config.jobImg2[relation.id]} relation-name`}>
-          {relation.race_name || relation.job_name}
+        <p>
+          {relation.name}
         </p>
         <p className="relation-dsc">{relation.introduce}</p>
         <p className="relation-status">
           {
-            _.map(relation.level, (level) => this.getRelationStatus(relation.num, level))
+            _.map(_.keys(relation.level), (key) => this.getRelationStatus(relation, key))
           }
         </p>
         <div className="relation-hero">
-          <p>【{relation.race_name || relation.job_name}】元素英雄们：</p>
+          <p>【{relation.name}】英雄们：</p>
           {this.getTooltipHeroes(relation)}
         </div>
       </div>
@@ -67,17 +67,19 @@ export default class HeroRelations extends Component {
         placement="right"
         title={this.getTooltipContent(relation)}
       >
-        <div className={config.raceImg2[relation.id] || config.jobImg2[relation.id]}>
-          {
-            relation.num >= +relation.level[0].name ?
-            <p className="num">{relation.num}</p > : null
-          }
+        <div>
+          <span>
+            <img
+              className={relation.num >= _.keys(relation.level)[0] ? 'icon-img-active' : 'icon-img-disable'}
+              src={relation.imagePath}
+              alt=""
+            />
+          </span>
+          <p className="num">{relation.num}</p>
           <p>
-            <span>{relation.race_name || relation.job_name}</span>
+            <span>{relation.name}</span>
             {
-              relation.num >= +relation.level[0].name ?
-              <span>{_.map(relation.level, (level) => level.name).join(' > ')}</span> :
-              <span>{`${relation.num}/${+relation.level[0].name}`}</span>
+              <span>{_.keys(relation.level).join(' > ')}</span>
             }
           </p >
         </div>
@@ -106,7 +108,7 @@ export default class HeroRelations extends Component {
         <div className="relations-list">
           {
             _.map(_.orderBy(this.homeStore.relations, ['num'], ['desc']), (relation) => (
-              <div key={`hero-relation-${relation.traitID}`}>
+              <div key={`hero-relation-${relation.TFTID}-${relation.type}`}>
                 {this.getRelationNum(relation)}
               </div>
             ))

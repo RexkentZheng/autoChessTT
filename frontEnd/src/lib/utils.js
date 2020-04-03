@@ -56,3 +56,84 @@ export const culAttackWidth = (index, unit, max) => {
   })
   return res;
 }
+
+/**
+ * @description: 利用二次贝塞尔方程算出点的位置
+ * @param {number} p0 起始位置
+ * @param {number} p1 中间位置
+ * @param {number} p2 终止位置
+ * @param {number} t 曲率
+ * @return: 计算后的点的位置
+ */
+export const calBezier = (p0, p1, p2, t) => {
+  const k = 1 - t;
+  return k * k * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+}
+
+/**
+ * @description: 绘制一条曲线路径
+ * 首先根据曲率算出起点和终点的中间点，得到x,y的坐标，存放于cp中
+ * 之后算出第一个Q0，B，根据这个可以得到贝塞尔曲线的控制点
+ * 最后使用canvas的quadraticCurveTo方法进行绘制
+ * @param  {Object} ctx canvas渲染上下文
+ * @param  {Array<number>} start 起点
+ * @param  {Array<number>} end 终点
+ * @param  {number} curveness 曲度(0-1)
+ * @param  {number} percent 绘制百分比(0-100)
+ */
+export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
+
+  const cp = [
+    ( start[ 0 ] + end[ 0 ] ) / 2 - ( start[ 1 ] - end[ 1 ] ) * curveness,
+    ( start[ 1 ] + end[ 1 ] ) / 2 - ( end[ 0 ] - start[ 0 ] ) * curveness
+  ];
+
+  const t = percent / 100;
+
+  const p0 = start;
+  const p1 = cp;
+  const p2 = end;
+
+  const v01 = [ p1[ 0 ] - p0[ 0 ], p1[ 1 ] - p0[ 1 ] ];     // 向量<p0, p1>
+  const v12 = [ p2[ 0 ] - p1[ 0 ], p2[ 1 ] - p1[ 1 ] ];     // 向量<p1, p2>
+
+  const q0 = [ p0[ 0 ] + v01[ 0 ] * t, p0[ 1 ] + v01[ 1 ] * t ];
+  const q1 = [ p1[ 0 ] + v12[ 0 ] * t, p1[ 1 ] + v12[ 1 ] * t ];
+
+  const v = [ q1[ 0 ] - q0[ 0 ], q1[ 1 ] - q0[ 1 ] ];       // 向量<q0, q1>
+
+  const b = [ q0[ 0 ] + v[ 0 ] * t, q0[ 1 ] + v[ 1 ] * t ];
+
+  ctx.moveTo( p0[ 0 ], p0[ 1 ] );
+
+  ctx.quadraticCurveTo(
+      q0[ 0 ], q0[ 1 ],
+      b[ 0 ], b[ 1 ]
+  );
+
+}
+
+// const calBezier = (p0, p1, p2, t) => {
+//   const k = 1 - t;
+//   return k * k * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
+// }
+
+// export const  drawCurvePath = ( ctx, start, end, curveness, percent ) => {
+
+//   var cp = [
+//        ( start[ 0 ] + end[ 0 ] ) / 2 - ( start[ 1 ] - end[ 1 ] ) * curveness,
+//        ( start[ 1 ] + end[ 1 ] ) / 2 - ( end[ 0 ] - start[ 0 ] ) * curveness
+//   ];
+
+//   ctx.moveTo( start[ 0 ], start[ 1 ] );
+
+//   for ( var t = 0; t <= percent / 100; t += 0.01 ) {
+
+//       var x = calBezier( start[ 0 ], cp[ 0 ], end[ 0 ], t );
+//       var y = calBezier( start[ 1 ], cp[ 1 ], end[ 1 ], t );
+
+//       ctx.lineTo( x, y );
+//       // ctx.fillRect(x, y, 1, 1);
+//   }
+
+// }

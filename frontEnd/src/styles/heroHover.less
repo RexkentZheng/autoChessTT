@@ -103,19 +103,22 @@
           position: relative;
           display: block;
           width: auto;
-          height: 30px;
-          line-height: 30px;
+          height: 26px;
+          line-height: 26px;
           text-align: left;
           font-size: 12px;
           color: #fcfcfc;
-          &::before {
-            content: '';
-            vertical-align: top;
-            display: inline-block;
+          padding: 0 0 0 30px;
+          overflow: hidden;
+          .icon-img {
+            position: absolute;
+            top: 4px;
+            left: -30px;
             width: 20px;
             height: 20px;
-            margin: 5px;
-            background-position-y: -60px;
+            -webkit-filter: drop-shadow(#deb762 30px 0);
+            filter: drop-shadow(#deb762 30px 0);
+            z-index: 99;
           }
         }
       }
@@ -218,7 +221,7 @@
     }
   }
   .info {
-    width: 105px;
+    width: 160px;
     padding-left: 5px;
     display: flex;
     justify-content: space-between;
@@ -226,7 +229,7 @@
     color: #FFFFFF;
     background-color: rgba(0, 0, 0, 0.75);
     .property {
-      width: 50px;
+      width: 75px;
       height: 30px;
     }
   }

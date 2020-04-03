@@ -141,15 +141,21 @@ export default class HeroList extends Component {
                       className={`champion cost${hero.price}`}
                       onClick={this.buyHero.bind(this, index,hero)}
                     >
-                      <img className="hidden" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`} alt=""/>
+                      <img className="hidden" src={`https://game.gtimg.cn/images/lol/act/img/tft/champions/${hero.name}`} alt=""/>
                       <div className="triangle"></div>
                       <div className="pic-shadow"></div>
                       <div className="synergies">
-                        <span className={config.raceImg2[hero.race]}>{window.TFTrace_List[hero.race].race_name}</span>
-                        <span className={config.jobImg2[hero.job]}>{window.TFTjob_List[hero.job].job_name}</span>
+                        <span>
+                          <img className="icon-img" src={config.allRaces[hero.raceIds].imagePath} alt=""/>
+                          {hero.races}
+                        </span>
+                        <span>
+                          <img className="icon-img" src={config.allJobs[hero.jobIds].imagePath} alt=""/>
+                          {hero.jobs}
+                        </span>
                       </div>
-                      <img className="champion" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/600x345/${hero.heroId}.jpg`} alt="" />
-                      <p>{hero.hero_name}<span>{hero.price}</span></p>
+                      <img className="champion" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/624x318/${hero.name}`} alt="" />
+                      <p>{hero.displayName}<span>{hero.price}</span></p>
                     </div>
                   );
                 })

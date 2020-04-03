@@ -44,13 +44,22 @@ class HomeStore extends Base {
     this.heroWaitting = this.heroWaitting.map((item) => {
       if (!hasChange && !item) {
         hasChange = true;
-        return hero;
+        return {
+          ...hero,
+          leftLife: +hero.life,
+          leftMagic: +hero.startMagic
+        };
       }
       return item;
     })
+    const completeHero = {
+      ...hero,
+      leftLife: +hero.life,
+      leftMagic: +hero.startMagic
+    }
     if (hasChange) {
       this.updateMoney(-hero.price);
-      this.updateHeroGrade(hero);
+      this.updateHeroGrade(completeHero);
       this.updateHeroList(null, index);
     }
   }
@@ -90,12 +99,8 @@ class HomeStore extends Base {
         hasChange = true;
         return _.extend(item, {
           grade : hero.grade + 1,
-          info: {
-            ...item.info,
-            damage: +item.info.damage * 1.8,
-            health: +item.info.health * 1.8
-          },
-          leftHealth: +item.info.health * 1.8
+          leftLife: +item.leftLife * 1.8,
+          attack: +item.attack * 1.8
         })
       } else if (this.compareHero(item, hero)){
         return null;
@@ -131,7 +136,7 @@ class HomeStore extends Base {
     if (!newHero) {
       return false;
     }
-    return newHero.id === oldHero.id && newHero.grade === oldHero.grade;
+    return newHero.chessId === oldHero.chessId && newHero.grade === oldHero.grade;
   }
 
   /**
@@ -226,7 +231,7 @@ class HomeStore extends Base {
    */
   getUniqHeroes(heroes) {
     let uniqHeroes = [];
-    _.forEach(_.groupBy(heroes, 'id'), (value) => uniqHeroes.push(_.first(value)))
+    _.forEach(_.groupBy(heroes, 'chessId'), (value) => uniqHeroes.push(_.first(value)))
     return uniqHeroes;
   }
 
@@ -236,15 +241,15 @@ class HomeStore extends Base {
    * @param {string} type 关系类型
    * @return: 英雄关系对象
    */
-  getRelationsObj(heroes, type) {
+  getRelationsObj(heroes, type, configType) {
     let relations = {};
     _.map(heroes, (hero) => {
       if (hero) {
-        if (relations[+hero[type]]) {
-          relations[+hero[type]].num += 1;
+        if (relations[+hero[`${type}Ids`]]) {
+          relations[+hero[`${type}Ids`]].num += 1;
         } else {
-          relations[+hero[type]] = {
-            ...window[`TFT${type}_List`][hero[type]],
+          relations[+hero[`${type}Ids`]] = {
+            ...config[configType][+hero[`${type}Ids`]],
             num: 1,
             type
           }
@@ -277,9 +282,10 @@ class HomeStore extends Base {
   heroRelation = autorun(() => {
     const uniqHeroes = this.getUniqHeroes(this.heroTable);
     this.relations = _.sortBy(_.concat(
-      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'job')),
-      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'race'))
+      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'job', 'allJobs')),
+      this.getRelationsArr(this.getRelationsObj(uniqHeroes, 'race', 'allRaces'))
     ), ['num']);
+    // console.log(toJS(this.relations));
   });
 
   /**

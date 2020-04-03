@@ -92,6 +92,7 @@ export default class HeroTableItem extends Component {
 
     return(
       <div
+        id={`position-${this.props.rangeIndex}`}
         className={`grid ${hasBattling ? 'battling' : ''}`}
         onDrop={this.drop()}
         onDragOver={this.allowDrop.bind(this)}
@@ -110,16 +111,22 @@ export default class HeroTableItem extends Component {
                   <div className="img">
                     <div className="pic-shadow"></div>
                     <div className="synergies">
-                      <span className={config.raceImg2[this.props.hero.race]}>{window.TFTrace_List[this.props.hero.race].race_name}</  span>
-                      <span className={config.jobImg2[this.props.hero.job]}>{window.TFTjob_List[this.props.hero.job].job_name}</span>
+                    <span>
+                      <img className="icon-img" src={config.allRaces[this.props.hero.raceIds].imagePath} alt=""/>
+                      {this.props.hero.races}
+                    </span>
+                    <span>
+                      <img className="icon-img" src={config.allJobs[this.props.hero.jobIds].imagePath} alt=""/>
+                      {this.props.hero.jobs}
+                    </span>
                     </div>
                     <p className={`star star${this.props.hero.grade}`}></p>
                     <p className="price">{this.props.hero.price}</p>
                     <p className="name">{this.props.hero.hero_tittle}</p>
-                    <img src={`https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/600x345/${this.props.hero.heroId}.jpg`} alt=""/>
+                    <img src={`https://game.gtimg.cn/images/lol/tft/cham-icons/624x318/${this.props.hero.name}`} alt=""/>
                     <Progress
                       className="hover-health"
-                      percent={+this.props.hero.leftHealth / +this.props.hero.info.health * 100}
+                      percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
                       showInfo={false}
                       strokeColor="#0E8E3E"
                       strokeLinecap="square"
@@ -127,7 +134,7 @@ export default class HeroTableItem extends Component {
                     />
                     <Progress
                       className="hover-mana"
-                      percent={+this.props.hero.leftMana / +this.props.hero.info.Mana * 100}
+                      percent={+this.props.hero.leftMagic / +this.props.hero.magic * 100}
                       showInfo={false}
                       strokeColor="#194d61"
                       strokeLinecap="square"
@@ -140,38 +147,28 @@ export default class HeroTableItem extends Component {
                       title={(
                         <div className="hover-tooltip">
                           <p className="first">
-                            <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
-                            <span>{this.props.hero.skill_name}</span>
+                            <img src={this.props.hero.originalImage} alt=""/>
+                            <span>{this.props.hero.skillName}</span>
                           </p>
                           <p className="second">
-                            {this.props.hero.skill_introduce}
+                            {this.props.hero.skillIntroduce}
                           </p>
                           <div className="third">
-                            {
-                              _.map(this.props.hero.skill_num.split('；'), (sentence) => (
-                                <p key={sentence}>
-                                  {
-                                    _.map(sentence.split('：'), (words, index) => (
-                                      <span key={words} className={index === 0 ? 'greenWords' : ''}>{words}</span>
-                                    ))
-                                  }
-                                </p>
-                              ))
-                            }
+                            {this.props.hero.skillDetail}
                           </div>
                         </div>
                       )}
                     >
                       <div className="skill">
-                        <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
+                        <img src={this.props.hero.originalImage} alt=""/>
                       </div>
                     </Tooltip>
                     <div className="equipment">
                       {
-                        _.map(this.props.hero.equipment ? this.props.hero.equipment.split(',') : [], (item, index) => {
+                        _.map(this.props.hero.recEquip ? this.props.hero.recEquip.split(',') : [], (item, index) => {
                           return (
-                            <div key={`equipmentHeroListHover${this.props.hero.heroId}${item}${index}`} className="equipment-item">
-                              <img draggable="false" src={`https://game.gtimg.cn/images/lol/tft/items/${item}.png`} alt="" />
+                            <div key={`equipmentHeroListHover${this.props.hero.chessId}${item}${index}`} className="equipment-item">
+                              <img draggable="false" src={`https://game.gtimg.cn/images/lol/act/img/tft/equip/${item}.png`} alt="" />
                             </div>
                           )
                         })
@@ -182,31 +179,31 @@ export default class HeroTableItem extends Component {
                 <div className="info">
                   <div className="property">
                     <span className="icon">攻击力：</span>
-                    <span>{this.props.hero.info.damage}</span>
+                    <span>{this.props.hero.attack}</span>
                   </div>
                   <div className="property">
                     <span className="icon">法强：</span>
-                    <span>100%</span>
+                    <span>{this.props.hero.crit}</span>
                   </div>
                   <div className="property">
                     <span className="icon">护甲：</span>
-                    <span>{this.props.hero.info.armor}</span>
+                    <span>{this.props.hero.armor}</span>
                   </div>
                   <div className="property">
                     <span className="icon">魔抗：</span>
-                    <span>{this.props.hero.info.magic_res}</span>
+                    <span>{this.props.hero.spellBlock}</span>
                   </div>
                   <div className="property">
                     <span className="icon">攻速：</span>
-                    <span>{this.props.hero.info.speed}</span>
+                    <span>{this.props.hero.attackSpeed}</span>
                   </div>
                   <div className="property">
                     <span className="icon">攻击范围：</span>
-                    <span>{this.props.hero.info.range}</span>
+                    <span>{this.props.hero.attackRange}</span>
                   </div>
                   <div className="property">
                     <span className="icon">暴击：</span>
-                    <span>{this.props.hero.info.CR}</span>
+                    <span>{this.props.hero.crit}</span>
                   </div>
                   <div className="property">
                     <span className="icon">暴击伤害：</span>
@@ -219,19 +216,19 @@ export default class HeroTableItem extends Component {
             <div className="grid-cont">
               <Progress
                 className="health-percent"
-                percent={+this.props.hero.leftHealth / +this.props.hero.info.health * 100}
+                percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
                 showInfo={false}
                 size="small"
                 strokeColor="#87d068" />
               <Progress
                 className="mana-percent"
-                percent={+this.props.hero.leftMana / +this.props.hero.info.Mana * 100}
+                percent={+this.props.hero.leftMagic / +this.props.hero.magic * 100}
                 showInfo={false}
                 size="small"
                 strokeColor="#108ee9" />
               <div className={`grid-champion cost${this.props.hero.price} `}>
                 <div className={`${this.props.hero ? `star${this.props.hero.grade}` : ''}`}>
-                  <img src={this.props.hero.heroId ? `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${this.props.hero.heroId}.png` : ''} alt="" />
+                  <img src={this.props.hero.chessId ? `https://game.gtimg.cn/images/lol/act/img/tft/champions/${this.props.hero.name}` : ''} alt="" />
                 </div>
               </div>
               <div className="grid-items">
@@ -239,7 +236,7 @@ export default class HeroTableItem extends Component {
                   
                   _.map(this.props.hero.equipment ? this.props.hero.equipment.split(',') : [], (item, index) => {
                     return (
-                      <div key={`equipmentHeroList${this.props.hero.heroId}${item}${index}`} className="equipment">
+                      <div key={`equipmentHeroList${this.props.hero.chessId}${item}${index}`} className="equipment">
                         <img draggable="false" src={`https://game.gtimg.cn/images/lol/tft/items/${item}.png`} alt="" />
                       </div>
                     )

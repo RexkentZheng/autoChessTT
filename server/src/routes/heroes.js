@@ -6,11 +6,11 @@ import config from '../config/default'
 import { getRateResult } from '../lib/utils';
 
 const heroes = {
-  hero1: _.filter(config.heroes, (hero) => hero.price === 1 && hero.season_id === '2'),
-  hero2: _.filter(config.heroes, (hero) => hero.price === 2 && hero.season_id === '2'),
-  hero3: _.filter(config.heroes, (hero) => hero.price === 3 && hero.season_id === '2'),
-  hero4: _.filter(config.heroes, (hero) => hero.price === 4 && hero.season_id === '2'),
-  hero5: _.filter(config.heroes, (hero) => hero.price === 5 && hero.season_id === '2') 
+  hero1: _.filter(config.heroes, (hero) => parseInt(hero.price) === 1),
+  hero2: _.filter(config.heroes, (hero) => parseInt(hero.price) === 2),
+  hero3: _.filter(config.heroes, (hero) => parseInt(hero.price) === 3),
+  hero4: _.filter(config.heroes, (hero) => parseInt(hero.price) === 4),
+  hero5: _.filter(config.heroes, (hero) => parseInt(hero.price) === 5) 
 }
 
 const list = async (ctx, next) => {
@@ -68,11 +68,12 @@ const getRealRandomHeroes = async (ctx, next) => {
       const star = getRateResult(rateArr);
       pickResult.push(_.sample(heroes[`hero${star}`]))
     }
+    console.log(pickResult)
     ctx.response.body = resBeautiful.set(_.map(pickResult, (hero) => ({
       ..._.omit(hero, 'level'),
-      info: hero.level[0],
-      leftHealth: hero.level[0].health,
-      leftMana: hero.level[0].StartingMana
+      info: {},
+      leftHealth: hero.lifeData.split('/'),
+      leftMana: hero.magic
     })));
   } catch (error) {
     ctx.app.emit('error', error, ctx);

@@ -25,7 +25,7 @@ export default class HeroWaittingItem extends Component {
       from: 'waitting'
     }));
     let img = new Image();
-    img.src = `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${hero.heroId}.png`;
+    img.src = `https://game.gtimg.cn/images/lol/act/img/tft/champions/${hero.name}`;
     img.className = 'move-img hidden'
     e.dataTransfer.setDragImage(img, 10, 10);
   }
@@ -85,17 +85,17 @@ export default class HeroWaittingItem extends Component {
               placement="top"
               title={(
                 <div className="hover-tooltip heroTableHover">
-                  <div className="skill-img">
-                    <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.heroId}.png`} alt=""/>
+                  {/* <div className="skill-img">
+                    <img src={`//game.gtimg.cn/images/lol/tft/skills/tft2/${this.props.hero.chessId}.png`} alt=""/>
                   </div>
                   <div className="skill-introduce">
                     <p>{this.props.hero.skill_name}</p>
                     <p>{this.props.hero.skill_introduce}</p>
-                  </div>
+                  </div> */}
                 </div>
               )}
             >
-              <img src={this.props.hero ? `https://game.gtimg.cn/images/lol/tft/cham-icons/tft2/120x120/${this.props.hero.heroId}.png` : ''} alt=""/>
+              <img src={this.props.hero ? `https://game.gtimg.cn/images/lol/act/img/tft/champions/${this.props.hero.name}` : ''} alt=""/>
             </Tooltip>
           </div>
           : null

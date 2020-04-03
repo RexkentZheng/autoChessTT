@@ -1,7 +1,19 @@
 import heroes from './heroes';
+import allJobs from './jobs';
+import allRaces from './races';
+
+const groupByRacesAndJobs = (collection) => {
+  const obj = {};
+  collection.map((item) => {
+    obj[item.traitId] = item;
+  })
+  return obj;
+}
 
 export default {
   heroes,
+  allRaces: groupByRacesAndJobs(allRaces),
+  allJobs: groupByRacesAndJobs(allJobs),
   urls: {
     root: '/',
     test: '/test',
