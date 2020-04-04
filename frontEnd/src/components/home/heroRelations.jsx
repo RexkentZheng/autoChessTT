@@ -15,7 +15,7 @@ export default class HeroRelations extends Component {
 
   getRelationStatus (relation, key) {
     return (
-      <span key={`${relation.TFTID}-${relation.id}`} className={relation.num >= key ? 'normal' : 'disable'}>
+      <span key={`${encodeURI(relation.alias)}-${relation.TFTID}-${relation.id}-${relation.type}`} className={relation.num >= key ? 'normal' : 'disable'}>
         {`(${key}) +${relation.level[key]}`}
       </span>
     )

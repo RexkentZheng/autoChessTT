@@ -65,7 +65,7 @@ export default class HeroList extends Component {
     const { hero, index, from } = JSON.parse(e.dataTransfer.getData('info'));
     if (from === 'waitting') {
       this.props.homeStore.default.updateHeroWaitting(null, index);
-      this.props.homeStore.default.updateMoney(hero.price)
+      this.props.homeStore.default.updateMoney(+hero.price)
     }
   }
 
@@ -145,14 +145,22 @@ export default class HeroList extends Component {
                       <div className="triangle"></div>
                       <div className="pic-shadow"></div>
                       <div className="synergies">
-                        <span>
-                          <img className="icon-img" src={config.allRaces[hero.raceIds].imagePath} alt=""/>
-                          {hero.races}
-                        </span>
-                        <span>
-                          <img className="icon-img" src={config.allJobs[hero.jobIds].imagePath} alt=""/>
-                          {hero.jobs}
-                        </span>
+                        {
+                          _.map(hero.raceIds.split(','), (raceId) => (
+                            <span key={`heroList${index}null-${raceId}-race`} >
+                              <img className="icon-img" src={config.allRaces[raceId].imagePath} alt=""/>
+                              {hero.races}
+                            </span>
+                          ))
+                        }
+                        {
+                          _.map(hero.jobIds.split(','), (jobId) => (
+                            <span key={`heroList${index}null-${jobId}-job`}>
+                              <img className="icon-img" src={config.allJobs[jobId].imagePath} alt=""/>
+                              {hero.jobs}
+                            </span>
+                          ))
+                        }
                       </div>
                       <img className="champion" src={`https://game.gtimg.cn/images/lol/tft/cham-icons/624x318/${hero.name}`} alt="" />
                       <p>{hero.displayName}<span>{hero.price}</span></p>

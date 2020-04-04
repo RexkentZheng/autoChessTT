@@ -112,28 +112,3 @@ export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
   );
 
 }
-
-// const calBezier = (p0, p1, p2, t) => {
-//   const k = 1 - t;
-//   return k * k * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
-// }
-
-// export const  drawCurvePath = ( ctx, start, end, curveness, percent ) => {
-
-//   var cp = [
-//        ( start[ 0 ] + end[ 0 ] ) / 2 - ( start[ 1 ] - end[ 1 ] ) * curveness,
-//        ( start[ 1 ] + end[ 1 ] ) / 2 - ( end[ 0 ] - start[ 0 ] ) * curveness
-//   ];
-
-//   ctx.moveTo( start[ 0 ], start[ 1 ] );
-
-//   for ( var t = 0; t <= percent / 100; t += 0.01 ) {
-
-//       var x = calBezier( start[ 0 ], cp[ 0 ], end[ 0 ], t );
-//       var y = calBezier( start[ 1 ], cp[ 1 ], end[ 1 ], t );
-
-//       ctx.lineTo( x, y );
-//       // ctx.fillRect(x, y, 1, 1);
-//   }
-
-// }

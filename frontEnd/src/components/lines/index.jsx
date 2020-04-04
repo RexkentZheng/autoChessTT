@@ -13,10 +13,6 @@ export default class LineMain extends React.Component {
     this.gycanvas = React.createRef();
     this.gycanvasWrapper = React.createRef();
     this.context = null;
-    this.data = [
-      [[100, 150], [200, 300]],
-      [[200, 300], [288, 400]]
-    ]
   }
 
   state = {
@@ -71,10 +67,9 @@ export default class LineMain extends React.Component {
   }
 
   calPosition(locationId) {
-    const item = document.getElementById(`position-${locationId}`);
-    const left = item.offsetLeft + (item.offsetWidth + 14) / 2;
-    const top = (locationId > 28 ? item.offsetTop + 300 : item.offsetTop + 20) - item.offsetHeight / 5 * 3;
-    // console.log(`${locationId} --- ${[left, top]}`)
+    const item = document.getElementById(`position-${locationId}`).getBoundingClientRect();
+    const top = item.top + item.height / 2;
+    const left = item.left + item.width / 2;
     return [
       left, top
     ]
@@ -93,7 +88,7 @@ export default class LineMain extends React.Component {
     }
     return (
       <div className="gycanvas-wrapper" ref={this.gycanvasWrapper} >
-        <canvas className="gycanvas" ref={this.gycanvas}></canvas>
+        <canvas id="gycanvas" className="gycanvas" ref={this.gycanvas}></canvas>
       </div>
     );
   }

@@ -111,14 +111,22 @@ export default class HeroTableItem extends Component {
                   <div className="img">
                     <div className="pic-shadow"></div>
                     <div className="synergies">
-                    <span>
-                      <img className="icon-img" src={config.allRaces[this.props.hero.raceIds].imagePath} alt=""/>
-                      {this.props.hero.races}
-                    </span>
-                    <span>
-                      <img className="icon-img" src={config.allJobs[this.props.hero.jobIds].imagePath} alt=""/>
-                      {this.props.hero.jobs}
-                    </span>
+                    {
+                      _.map(this.props.hero.raceIds.split(','), (raceId) => (
+                        <span key={`heroTableItem-${this.props.hero.chessId}-${raceId}-race`}>
+                          <img className="icon-img" src={config.allRaces[raceId].imagePath} alt=""/>
+                          {this.props.hero.races}
+                        </span>
+                      ))
+                    }
+                    {
+                      _.map(this.props.hero.jobIds.split(','), (jobId) => (
+                        <span key={`heroTableItem-${this.props.hero.chessId}-${jobId}-job`}>
+                          <img className="icon-img" src={config.allJobs[jobId].imagePath} alt=""/>
+                          {this.props.hero.jobs}
+                        </span>
+                      ))
+                    }
                     </div>
                     <p className={`star star${this.props.hero.grade}`}></p>
                     <p className="price">{this.props.hero.price}</p>

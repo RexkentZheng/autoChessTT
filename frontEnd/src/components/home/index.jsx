@@ -29,8 +29,8 @@ export default class Home extends Component {
             <HeroTableBattle />   :
             <HeroTable />
           }
-          <LinesMain data={this.battleStore.damageItems} />
         </div>
+        <LinesMain data={this.battleStore.damageItems} />
         <HeroWaitting />
         <HeroList />
       </div>

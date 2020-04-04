@@ -100,7 +100,7 @@ class BattleStore extends Base {
         if (hero) {
           hero.leftLife = this.getLeftHealth(allDps, hero);
           if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
-            Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
+            // Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
             hero.leftMagic = 0;
           }
           hero.leftMagic = +hero.leftMagic + 10;
