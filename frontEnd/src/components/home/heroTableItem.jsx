@@ -86,6 +86,17 @@ export default class HeroTableItem extends Component {
     e.preventDefault()
   }
 
+  /**
+   * @description: 根据英雄技能介绍获取英雄的法术强度
+   * 存在问题是某些英雄的技能没有伤害，比方说加攻速和加护盾，暂时未处理
+   * @param {object} hero 英雄信息 
+   * @return: 返回当前英雄该等级下的伤害
+   */
+  getSkillDamage (hero) {
+    const damages = hero.skillDetail.match(/\d+\s\/\s\d+\s\/\s\d+/)[0].split(' / ');
+    return damages[hero.grade - 1];
+  }
+
   render() {
 
     const hasBattling = this.props.homeStore.default.status && this.props.hero;
@@ -132,14 +143,20 @@ export default class HeroTableItem extends Component {
                     <p className="price">{this.props.hero.price}</p>
                     <p className="name">{this.props.hero.hero_tittle}</p>
                     <img src={`https://game.gtimg.cn/images/lol/tft/cham-icons/624x318/${this.props.hero.name}`} alt=""/>
-                    <Progress
-                      className="hover-health"
-                      percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
-                      showInfo={false}
-                      strokeColor="#0E8E3E"
-                      strokeLinecap="square"
-                      strokeWidth={14}
-                    />
+                    <div className="life-progress">
+                      <Progress
+                        className="hover-health"
+                        percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
+                        showInfo={false}
+                        strokeColor="#0E8E3E"
+                        strokeLinecap="square"
+                        strokeWidth={14}
+                      />
+                      {/* <Progress
+                        className="hover-shield"
+                        percent={+}
+                      /> */}
+                    </div>
                     <Progress
                       className="hover-mana"
                       percent={+this.props.hero.leftMagic / +this.props.hero.magic * 100}
@@ -162,7 +179,7 @@ export default class HeroTableItem extends Component {
                             {this.props.hero.skillIntroduce}
                           </p>
                           <div className="third">
-                            {this.props.hero.skillDetail}
+                            {this.props.hero.skillDetail.split('。')[1]}
                           </div>
                         </div>
                       )}
@@ -191,7 +208,7 @@ export default class HeroTableItem extends Component {
                   </div>
                   <div className="property">
                     <span className="icon">法强：</span>
-                    <span>{this.props.hero.crit}</span>
+                    <span>{this.getSkillDamage(this.props.hero)}</span>
                   </div>
                   <div className="property">
                     <span className="icon">护甲：</span>
@@ -206,7 +223,7 @@ export default class HeroTableItem extends Component {
                     <span>{this.props.hero.attackSpeed}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">攻击范围：</span>
+                    <span className="icon">范围：</span>
                     <span>{this.props.hero.attackRange}</span>
                   </div>
                   <div className="property">
@@ -214,7 +231,7 @@ export default class HeroTableItem extends Component {
                     <span>{this.props.hero.crit}</span>
                   </div>
                   <div className="property">
-                    <span className="icon">暴击伤害：</span>
+                    <span className="icon">暴伤：</span>
                     <span>150%</span>
                   </div>
                 </div>
@@ -242,10 +259,10 @@ export default class HeroTableItem extends Component {
               <div className="grid-items">
                 {
                   
-                  _.map(this.props.hero.equipment ? this.props.hero.equipment.split(',') : [], (item, index) => {
+                  _.map(this.props.hero.recEquip ? this.props.hero.recEquip.split(',') : [], (item, index) => {
                     return (
                       <div key={`equipmentHeroList${this.props.hero.chessId}${item}${index}`} className="equipment">
-                        <img draggable="false" src={`https://game.gtimg.cn/images/lol/tft/items/${item}.png`} alt="" />
+                        <img draggable="false" src={`https://game.gtimg.cn/images/lol/act/img/tft/equip/${item}.png`} alt="" />
                       </div>
                     )
                   })

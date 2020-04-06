@@ -65,7 +65,7 @@ class BattleStore extends Base {
         const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
         let targetHero = this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
         if (targetHero) {
-          this.damageHeroes[targetHero.role][targetHero.chessId] = this.damageHeroes[targetHero.role][targetHero.chessId] ? this.damageHeroes[targetHero.role][targetHero.chessId] + +hero.attack : +hero.attack;
+          this.damageHeroes[targetHero.role][targetHero.chessId] = this.damageHeroes[targetHero.role][targetHero.chessId] ? this.damageHeroes[targetHero.role][targetHero.chessId] + +hero.attack * +hero.attackSpeed - +targetHero.armor : +hero.attack * +hero.attackSpeed - +targetHero.armor;
           this.damageItems.push([index + 1, targetHero.locationId])
         } else {
           targetHero = this.getTargetHero(this.cleanAllHeroes, hero);
