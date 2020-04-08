@@ -30,7 +30,7 @@ export default class Home extends Component {
             <HeroTable />
           }
         </div>
-        <LinesMain data={this.battleStore.damageItems} />
+        <LinesMain data={this.battleStore.damageItems} skill={this.battleStore.skillItems} />
         <HeroWaitting />
         <HeroList />
       </div>

@@ -82,7 +82,6 @@ export const calBezier = (p0, p1, p2, t) => {
  * @param  {number} percent 绘制百分比(0-100)
  */
 export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
-
   const cp = [
     ( start[ 0 ] + end[ 0 ] ) / 2 - ( start[ 1 ] - end[ 1 ] ) * curveness,
     ( start[ 1 ] + end[ 1 ] ) / 2 - ( end[ 0 ] - start[ 0 ] ) * curveness
@@ -105,10 +104,45 @@ export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
   const b = [ q0[ 0 ] + v[ 0 ] * t, q0[ 1 ] + v[ 1 ] * t ];
 
   ctx.moveTo( p0[ 0 ], p0[ 1 ] );
-
   ctx.quadraticCurveTo(
       q0[ 0 ], q0[ 1 ],
       b[ 0 ], b[ 1 ]
   );
 
 }
+
+/**
+ * @description: 获取英雄技能伤害
+ * @param {object} hero 英雄信息 
+ * @return {Array} 英雄技能伤害数组[200, 300, 400]
+ */
+export const getSkillDamages = (hero) => hero.skillDetail.match(/\d+\s\/\s\d+\s\/\s\d+/)[0].split(' / ');
+
+/**
+ * @description: 获取目标英雄
+ * 没有rangeIds参数意味着当前英雄的攻击范围内没有敌方Hero，需选定距离最近的敌方Hero返回
+ * 有rangeIds参数需先判断攻击范围内有无敌方Hero，有则返回敌方Hero，没有则返回null
+ * @param {Array<Object>} targets 目标Hero列表
+ * @param {Object} hero 当前Hero
+ * @param {Object} rangeIds Hero攻击范围ID
+ * @return: 目标Hero或者null
+ */
+export const getTargetHero = (targets, hero, rangeIds = null) => {
+  let allEnemies = _.filter(targets, (targetItem) => targetItem.role !== hero.role);
+  if (rangeIds) {
+    allEnemies = _.filter(allEnemies, (enemyItem) => _.indexOf(rangeIds, enemyItem.locationId) >= 0);
+  }
+  if (allEnemies.length > 0) {
+    const sortedEnemy = _.sortBy(allEnemies, (enemyItem) => Math.abs(enemyItem.locationId - hero.locationId));
+    return _.first(sortedEnemy);
+  }
+  return null;
+}
+
+export const getLocationFuc = (index) => {
+  // Y值，有余数则加1，没有则取结果
+  const y = index % 7 === 0 ? parseInt(index / 7) : parseInt(index / 7) + 1;
+  // X值
+  const x = index % 7 === 0 ? 7 : index - 7 * (y - 1);
+  return { x, y };
+};

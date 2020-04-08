@@ -47,8 +47,12 @@ class HomeStore extends Base {
         return {
           ...hero,
           leftLife: +hero.life,
-          leftMagic: +hero.startMagic,
-          shield: 0
+          leftMagic: +hero.chessId === 4 ? +hero.magic - 10 : +hero.startMagic,
+          shield: 0,
+          pause: {
+            timeLeft: 0,
+            dps: []
+          }
         };
       }
       return item;

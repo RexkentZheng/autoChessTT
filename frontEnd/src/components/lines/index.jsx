@@ -66,6 +66,24 @@ export default class LineMain extends React.Component {
     animate();
   }
 
+  // showSkills(context, skill) {
+    
+  //   let percent = 0;
+  //   const start = 20;
+  //   const end = 23;
+  //   context.moveTo(this.calPosition(start)[0], this.calPosition(start)[1]);
+  //   const animate = () => {
+  //     context.lineTo(this.calPosition(end)[0] / 100 * percent, this.calPosition(end)[1] / 100 * percent);
+  //     percent = (percent + 3) % 100;
+  //     console.log(`${this.calPosition(end)[0] / 100 * percent}-${this.calPosition(end)[1] / 100 * percent}`)
+  //     console.log(percent)
+  //     if (percent <= 96) {
+  //       requestAnimationFrame(animate);
+  //     }
+  //   }
+  //   animate()
+  // }
+
   calPosition(locationId) {
     const item = document.getElementById(`position-${locationId}`).getBoundingClientRect();
     const top = item.top + item.height / 2;
@@ -77,14 +95,16 @@ export default class LineMain extends React.Component {
 
   static getDerivedStateFromProps(props) {
     return {
-      data: props.data
+      data: props.data,
+      skill: props.skill,
     }
   }
 
   render() {
     if (!_.isEmpty(this.gycanvas.current)) {
-      this.gycanvas.current.getContext('2d').clearRect(0,0,this.originWidth, this.originHeight)
-      this.showMeLines(this.gycanvas.current.getContext('2d'), this.state.data)
+      this.gycanvas.current.getContext('2d').clearRect(0,0,this.originWidth, this.originHeight);
+      this.showMeLines(this.gycanvas.current.getContext('2d'), this.state.data);
+      // this.showSkills(this.gycanvas.current.getContext('2d'), this.state.skill);
     }
     return (
       <div className="gycanvas-wrapper" ref={this.gycanvasWrapper} >
