@@ -103,7 +103,7 @@ class BattleStore extends Base {
           return hero.blind -= 1;
         }
         console.log(`${hero.chessId}-${hero.leftMagic}-${hero.magic}`)
-        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 115) {
+        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 142) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.role][hero.uniqId]);
           if (hero.skill.timeLeft === 0) {
             this.skillItems.push({
