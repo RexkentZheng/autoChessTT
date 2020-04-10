@@ -29,7 +29,10 @@ const getLocation = (index) => {
 const getLength = ({x, y}) => {
   const xL = y % 2 === 0 ? x * 2 * Math.sqrt(3) : (x * 2 - 1) * Math.sqrt(3);
   const yL = y * 3 - 1;
-  return { xL, yL };
+  return {
+    x: xL,
+    y: yL
+  };
 }
 
 /**
@@ -44,9 +47,9 @@ const getLength = ({x, y}) => {
 export const culAttackWidth = (index, unit, max) => {
   const all = _.range(1, max, 1);
   const res = []
-  const { xL: indexXX, yL: indexYY } = getLength(getLocation(index));
+  const { x: indexXX, y: indexYY } = getLength(getLocation(index));
   _.map(all, (item) => {
-    const { xL: itemXX, yL: itemYY } = getLength(getLocation(item));
+    const { x: itemXX, y: itemYY } = getLength(getLocation(item));
     // 求绝对距离
     const absDistance = Math.sqrt((Math.pow(Math.abs(indexXX - itemXX), 2) + Math.pow(Math.abs(indexYY - itemYY), 2)));
     // 比较距离
@@ -139,10 +142,22 @@ export const getTargetHero = (targets, hero, rangeIds = null) => {
   return null;
 }
 
+/**
+ * @description: 计算两点之间的距离
+ * @param {number} x 初始点x坐标 
+ * @param {number} y 初始点y坐标 
+ * @param {number} x1 目标点x坐标 
+ * @param {number} y1 目标点y坐标 
+ * @return {number} 二者的距离
+ */
+export const calLength = (x, y, x1, y1) => {
+  return Math.sqrt((Math.pow(Math.abs(x - x1), 2) + Math.pow(Math.abs(y - y1), 2)))
+}
+
 export const getLocationFuc = (index) => {
   // Y值，有余数则加1，没有则取结果
   const y = index % 7 === 0 ? parseInt(index / 7) : parseInt(index / 7) + 1;
   // X值
   const x = index % 7 === 0 ? 7 : index - 7 * (y - 1);
-  return { x, y };
+  return getLength({ x, y });
 };
