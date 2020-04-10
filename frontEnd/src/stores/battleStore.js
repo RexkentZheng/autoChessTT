@@ -94,7 +94,16 @@ class BattleStore extends Base {
     tmpHeroes = _.cloneDeep(this.allHeroes);
     _.map(this.allHeroes, (hero, index) => {
       if (hero) {
-        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 4) {
+        // 致盲和控制的特殊情况，致盲可以普攻并加蓝，但不能放技能，控制什么都不能做
+        if (hero.ctrl !== 0) {
+          hero.ctrl -= 1;
+          hero.blind -= 1;
+        }
+        if (hero.blind !== 0) {
+          return hero.blind -= 1;
+        }
+        console.log(`${hero.chessId}-${hero.leftMagic}-${hero.magic}`)
+        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 104) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.role][hero.uniqId]);
           if (hero.skill.timeLeft === 0) {
             this.skillItems.push({
@@ -111,6 +120,9 @@ class BattleStore extends Base {
             hero.skill.timeLeft -= 1;
           }
         } else {
+          if (+hero.chessId === 104) {
+            console.log('here')
+          }
           const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
           let targetHero = null;
           if (this.tmpTargets[hero.role][hero.uniqId]) {
@@ -155,6 +167,10 @@ class BattleStore extends Base {
       console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
+          if (allDps[hero.role][hero.chessId]) {
+            hero.blind = allDps[hero.role][hero.chessId].blind || 0;
+            hero.ctrl =  allDps[hero.role][hero.chessId].ctrl || 0;
+          }
           hero.leftLife = this.getLeftHealth(allDps, hero);
           // if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
           //   // Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);

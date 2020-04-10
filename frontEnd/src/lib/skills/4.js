@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-06 21:42:05
  * @LastEditor: Rex Zheng 
- * @LastEditTime: 2020-04-08 17:49:30
+ * @LastEditTime: 2020-04-08 18:35:22
  */
 
 import _ from 'lodash';
@@ -49,13 +49,9 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     const { x: tx, y: ty } = getLocationFuc(targetHero.locationId);
     const { x: ox, y: oy } = getLocationFuc(hero.locationId);
 
-    console.log(`${tx}-${ty}`)
-    console.log(`${ox}-${oy}`)
     const targetHeros = _.map(allHeroes, (heroItem) => {
       if (heroItem && hero.role !== heroItem.role) {
-        console.log(`${heroItem.chessId}-${heroItem.locationId}`)
         const {x, y} = getLocationFuc(heroItem.locationId);
-        console.log(`${x}-${y}`);
         if (
           ((tx > ox === x > ox) && ( ty > oy === y > oy)) ||
           (tx === ox && (ty > oy) === (y > oy)) ||
@@ -81,7 +77,8 @@ export default (hero, allHeroes, paramTargetHero = null) => {
       target: item.chessId,
       role: item.role,
       damage,
-      pause: 0,
+      blind: 0,
+      ctrl: 0,
       buffs: null,
       nerfs: null,
     }))
@@ -93,6 +90,4 @@ export default (hero, allHeroes, paramTargetHero = null) => {
   } else {
     return null;
   }
-
-  console.log((targetHero))
 }
