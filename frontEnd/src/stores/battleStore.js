@@ -1,8 +1,8 @@
-import { Message, Notification } from 'lib/notification';
+import { Message } from 'lib/notification';
 import skills from 'lib/skills';
 import { culAttackWidth } from 'lib/utils';
 import _ from 'lodash';
-import { computed, observable, toJS } from 'mobx';
+import { computed, observable } from 'mobx';
 
 import Base from './base';
 
@@ -72,7 +72,7 @@ class BattleStore extends Base {
 
   /**
    * @description: 获取allDps中的英雄伤害
-   * @param {object} 出手英雄 
+   * @param {object} 出手英雄
    * @return {number} 目标英雄应该承受的伤害
    */
   getDpsDamage(hero) {
@@ -98,28 +98,45 @@ class BattleStore extends Base {
         if (hero.blind !== 0) {
           return hero.blind -= 1;
         }
-        console.log(`${hero.chessId}-${hero.leftMagic}-${hero.magic}`)
-        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 142) {
-          hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.role][hero.uniqId]);
-          if (hero.skill.timeLeft === 0) {
-            this.skillItems.push({
-              startPosition: index + 1,
-              endPosition: _.map(hero.skill.effect, item => item.locationId),
-            })
-            //  这里需要区分target是uniqId还是locationId
+        if (+hero.leftMagic >= +hero.magic && +hero.chessId === 104) {
+          if (!hero.skill) {
+            hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.role][hero.uniqId]);
+          }
+          if (hero.skill.timeLeft <= 0) {
+            // 下面这里的技能释放位置判定有问题
+            // this.skillItems.push({
+            //   startPosition: index + 1,
+            //   endPosition: _.map(hero.skill.effect, item => item.locationId),
+            // })
             _.map(hero.skill.effect, (item) => {
-              this.damageHeroes[item.target] = {
-                ..._.omit(item, ['target', 'role']),
-                damage: this.getDpsDamage(item) + item.damage,
+              //  这里需要区分target是uniqId还是locationId
+              if (_.indexOf(item.target, ':') > 0) {
+                const newTargetHero = _.find(_.compact(this.allHeroes),
+                  (target) => target.locationId === +item.target.split(':')[1] && target.role !== hero.role);
+                if (newTargetHero) {
+                  this.damageHeroes[newTargetHero.uniqId] = {
+                    ..._.omit(item, ['target', 'role']),
+                    damage: this.getDpsDamage(item) + item.damage
+                  }
+                }
+              } else {
+                this.damageHeroes[item.target] = {
+                  ..._.omit(item, ['target', 'role']),
+                  damage: this.getDpsDamage(item) + item.damage
+                }
               }
             });
+            hero.skill = null;
           } else {
             hero.skill.timeLeft -= 1;
           }
+          tmpHeroes = _.map(tmpHeroes, (item) => {
+            if (item && item.uniqId === hero.uniqId) {
+              return hero;
+            }
+            return item;
+          })
         } else {
-          if (+hero.chessId === 104) {
-            console.log('here')
-          }
           const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
           let targetHero = null;
           if (this.tmpTargets[hero.role][hero.uniqId]) {
@@ -161,9 +178,14 @@ class BattleStore extends Base {
   roundBattle() {
     this.timer = setInterval(() => {
       const allDps = this.getAllDps();
-      console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
+          // 释放技能前摇时判断何种状态 status字段:'invincible'无敌
+          if (hero.skill && hero.skill.timeLeft >= 0) {
+            if (hero.skill.status === 'invincible') {
+              return hero;
+            }
+          }
           if (allDps[hero.uniqId]) {
             hero.blind = allDps[hero.uniqId].blind || 0;
             hero.ctrl =  allDps[hero.uniqId].ctrl || 0;

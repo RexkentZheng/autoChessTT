@@ -116,7 +116,7 @@ export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
 
 /**
  * @description: 获取英雄技能伤害
- * @param {object} hero 英雄信息 
+ * @param {object} hero 英雄信息
  * @return {Array} 英雄技能伤害数组[200, 300, 400]
  */
 export const getSkillDamages = (hero) => hero.skillDetail.match(/\d+\s\/\s\d+\s\/\s\d+/)[0].split(' / ');
@@ -144,10 +144,10 @@ export const getTargetHero = (targets, hero, rangeIds = null) => {
 
 /**
  * @description: 计算两点之间的距离
- * @param {number} x 初始点x坐标 
- * @param {number} y 初始点y坐标 
- * @param {number} x1 目标点x坐标 
- * @param {number} y1 目标点y坐标 
+ * @param {number} x 初始点x坐标
+ * @param {number} y 初始点y坐标
+ * @param {number} x1 目标点x坐标
+ * @param {number} y1 目标点y坐标
  * @return {number} 二者的距离
  */
 export const calLength = (x, y, x1, y1) => {

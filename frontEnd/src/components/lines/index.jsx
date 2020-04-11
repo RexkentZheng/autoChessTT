@@ -96,7 +96,7 @@ export default class LineMain extends React.Component {
   static getDerivedStateFromProps(props) {
     return {
       data: props.data,
-      skill: props.skill,
+      skill: props.skill
     }
   }
 

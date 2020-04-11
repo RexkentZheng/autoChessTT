@@ -89,7 +89,7 @@ export default class HeroTableItem extends Component {
   /**
    * @description: 根据英雄技能介绍获取英雄的法术强度
    * 存在问题是某些英雄的技能没有伤害，比方说加攻速和加护盾，暂时未处理
-   * @param {object} hero 英雄信息 
+   * @param {object} hero 英雄信息
    * @return: 返回当前英雄该等级下的伤害
    */
   getSkillDamage (hero) {

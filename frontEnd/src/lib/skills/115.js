@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 15:20:03
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 11:26:06
+ * @LastEditTime: 2020-04-11 17:31:11
  */
 
 import _ from 'lodash';
@@ -16,7 +16,7 @@ import { calLength, getLocationFuc, getSkillDamages } from './../utils';
  * 注意：当前未考虑击飞炸弹人自己的问题
  * 利用getLocationFuc方法获取英雄的位置，然后计算出英雄之间的距离，取距离最近的英雄
  * 之后算下伤害返回即可。
- * @param {object} hero 释放技能的英雄-爆破鬼才 
+ * @param {object} hero 释放技能的英雄-爆破鬼才
  * @param {object[]} allHeroes 所有英雄
  * @param {object} paramTargetHero 目标英雄
  * @return {object} 格式如下：
@@ -36,7 +36,7 @@ import { calLength, getLocationFuc, getSkillDamages } from './../utils';
  *  }]
  *}
  */
-export default (hero, allHeroes, paramTargetHero = null) => {
+export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero)[hero.grade - 1];
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
 
@@ -60,13 +60,14 @@ export default (hero, allHeroes, paramTargetHero = null) => {
 
   return {
     timeLeft: 0,
+    status: null,
     effect: [{
       target: targetInfo.hero.uniqId,
       damage,
       blind: 0,
       ctrl: 0,
       buffs: null,
-      nerfs: null,
+      nerfs: null
     }]
   }
 

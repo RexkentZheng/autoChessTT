@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 16:24:41
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 11:25:59
+ * @LastEditTime: 2020-04-11 17:30:49
  */
 
 import _ from 'lodash';
@@ -16,7 +16,7 @@ import _ from 'lodash';
  * 处理之后也要注意一下，因为其伤害的格式为：'150/225/400',而眩晕的格式为：'2.5 / 3 / 4'
  * 区别在于其间的分隔符不同，一个是：'/'，一个是：' / '
  * 处理好数据的提取后即可根据剩余生命值来判断目标敌人，然后得出伤害之类的信息即可
- * @param {type} 
+ * @param {object}
  * skill: {
  *  timeLeft: 0,
  *  effect: [{
@@ -32,7 +32,7 @@ import _ from 'lodash';
  *  }]
  *}
  */
-export default (hero, allHeroes, paramTargetHero = null) => {
+export default (hero, allHeroes) => {
   const allSkillInfo = hero.skillDetail.split(/\r\n|[\r\n]/)
   const damage = allSkillInfo[1].match(/\d+\/\d+\/\d+/)[0].split('/')[hero.grade - 1];
   const ctrl = allSkillInfo[2].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
@@ -52,17 +52,16 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     }
   })
 
-  console.log(targetInfo.hero.uniqId)
-
   return {
     timeLeft: 0,
+    status: null,
     effect: [{
       target: targetInfo.hero.uniqId,
       damage,
       blind: 0,
       ctrl,
       buffs: null,
-      nerfs: null,
+      nerfs: null
     }]
   }
 

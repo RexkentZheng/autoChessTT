@@ -2,8 +2,8 @@
  * @Description: 英雄技能-卡牌大师-崔斯特-4
  * @Author: Rex Zheng
  * @Date: 2020-04-06 21:42:05
- * @LastEditor: Rex Zheng 
- * @LastEditTime: 2020-04-11 11:26:21
+ * @LastEditor: Rex Zheng
+ * @LastEditTime: 2020-04-11 17:29:21
  */
 
 import _ from 'lodash';
@@ -20,7 +20,7 @@ import { culAttackWidth, getLocationFuc, getSkillDamages, getTargetHero } from '
  * 这时就用到了三角形内角的计算方法，先获取到三个英雄的位置（目标英雄，释放技能英雄，等待判断英雄）
  * 根据其在平面直角坐标系中的位置，获取到三角形三边的长度，再根据计算弧度的方法  (a² + b² - c²)/ (2 * a * b)得出我们需要比例
  * 使用Math.acos，也就是arccos来计算出弧度，之后将弧度转换为角度即可完成计算。
- * @param {object} hero 释放技能的英雄-卡牌大师  
+ * @param {object} hero 释放技能的英雄-卡牌大师
  * @param {object[]} allHeroes 所有英雄
  * @param {object} paramTargetHero 目标英雄
  * @return {object} 格式如下：
@@ -61,7 +61,6 @@ export default (hero, allHeroes, paramTargetHero = null) => {
           const ot = Math.sqrt((Math.pow(Math.abs(ox - tx), 2) + Math.pow(Math.abs(oy - ty), 2)));
           const res = Math.acos((xo * xo + ot * ot - xt * xt) / (2 * xo * ot));
           const angle = res * 180 / Math.PI;
-          console.log(angle)
           if (parseInt(angle) === 33) {
             return heroItem;
           }
@@ -74,11 +73,12 @@ export default (hero, allHeroes, paramTargetHero = null) => {
 
     const effect =  _.map(_.compact(targetHeros).concat(targetHero), (item) => ({
       target: item.uniqId,
+      status: null,
       damage,
       blind: 0,
       ctrl: 0,
       buffs: null,
-      nerfs: null,
+      nerfs: null
     }))
 
     return {
