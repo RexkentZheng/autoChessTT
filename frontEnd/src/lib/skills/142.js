@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 16:24:41
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-10 17:03:41
+ * @LastEditTime: 2020-04-11 11:25:59
  */
 
 import _ from 'lodash';
@@ -20,8 +20,7 @@ import _ from 'lodash';
  * skill: {
  *  timeLeft: 0,
  *  effect: [{
- *    target: 21,
- *    role: 'enemy'
+ *    target: army21,
  *    damage: 300,
  *    pause: 3,
  *    buff: {
@@ -53,11 +52,12 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     }
   })
 
+  console.log(targetInfo.hero.uniqId)
+
   return {
     timeLeft: 0,
     effect: [{
-      target: targetInfo.hero.chessId,
-      role:  targetInfo.hero.role,
+      target: targetInfo.hero.uniqId,
       damage,
       blind: 0,
       ctrl,

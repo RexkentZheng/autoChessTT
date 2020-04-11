@@ -8,10 +8,7 @@ import Base from './base';
 
 class BattleStore extends Base {
   @observable allHeroes = [];
-  @observable damageHeroes = {
-    enemy: {},
-    army: {}
-  };
+  @observable damageHeroes = {};
   @observable timer = null;
 
   // 给线用的数据
@@ -70,7 +67,7 @@ class BattleStore extends Base {
    */
   calDamage(targetHero, hero) {
     return {
-      damage: this.damageHeroes[targetHero.role][targetHero.chessId] ? this.damageHeroes[targetHero.role][targetHero.chessId].damage + +hero.attack * +hero.attackSpeed * 2 - +targetHero.armor : +hero.attack * +hero.attackSpeed * 2 - +targetHero.armor};
+      damage: this.damageHeroes[targetHero.uniqId] ? this.damageHeroes[targetHero.uniqId].damage + +hero.attack * +hero.attackSpeed * 2 - +targetHero.armor : +hero.attack * +hero.attackSpeed * 2 - +targetHero.armor};
   }
 
   /**
@@ -79,7 +76,7 @@ class BattleStore extends Base {
    * @return {number} 目标英雄应该承受的伤害
    */
   getDpsDamage(hero) {
-    return this.damageHeroes[hero.role][hero.target] ? this.damageHeroes[hero.role][hero.target].damage : 0;
+    return this.damageHeroes[hero.uniqId] ? this.damageHeroes[hero.uniqId].damage : 0;
   }
 
   /**
@@ -87,8 +84,7 @@ class BattleStore extends Base {
    * @return {Array<Object>} damageHeroes 每秒受伤情况
    */
   getAllDps() {
-    this.damageHeroes.army = {};
-    this.damageHeroes.enemy = {};
+    this.damageHeroes = {};
     let tmpHeroes = [];
     this.damageItems = [];
     tmpHeroes = _.cloneDeep(this.allHeroes);
@@ -110,8 +106,9 @@ class BattleStore extends Base {
               startPosition: index + 1,
               endPosition: _.map(hero.skill.effect, item => item.locationId),
             })
+            //  这里需要区分target是uniqId还是locationId
             _.map(hero.skill.effect, (item) => {
-              this.damageHeroes[item.role][item.target] = {
+              this.damageHeroes[item.target] = {
                 ..._.omit(item, ['target', 'role']),
                 damage: this.getDpsDamage(item) + item.damage,
               }
@@ -132,7 +129,7 @@ class BattleStore extends Base {
           }
           if (targetHero) {
             this.tmpTargets[hero.role][hero.uniqId] = targetHero;
-            this.damageHeroes[targetHero.role][targetHero.chessId] = this.calDamage(targetHero, hero);
+            this.damageHeroes[targetHero.uniqId] = this.calDamage(targetHero, hero);
             this.damageItems.push([index + 1, targetHero.locationId])
           } else {
             targetHero = this.getTargetHero(this.cleanAllHeroes, hero);
@@ -167,9 +164,9 @@ class BattleStore extends Base {
       console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
-          if (allDps[hero.role][hero.chessId]) {
-            hero.blind = allDps[hero.role][hero.chessId].blind || 0;
-            hero.ctrl =  allDps[hero.role][hero.chessId].ctrl || 0;
+          if (allDps[hero.uniqId]) {
+            hero.blind = allDps[hero.uniqId].blind || 0;
+            hero.ctrl =  allDps[hero.uniqId].ctrl || 0;
           }
           hero.leftLife = this.getLeftHealth(allDps, hero);
           // if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
@@ -212,7 +209,7 @@ class BattleStore extends Base {
    * @return: 英雄剩余生命值
    */
   getLeftHealth(dps, hero) {
-    return dps[hero.role][hero.chessId] ? +hero.leftLife - dps[hero.role][hero.chessId].damage: +hero.leftLife;
+    return dps[hero.uniqId] ? +hero.leftLife - dps[hero.uniqId].damage: +hero.leftLife;
   }
 
   /**

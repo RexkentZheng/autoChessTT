@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 17:56:52
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-10 16:12:52
+ * @LastEditTime: 2020-04-11 11:26:14
  */
 
 import _ from 'lodash';
@@ -22,8 +22,7 @@ import { calLength, culAttackWidth, getLocationFuc, getSkillDamages } from './..
  * skill: {
  *  timeLeft: 0,
  *  effect: [{
- *    target: 21,
- *    role: 'enemy'
+ *    target: army21,
  *    damage: 300,
  *    pause: 3,
  *    buff: {
@@ -69,8 +68,7 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     return {
       timeLeft: 0,
       effect: _.map(_.compact(targetHeroes), (targetItem) => ({
-        target: targetItem.chessId,
-        role: targetItem.role,
+        target: targetItem.uniqId,
         damage,
         blind: 4,
         ctrl: 0,
