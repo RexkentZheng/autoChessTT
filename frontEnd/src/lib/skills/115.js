@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 15:20:03
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 17:31:11
+ * @LastEditTime: 2020-04-13 11:32:52
  */
 
 import _ from 'lodash';
@@ -19,22 +19,7 @@ import { calLength, getLocationFuc, getSkillDamages } from './../utils';
  * @param {object} hero 释放技能的英雄-爆破鬼才
  * @param {object[]} allHeroes 所有英雄
  * @param {object} paramTargetHero 目标英雄
- * @return {object} 格式如下：
- * skill: {
- *  timeLeft: 0,
- *  effect: [{
- *    target: army21,
- *    role: 'enemy'
- *    damage: 300,
- *    pause: 3,
- *    buff: {
- *      attack: 32
- *    }
- *    debuff: {
- *      attack: -32
- *    },
- *  }]
- *}
+ * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero)[hero.grade - 1];
@@ -60,9 +45,8 @@ export default (hero, allHeroes) => {
 
   return {
     timeLeft: 0,
-    status: null,
     effect: [{
-      target: targetInfo.hero.uniqId,
+      target: targetInfo.hero,
       damage,
       blind: 0,
       ctrl: 0,

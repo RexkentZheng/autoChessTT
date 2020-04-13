@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-06 21:42:05
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 17:29:21
+ * @LastEditTime: 2020-04-13 11:27:48
  */
 
 import _ from 'lodash';
@@ -27,7 +27,7 @@ import { culAttackWidth, getLocationFuc, getSkillDamages, getTargetHero } from '
  * skill: {
  *  timeLeft: 0,
  *  effect: [{
- *    target: army21,
+ *    target: targetHero,
  *    damage: 300,
  *    pause: 3,
  *    buff: {
@@ -72,8 +72,7 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     })
 
     const effect =  _.map(_.compact(targetHeros).concat(targetHero), (item) => ({
-      target: item.uniqId,
-      status: null,
+      target: item,
       damage,
       blind: 0,
       ctrl: 0,

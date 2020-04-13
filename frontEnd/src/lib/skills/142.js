@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 16:24:41
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 17:30:49
+ * @LastEditTime: 2020-04-13 11:32:45
  */
 
 import _ from 'lodash';
@@ -16,21 +16,9 @@ import _ from 'lodash';
  * 处理之后也要注意一下，因为其伤害的格式为：'150/225/400',而眩晕的格式为：'2.5 / 3 / 4'
  * 区别在于其间的分隔符不同，一个是：'/'，一个是：' / '
  * 处理好数据的提取后即可根据剩余生命值来判断目标敌人，然后得出伤害之类的信息即可
- * @param {object}
- * skill: {
- *  timeLeft: 0,
- *  effect: [{
- *    target: army21,
- *    damage: 300,
- *    pause: 3,
- *    buff: {
- *      attack: 32
- *    }
- *    debuff: {
- *      attack: -32
- *    },
- *  }]
- *}
+ * @param {object} hero 释放技能的英雄-暮光星灵
+ * @param {object[]} allHeroes 所有英雄
+ * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
   const allSkillInfo = hero.skillDetail.split(/\r\n|[\r\n]/)
@@ -54,9 +42,8 @@ export default (hero, allHeroes) => {
 
   return {
     timeLeft: 0,
-    status: null,
     effect: [{
-      target: targetInfo.hero.uniqId,
+      target: targetInfo.hero,
       damage,
       blind: 0,
       ctrl,

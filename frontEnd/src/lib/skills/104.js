@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 17:56:52
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-11 17:34:00
+ * @LastEditTime: 2020-04-13 11:28:45
  */
 
 import _ from 'lodash';
@@ -18,21 +18,7 @@ import { calLength, culAttackWidth, getLocationFuc, getSkillDamages } from './..
  * @param {object} hero 释放技能的英雄-法外狂徒
  * @param {object[]} allHeroes 所有英雄
  * @param {object} paramTargetHero 目标英雄
- * @return {object} 格式如下：
- * skill: {
- *  timeLeft: 0,
- *  effect: [{
- *    target: army21,
- *    damage: 300,
- *    pause: 3,
- *    buff: {
- *      attack: 32
- *    }
- *    debuff: {
- *      attack: -32
- *    },
- *  }]
- *}
+ * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero)[hero.grade - 1];
@@ -64,9 +50,8 @@ export default (hero, allHeroes) => {
 
     return {
       timeLeft: 0,
-      status: null,
       effect: _.map(_.compact(targetHeroes), (targetItem) => ({
-        target: targetItem.uniqId,
+        target: targetItem,
         damage,
         blind: 4,
         ctrl: 0,

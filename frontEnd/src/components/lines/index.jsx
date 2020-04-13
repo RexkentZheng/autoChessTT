@@ -1,5 +1,6 @@
 import { drawCurvePath } from 'lib/utils';
 import _ from 'lodash';
+import { toJS } from 'mobx';
 import { inject, observer }     from 'mobx-react';
 import React from 'react';
 
@@ -43,18 +44,20 @@ export default class LineMain extends React.Component {
     }
     context.stroke();
     const animate = () => {
-      data.map((item, index) => {
-        const [start, end] = item;
-        context.beginPath();
-        context.strokeStyle = colors[index];
-        drawCurvePath(
-          context,
-          this.calPosition(start),
-          this.calPosition(end),
-          0.5,
-          percent
-        );
-        context.stroke();
+      Object.keys(data).map((key, index) => {
+        data[key].map((item) => {
+          const {originLocation, targetLocation} = item;
+          context.beginPath();
+          context.strokeStyle = colors[index];
+          drawCurvePath(
+            context,
+            this.calPosition(originLocation),
+            this.calPosition(targetLocation),
+            0.5,
+            percent
+          );
+          context.stroke();
+        })
       })
       percent = (percent + 3) % 100;
       if (percent <= 96) {
