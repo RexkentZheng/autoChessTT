@@ -95,7 +95,7 @@ class BattleStore extends Base {
         return this.updateHeroStatus(hero);
       }
       // 判断是否需要释放技能
-      if (+hero.leftMagic >= +hero.magic && +hero.chessId === 142) {
+      if (+hero.leftMagic >= +hero.magic && +hero.chessId === 104) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.uniqId]);
         }
@@ -131,6 +131,10 @@ class BattleStore extends Base {
   updateHeroSkills(hero) {
     let newSkill = hero.skill;
     if (newSkill.timeLeft -1 <= 0) {
+      // 如果是需要二次计算的英雄，则重新计算目标英雄（会阻挡）
+      if (_.indexOf(skills.reCalTargetHeroes, +hero.chessId) >= 0) {
+        newSkill = skills[hero.chessId](hero, this.allHeroes, newSkill.effect[0].target, true);
+      }
       _.map(newSkill.effect, (item) => {
         //  这里需要区分target是uniqId还是locationId
         let target = null;

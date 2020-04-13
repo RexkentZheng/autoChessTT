@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 17:56:52
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-13 11:28:45
+ * @LastEditTime: 2020-04-13 16:08:29
  */
 
 import _ from 'lodash';
@@ -29,18 +29,27 @@ export default (hero, allHeroes) => {
     const { x: tx, y: ty } = getLocationFuc(targetHero.locationId);
     const { x: ox, y: oy } = getLocationFuc(hero.locationId);
 
-    _.map(enemies, (heroItem) => {
-      const {x, y} = getLocationFuc(heroItem.locationId);
+    let targetInfo = {
+      distance: parseInt(calLength(tx, ty, ox, oy)),
+      hero: targetHero
+    }
+
+    _.map(enemies, (item) => {
+      const {x, y} = getLocationFuc(item.locationId);
+      const tmpDistance = parseInt(calLength(x, y, ox, oy));
       if (
-        (x / ox === tx / ox && y / oy === ty / oy) &&
-        (calLength(x, y, ox, oy) < calLength(tx, ty, ox, oy)) &&
+        (parseInt(x / ox) === parseInt(tx / ox) && parseInt(y / oy) === parseInt(ty / oy)) &&
+        (tmpDistance < targetInfo.distance) &&
         (x > ox === tx > ox && y > oy === ty > oy)
       ) {
-        targetHero = heroItem;
+        targetInfo = {
+          distance: tmpDistance,
+          hero: item
+        };
       }
     })
 
-    const aoeIds = culAttackWidth(targetHero.locationId, 1, 49);
+    const aoeIds = culAttackWidth(targetInfo.hero.locationId, 1, 49);
     const targetHeroes = _.map(enemies, (heroItem) => {
       if (_.indexOf(aoeIds, +heroItem.locationId) >= 0) {
         return heroItem;
