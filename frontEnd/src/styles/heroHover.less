@@ -165,18 +165,40 @@
       right: 58%;
       z-index: 999;
     }
-    .hover-health {
+    .hover-percent-wrapper {
       position: absolute;
-      width: 75%;
-      bottom: 2px;
-      right: 8px;
       z-index: 999;
-      .ant-progress-bg {
-        border-radius: 0 !important;
+      width: 100%;
+      bottom: 0px;
+      right: 0px;
+      .hover-health {
+        position: absolute;
+        width: 75%;
+        bottom: 2px;
+        right: 8px;
+        z-index: 0;
+        .ant-progress-bg {
+          border-radius: 0 !important;
+        }
+        .ant-progress-inner {
+          border-radius: 0 !important;
+          background-color: rgba(0, 0, 0, 0) !important;
+        }
       }
-      .ant-progress-inner {
-        border-radius: 0 !important;
-        background-color: #172126 !important;
+      .hover-shield {
+        position: absolute;
+        width: 75%;
+        bottom: -1px;
+        right: 8px;
+        z-index: 1;
+        transform: rotate(180deg) ;
+        .ant-progress-bg {
+          border-radius: 0 !important;
+        }
+        .ant-progress-inner {
+          border-radius: 0 !important;
+          background-color: rgba(0, 0, 0, 0) !important;
+        }
       }
     }
     .hover-mana {
@@ -190,7 +212,7 @@
       }
       .ant-progress-inner {
         border-radius: 0 !important;
-        background-color: #172126 !important;
+        background-color: rgba(0, 0, 0, 0) !important;
       }
     }
     .skill-equip {

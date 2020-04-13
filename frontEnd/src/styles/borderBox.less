@@ -45,16 +45,34 @@
     &:nth-child(22) {
       margin-left: 48px;
     }
-    .health-percent {
+    .percent-wrapper {
       position: absolute;
+      width: 75%;
+      height: 5px;
       top: -18px;
       left: 18px;
-      width: 75%;
-      .ant-progress-bg {
-        height: 5px !important;
+      .health-percent {
+        position: absolute;
+        z-index: -1;
+        .ant-progress-bg {
+          height: 5px !important;
+        }
+        .ant-progress-inner {
+          background-color: rgba(0, 0, 0, 0);
+        }
       }
-      .ant-progress-inner {
-        background-color: gray;
+      .shield-percent {
+        transform: rotate(180deg) translate(-1px, -1px);
+        position: absolute;
+        right: -2;
+        top: 10;
+        z-index: 1;
+        .ant-progress-bg {
+          height: 5px !important;
+        }
+        .ant-progress-inner {
+          background-color: rgba(0, 0, 0, 0);
+        }
       }
     }
     .mana-percent {
@@ -66,7 +84,7 @@
         height: 3px !important;
       }
       .ant-progress-inner {
-        background-color: gray;
+        background-color: rgba(0, 0, 0, 0);
       }
     }
   }

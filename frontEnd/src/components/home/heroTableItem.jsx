@@ -97,10 +97,17 @@ export default class HeroTableItem extends Component {
     return damages[hero.grade - 1];
   }
 
+  calManaPercent(hero) {
+    if (+hero.magic === 0) {
+      return 0;
+    } else {
+      return +this.props.hero.leftMagic / +this.props.hero.magic * 100;
+    }
+  }
+
   render() {
 
     const hasBattling = this.props.homeStore.default.status && this.props.hero;
-
     return(
       <div
         id={`position-${this.props.rangeIndex}`}
@@ -143,7 +150,7 @@ export default class HeroTableItem extends Component {
                     <p className="price">{this.props.hero.price}</p>
                     <p className="name">{this.props.hero.hero_tittle}</p>
                     <img src={`https://game.gtimg.cn/images/lol/tft/cham-icons/624x318/${this.props.hero.name}`} alt=""/>
-                    <div className="life-progress">
+                    <div className="hover-percent-wrapper">
                       <Progress
                         className="hover-health"
                         percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
@@ -152,14 +159,18 @@ export default class HeroTableItem extends Component {
                         strokeLinecap="square"
                         strokeWidth={14}
                       />
-                      {/* <Progress
+                      <Progress
                         className="hover-shield"
-                        percent={+}
-                      /> */}
+                        percent={+(this.props.hero.shield || 0) / +this.props.hero.life * 100}
+                        showInfo={false}
+                        strokeColor="#FFFFFF"
+                        strokeLinecap="square"
+                        strokeWidth={14}
+                      />
                     </div>
                     <Progress
                       className="hover-mana"
-                      percent={+this.props.hero.leftMagic / +this.props.hero.magic * 100}
+                      percent={this.calManaPercent(this.props.hero)}
                       showInfo={false}
                       strokeColor="#194d61"
                       strokeLinecap="square"
@@ -239,15 +250,24 @@ export default class HeroTableItem extends Component {
             )}
           >
             <div className="grid-cont">
-              <Progress
-                className="health-percent"
-                percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
-                showInfo={false}
-                size="small"
-                strokeColor="#87d068" />
+              <div className="percent-wrapper">
+                <Progress
+                  className="health-percent"
+                  percent={+this.props.hero.leftLife / +this.props.hero.life * 100}
+                  showInfo={false}
+                  size="small"
+                  strokeColor="#87d068" />
+                <Progress
+                  className="shield-percent"
+                  percent={+(this.props.hero.shield || 0) / +this.props.hero.life * 100}
+                  showInfo={false}
+                  size="small"
+                  strokeColor="#FFFFFF"
+                />
+              </div>
               <Progress
                 className="mana-percent"
-                percent={+this.props.hero.leftMagic / +this.props.hero.magic * 100}
+                percent={this.calManaPercent(this.props.hero)}
                 showInfo={false}
                 size="small"
                 strokeColor="#108ee9" />

@@ -16,6 +16,8 @@ class BattleStore extends Base {
 
   @observable tmpTargets = {};
 
+  @observable round = 0;
+
   /**
    * @description: 得出没有null值的所有hero
    */
@@ -48,6 +50,7 @@ class BattleStore extends Base {
     });
     if (!_.isEmpty(armyHeroes)) {
       this.allHeroes = _.cloneDeep(newEnemyHeroes.concat(newArmyHeroes));
+      this.round = 0;
       this.roundBattle();
     } else {
       clearInterval(this.timer);
@@ -85,7 +88,8 @@ class BattleStore extends Base {
   newGetAllDps() {
     this.damageHeroes = {};
     const moveHeroes = [];
-    this.allHeroes = _.map(this.allHeroes, (hero) => {
+    this.allHeroes = _.map(this.allHeroes, (heroItem) => {
+      let hero = heroItem;
       // 位置为空直接返回
       if (!hero) {
         return hero;
@@ -95,10 +99,14 @@ class BattleStore extends Base {
         return this.updateHeroStatus(hero);
       }
       // 判断是否需要释放技能
-      if (+hero.leftMagic >= +hero.magic && +hero.chessId === 104) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 104) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.uniqId]);
         }
+      }
+      // 处理技能为被动的情况
+      if (hero.skillType === '被动') {
+        hero = this.updateHeroPassivity(hero);
       }
       // 判断是否在释放技能(前摇)
       if (hero.skill && hero.skill.timeLeft >= 0) {
@@ -118,6 +126,24 @@ class BattleStore extends Base {
     });
     this.moveHeroes(moveHeroes);
     return this.damageHeroes;
+  }
+
+  /**
+   * @description: 处理英雄被动技能
+   * @param {object} hero 英雄信息 
+   * 1. 石头人 回合开始时给自己增加护盾
+   * @return: 更新后的英雄信息
+   */
+  updateHeroPassivity(hero) {
+    // 石头人情况 仅在第一回合触发一次
+    if (+hero.chessId === 54 && this.round === 1) {
+      const { shield } = skills[hero.chessId](hero);
+      return {
+        ...hero,
+        shield,
+      }
+    }
+    return hero;
   }
 
   /**
@@ -298,10 +324,12 @@ class BattleStore extends Base {
    */
   roundBattle() {
     this.timer = setInterval(() => {
+      this.round += 1;
       const allDps = this.newGetAllDps();
       console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
+          console.log(toJS(hero))
           // 释放技能前摇时判断何种状态 status字段:'invincible'无敌
           if (hero.skill && hero.skill.timeLeft >= 0) {
             if (hero.skill.status === 'invincible') {
@@ -309,7 +337,10 @@ class BattleStore extends Base {
             }
           }
           hero = this.updateHeroCtrlAndBlind(hero, allDps[hero.uniqId]);
-          hero.leftLife = this.getLeftHealth(allDps, hero);
+          // 计算英雄伤害（护盾和生命值）
+          const { leftLife, shield } = this.getLeftHealth(allDps, hero);
+          hero.leftLife = leftLife;
+          hero.shield = shield;
           // if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
           //   // Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
           //   hero.leftMagic = 0;
@@ -350,13 +381,25 @@ class BattleStore extends Base {
    * @return: 英雄剩余生命值
    */
   getLeftHealth(dps, hero) {
-    let { leftLife } = hero;
+    let { leftLife, shield } = hero;
     if (dps[hero.uniqId]) {
       _.map(dps[hero.uniqId], (item) => {
-        leftLife -= item.damage;
+        if (shield > 0) {
+          if (shield >= item.damage) {
+            shield = shield - item.damage;
+          } else {
+            leftLife = leftLife + shield - item.damage
+            shield = 0;
+          }
+        } else {
+          leftLife -= item.damage;
+        }
       })
     }
-    return leftLife;
+    return {
+      leftLife,
+      shield
+    };
   }
 
   /**
