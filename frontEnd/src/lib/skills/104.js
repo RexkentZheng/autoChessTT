@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 17:56:52
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-13 16:08:29
+ * @LastEditTime: 2020-04-14 13:41:33
  */
 
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import { calLength, culAttackWidth, getLocationFuc, getSkillDamages } from './..
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
-  const damage = +getSkillDamages(hero)[hero.grade - 1];
+  const damage = +getSkillDamages(hero);
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
   let targetHero = _.sortBy(enemies, (item) => -+item.attackSpeed)[0];
 

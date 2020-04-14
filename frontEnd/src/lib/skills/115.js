@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-10 15:20:03
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-13 11:32:52
+ * @LastEditTime: 2020-04-14 13:41:42
  */
 
 import _ from 'lodash';
@@ -22,7 +22,7 @@ import { calLength, getLocationFuc, getSkillDamages } from './../utils';
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
-  const damage = +getSkillDamages(hero)[hero.grade - 1];
+  const damage = +getSkillDamages(hero);
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
 
   let targetInfo = {

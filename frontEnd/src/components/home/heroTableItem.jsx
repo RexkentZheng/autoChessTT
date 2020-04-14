@@ -1,5 +1,6 @@
 import { Popover, Progress, Tooltip } from 'antd';
 import config from 'config';
+import { getSkillDamages } from 'lib/utils';
 import _ from 'lodash';
 import { inject, observer } from 'mobx-react'
 import React, { Component } from 'react';
@@ -84,17 +85,6 @@ export default class HeroTableItem extends Component {
    */
   dragging = () => e => {
     e.preventDefault()
-  }
-
-  /**
-   * @description: 根据英雄技能介绍获取英雄的法术强度
-   * 存在问题是某些英雄的技能没有伤害，比方说加攻速和加护盾，暂时未处理
-   * @param {object} hero 英雄信息
-   * @return: 返回当前英雄该等级下的伤害
-   */
-  getSkillDamage (hero) {
-    const damages = hero.skillDetail.match(/\d+\s\/\s\d+\s\/\s\d+/)[0].split(' / ');
-    return damages[hero.grade - 1];
   }
 
   calManaPercent(hero) {
@@ -219,7 +209,7 @@ export default class HeroTableItem extends Component {
                   </div>
                   <div className="property">
                     <span className="icon">法强：</span>
-                    <span>{this.getSkillDamage(this.props.hero)}</span>
+                    <span>{getSkillDamages(this.props.hero)}</span>
                   </div>
                   <div className="property">
                     <span className="icon">护甲：</span>

@@ -22,7 +22,7 @@ import { calLength, getLocationFuc, getSkillDamages } from './../utils';
  * @return: 格式参见4.js
  */
 export default (hero, allHeroes, paramTargetHero, updateHero) => {
-  const damage = +getSkillDamages(hero)[hero.grade - 1];
+  const damage = +getSkillDamages(hero);
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
 
   let targetInfo = {

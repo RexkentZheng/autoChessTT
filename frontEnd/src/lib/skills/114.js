@@ -22,7 +22,7 @@ import { culAttackWidth, getSkillDamages, getTargetHero } from './../utils';
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes, paramTargetHero = null) => {
-  const damage = +getSkillDamages(hero)[hero.grade - 1];
+  const damage = +getSkillDamages(hero);
   const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
 
   const targetHero = paramTargetHero || getTargetHero(_.compact(allHeroes), hero, rangeIds);

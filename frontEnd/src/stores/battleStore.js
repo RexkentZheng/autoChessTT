@@ -68,8 +68,34 @@ class BattleStore extends Base {
       originId: origin.uniqId,
       originLocation: origin.locationId,
       targetLocation: target.locationId,
-      damage: +origin.attack * +origin.attackSpeed * 2 - +target.armor
+      damage: +origin.attack * this.calHeroAttr(origin, 'attackSpeed') * 2 - +target.armor
     };
+  }
+
+  /**
+   * @description: 获取当前英雄的某种属性（添加上buffs和nerfs）
+   * @param {object} hero 英雄信息 
+   * @param {string} key 属性名 
+   * @return: 属性值
+   */
+  calHeroAttr(hero, key) {
+    const extraKeys = ['buffs', 'nerfs']
+    let tmpAttr = +hero[key];
+    _.map(extraKeys, (extraKey) => {
+      if (hero[extraKey]) {
+        _.map(hero[extraKey], (item) => {
+          if (item[key]) {
+            if (extraKey === 'buffs') {
+              tmpAttr = item[key] > 1 ? tmpAttr += item[key] : tmpAttr * ( 1 + item[key])
+            } else {
+              tmpAttr = item[key] > 1 ? tmpAttr -= item[key] : tmpAttr * ( 1 - item[key])
+            }
+            
+          }
+        })
+      }
+    })
+    return tmpAttr;
   }
 
   /**
@@ -98,6 +124,7 @@ class BattleStore extends Base {
       if (this.judgeHeroStatus(hero)) {
         return this.updateHeroStatus(hero);
       }
+      hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
       if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 78) {
         if (!hero.skill) {
@@ -114,7 +141,7 @@ class BattleStore extends Base {
       // 平A输出
       } else {
         const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-        let targetHero = this.tmpTargets[hero.uniqId] ? this.tmpTargets[hero.uniqId] : this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
+        let targetHero =this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
         if (targetHero) {
           this.tmpTargets[hero.uniqId] = targetHero;
           this.updateDamageHeroesWrapper(targetHero.uniqId, this.calDamage(targetHero, hero));
@@ -318,6 +345,60 @@ class BattleStore extends Base {
   }
 
   /**
+   * @description: 更新英雄buffs和nerfs的剩余时间
+   * @param {object} hero 英雄信息 
+   * @return: 更新后的英雄信息
+   */
+  updateHeroBuffsAndNerfs(hero) {
+    const tmpHero = hero;
+    const extraKeys = ['buffs', 'nerfs'];
+    _.map(extraKeys, (extraKey) => {
+      if (tmpHero[extraKey]) {
+        tmpHero[extraKey] = _.compact(_.map(tmpHero[extraKey], item => {
+          if (item.time - 1 <= 0) {
+            return null;
+          }
+          return {
+            ...item,
+            time: item.time -= 1
+          }
+        }));
+      }
+    })
+    return tmpHero;
+  }
+
+  /**
+   * @description: 添加英雄的buffs和nerfs
+   * 根据dps查找当前英雄的buff和nerf，然后添加即可
+   * @param {object} hero 英雄信息 
+   * @param {object[]} dpsItem 当前回合英雄有关内容 
+   * @return: 更新后的英雄信息
+   */
+  addHeroBuffsAndNerfs(hero, dpsItem = null) {
+    if (!dpsItem) {
+      return hero;
+    } else {
+      const tmpHero = hero;
+      const extraKeys = ['buffs', 'nerfs'];
+      _.map(dpsItem, (item) => {
+        _.map(extraKeys, (extraKey) => {
+          if (tmpHero[extraKey]) {
+            if (item[extraKey]) {
+              tmpHero[extraKey].push(item[extraKey]);
+            }
+          } else {
+            if (item[extraKey]) {
+              tmpHero[extraKey] = [item[extraKey]];
+            }
+          }
+        })
+      })
+      return tmpHero;
+    }
+  }
+
+  /**
    * @description: 战斗模拟，每秒发生一次战斗，用计时器来模拟此种情况
    * 首先获取到所有Hero的受伤情况，更新Hero的血量蓝量状态，血量小于0的Hero踢出allHeroes集合
    * 每轮末尾判断战斗是否结束
@@ -337,6 +418,7 @@ class BattleStore extends Base {
             }
           }
           hero = this.updateHeroCtrlAndBlind(hero, allDps[hero.uniqId]);
+          hero = this.addHeroBuffsAndNerfs(hero, allDps[hero.uniqId]);
           // 计算英雄伤害（护盾和生命值）
           const { leftLife, shield } = this.getLeftHealth(allDps, hero);
           hero.leftLife = leftLife;
@@ -385,8 +467,8 @@ class BattleStore extends Base {
     let { leftLife, shield } = hero;
     if (dps[hero.uniqId]) {
       _.map(dps[hero.uniqId], (item) => {
-        if (item.buffs && item.buffs.shield) {
-          shield += +item.buffs.shield;
+        if (item.shield && item.shield > 0) {
+          shield += +item.shield;
         }
         if (shield > 0) {
           if (shield >= item.damage) {
@@ -443,6 +525,12 @@ class BattleStore extends Base {
    * @return: 目标Hero或者null
    */
   getTargetHero(targets, hero, rangeIds = null) {
+    if (this.tmpTargets[hero.uniqId]) {
+      const tmpTarget = _.find(_.compact(targets), (item) => item.uniqId === this.tmpTargets[hero.uniqId].uniqId)
+      if (tmpTarget) {
+        return tmpTarget;
+      }
+    }
     let allEnemies = _.filter(targets, (targetItem) => targetItem.role !== hero.role);
     if (rangeIds) {
       allEnemies = _.filter(allEnemies, (enemyItem) => _.indexOf(rangeIds, enemyItem.locationId) >= 0);

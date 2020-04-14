@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-14 12:51:07
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-14 13:14:36
+ * @LastEditTime: 2020-04-14 13:19:47
  */
 
 import _ from 'lodash';
@@ -52,9 +52,8 @@ export default (hero, allHeroes) => {
       damage: 0,
       ctrl: 0,
       blind: 0,
-      buffs: {
-        shield
-      },
+      shield,
+      buffs: null,
       nerfs: null
     }, {
       target: targetInfo.hero,
