@@ -3,7 +3,7 @@
  * @Author: Rex Zheng 
  * @Date: 2020-04-03 15:53:57
  * @LastEditor: Rex Zheng 
- * @LastEditTime: 2020-04-14 13:37:35
+ * @LastEditTime: 2020-04-14 15:11:49
  */
 import model from '../models';
 import resBeautiful from './../lib/resBeautiful';
@@ -75,7 +75,7 @@ const getRealRandomHeroes = async (ctx, next) => {
       const star = getRateResult(rateArr);
       pickResult.push(_.sample(heroes[`hero${star}`]))
     }
-    const special = _.find(config.heroes, (item) => +item.chessId === 59)
+    const special = _.find(config.heroes, (item) => +item.chessId === 89)
     console.log(pickResult)
     pickResult[0] = special;
     ctx.response.body = resBeautiful.set(_.map(pickResult, (hero) => ({

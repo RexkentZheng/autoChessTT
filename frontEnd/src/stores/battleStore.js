@@ -64,11 +64,12 @@ class BattleStore extends Base {
    * @return { damage: Number } 返回目标受到的伤害
    */
   calDamage(target, origin) {
+    const damage = +origin.attack * this.calHeroAttr(origin, 'attackSpeed') * 2 - +target.armor - this.calHeroAttr(target, 'mitigation');
     return {
       originId: origin.uniqId,
       originLocation: origin.locationId,
       targetLocation: target.locationId,
-      damage: +origin.attack * this.calHeroAttr(origin, 'attackSpeed') * 2 - +target.armor
+      damage: damage >= 0 ? damage : 0,
     };
   }
 
@@ -80,7 +81,7 @@ class BattleStore extends Base {
    */
   calHeroAttr(hero, key) {
     const extraKeys = ['buffs', 'nerfs']
-    let tmpAttr = +hero[key];
+    let tmpAttr = +hero[key] || 0;
     _.map(extraKeys, (extraKey) => {
       if (hero[extraKey]) {
         _.map(hero[extraKey], (item) => {
@@ -126,7 +127,7 @@ class BattleStore extends Base {
       }
       hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 78) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 89) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.uniqId]);
         }
