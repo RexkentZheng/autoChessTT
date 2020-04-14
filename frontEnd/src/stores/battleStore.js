@@ -99,7 +99,7 @@ class BattleStore extends Base {
         return this.updateHeroStatus(hero);
       }
       // 判断是否需要释放技能
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 104) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 78) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.uniqId]);
         }
@@ -375,6 +375,7 @@ class BattleStore extends Base {
 
   /**
    * @description: 获取英雄剩余生命值
+   * 如果buffs里有护盾值，则加上护盾值
    * 如果在受伤列表上有当前Hero，当前英雄扣血，否则生命值不变
    * @param {Object} dps 所有Hero受伤情况
    * @param {Object} hero 当前Hero
@@ -384,6 +385,9 @@ class BattleStore extends Base {
     let { leftLife, shield } = hero;
     if (dps[hero.uniqId]) {
       _.map(dps[hero.uniqId], (item) => {
+        if (item.buffs && item.buffs.shield) {
+          shield += +item.buffs.shield;
+        }
         if (shield > 0) {
           if (shield >= item.damage) {
             shield = shield - item.damage;

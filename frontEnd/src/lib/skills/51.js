@@ -3,7 +3,7 @@
  * @Author: Rex Zheng <rex.zheng@nequal.com>
  * @Date: 2020-04-13 15:20:51
  * @LastEditor: Rex Zheng <rex.zheng@nequal.com>
- * @LastEditTime: 2020-04-13 16:04:09
+ * @LastEditTime: 2020-04-14 13:14:48
  */
 import _ from 'lodash';
 
@@ -27,7 +27,7 @@ export default (hero, allHeroes, paramTargetHero, updateHero) => {
 
   let targetInfo = {
     distance: 0,
-    hero: null,
+    hero: null
   }
 
   const { x: ox, y: oy } = getLocationFuc(hero.locationId);
