@@ -161,3 +161,36 @@ export const getLocationFuc = (index) => {
   const x = index % 7 === 0 ? 7 : index - 7 * (y - 1);
   return getLength({ x, y });
 };
+
+/**
+ * @description: 获取到最远或者最近的敌方英雄
+ * @param {object} hero 英雄信息
+ * @param {object[]} allHeroes 全部英雄
+ * @param {string} type 最近还是最远
+ * @return: 目标英雄
+ */
+export const getAwayHero = (hero, allHeroes, type) => {
+  const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
+  const { x: ox, y: oy } = getLength(getLocation(hero.locationId));
+  let targetInfo = {
+    distance: 0,
+    hero: null
+  }
+  _.map(enemies, (item) => {
+    const { x, y } = getLength(getLocation(item.locationId));
+    const tmpDistance = Math.sqrt((Math.pow(Math.abs(x - ox), 2) + Math.pow(Math.abs(y - oy), 2)));
+    if (type === 'far' && tmpDistance > targetInfo.distance) {
+      targetInfo = {
+        distance: tmpDistance,
+        hero: item
+      }
+    }
+    if (type === 'near' && tmpDistance < targetInfo.distance) {
+      targetInfo = {
+        distance: tmpDistance,
+        hero: item
+      }
+    }
+  })
+  return targetInfo.hero;
+}

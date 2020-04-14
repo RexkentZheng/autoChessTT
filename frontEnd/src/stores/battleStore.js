@@ -127,9 +127,10 @@ class BattleStore extends Base {
       }
       hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 89) {
+      const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 121) {
         if (!hero.skill) {
-          hero.skill = skills[hero.chessId](hero, this.allHeroes, this.tmpTargets[hero.uniqId]);
+          hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
       }
       // 处理技能为被动的情况
@@ -141,7 +142,6 @@ class BattleStore extends Base {
         return this.updateHeroSkills(hero);
       // 平A输出
       } else {
-        const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
         let targetHero =this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
         if (targetHero) {
           this.tmpTargets[hero.uniqId] = targetHero;
