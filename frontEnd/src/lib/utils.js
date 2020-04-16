@@ -119,7 +119,14 @@ export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
  * @param {object} hero 英雄信息
  * @return {Array} 英雄技能伤害数组[200, 300, 400]
  */
-export const getSkillDamages = (hero) => +hero.skillDetail.split(/\r\n|[\r\n]/)[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
+export const getSkillDamages = (hero) => {
+  const skillDetail = hero.skillDetail.split(/\r\n|[\r\n]/);
+  if (skillDetail.length > 1) {
+    return +skillDetail[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
+  } else {
+    return +skillDetail[0].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
+  }
+}
 
 /**
  * @description: 获取目标英雄

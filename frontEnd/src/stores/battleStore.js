@@ -128,7 +128,7 @@ class BattleStore extends Base {
       hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 498) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 1) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -472,8 +472,8 @@ class BattleStore extends Base {
           shield += +item.shield;
         }
         if (shield > 0) {
-          if (shield >= item.damage) {
-            shield = shield - item.damage;
+          if (shield >= (item.damage || 0)) {
+            shield = shield - (item.damage || 0);
           } else {
             leftLife = leftLife + shield - item.damage
             shield = 0;
