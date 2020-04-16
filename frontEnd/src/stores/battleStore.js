@@ -128,7 +128,7 @@ class BattleStore extends Base {
       hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 1) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 37) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -411,7 +411,7 @@ class BattleStore extends Base {
       console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
-          console.log(toJS(hero))
+          // console.log(toJS(hero))
           // 释放技能前摇时判断何种状态 status字段:'invincible'无敌
           if (hero.skill && hero.skill.timeLeft >= 0) {
             if (hero.skill.status === 'invincible') {
@@ -421,9 +421,7 @@ class BattleStore extends Base {
           hero = this.updateHeroCtrlAndBlind(hero, allDps[hero.uniqId]);
           hero = this.addHeroBuffsAndNerfs(hero, allDps[hero.uniqId]);
           // 计算英雄伤害（护盾和生命值）
-          const { leftLife, shield } = this.getLeftHealth(allDps, hero);
-          hero.leftLife = leftLife;
-          hero.shield = shield;
+          hero = this.getLeftHealth(allDps, hero);
           // if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
           //   // Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
           //   hero.leftMagic = 0;
@@ -459,31 +457,42 @@ class BattleStore extends Base {
   /**
    * @description: 获取英雄剩余生命值
    * 如果buffs里有护盾值，则加上护盾值
+   * 如果有clearNerfs属性，则去掉所有nerfs
+   * 如果有heal属性，在剩余生命值上加上heal值，但总值不能超过当前最大生命值
    * 如果在受伤列表上有当前Hero，当前英雄扣血，否则生命值不变
    * @param {Object} dps 所有Hero受伤情况
    * @param {Object} hero 当前Hero
    * @return: 英雄剩余生命值
    */
-  getLeftHealth(dps, hero) {
+  getLeftHealth(dps, heroItem) {
+    let hero = heroItem;
     let { leftLife, shield } = hero;
     if (dps[hero.uniqId]) {
       _.map(dps[hero.uniqId], (item) => {
+        const damage = item.damage || 0;
         if (item.shield && item.shield > 0) {
           shield += +item.shield;
         }
+        if (_.isNumber(item.heal) && item.heal > 0) {
+          leftLife = (leftLife + item.heal) > +hero.lifeData.split('/')[hero.grade - 1] ? +hero.lifeData.split('/')[hero.grade - 1] : leftLife + item.heal;
+        }
+        if (item.clearNerfs) {
+          hero.nerfs = [];
+        }
         if (shield > 0) {
-          if (shield >= (item.damage || 0)) {
-            shield = shield - (item.damage || 0);
+          if (shield >= damage) {
+            shield = shield - damage;
           } else {
-            leftLife = leftLife + shield - item.damage
+            leftLife = leftLife + shield - damage
             shield = 0;
           }
         } else {
-          leftLife -= item.damage;
+          leftLife -= damage;
         }
       })
     }
     return {
+      ...hero,
       leftLife,
       shield
     };
