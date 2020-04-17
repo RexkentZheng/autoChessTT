@@ -3,12 +3,12 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-16 15:50:46
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-16 17:38:43
+ * @LastEditTime: 2020-04-17 14:32:12
  */
 
 import _ from 'lodash';
 
-import { calLength, culAttackWidth, getLocationFuc, getSkillDamages } from './../utils';
+import { calLength, culAttackWidth, getLocationFuc } from './../utils';
 
 /**
  * @description: 安妮的英雄技能

@@ -128,9 +128,17 @@ class BattleStore extends Base {
         return this.updateHeroStatus(hero);
       }
       hero = this.updateHeroBuffsAndNerfs(hero)
+      // 铁男的特殊情况
+      if (+hero.chessId === 82) {
+        if (hero.shield > 0) {
+          hero.skill = skills[hero.chessId](hero, this.allHeroes, null, true);          
+        } else if (+hero.leftMagic >= +hero.magic) {
+          hero.skill = skills[hero.chessId](hero, this.allHeroes, null, false); 
+        }
+      }
       // 判断是否需要释放技能
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 53) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 82) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -140,7 +148,7 @@ class BattleStore extends Base {
         hero = this.updateHeroPassivity(hero);
       }
       // 判断是否在释放技能(前摇)
-      if (hero.skill && hero.skill.timeLeft >= 0) {
+      if (hero.skill && hero.skill.timeLeft >= 0 && _.indexOf(skills.skillAndAttack, +hero.chessId) < 0) {
         return this.updateHeroSkills(hero);
       // 平A输出
       } else {
@@ -150,6 +158,10 @@ class BattleStore extends Base {
           this.updateDamageHeroesWrapper(targetHero.uniqId, this.calDamage(targetHero, hero));
         } else {
           moveHeroes.push(hero);
+        }
+        // 某些的特殊情况，既能释放技能，又能普通（铁男）
+        if (_.indexOf(skills.skillAndAttack, +hero.chessId) >= 0 && hero.skill) {
+          return this.updateHeroSkills(hero);
         }
         return hero;
       }

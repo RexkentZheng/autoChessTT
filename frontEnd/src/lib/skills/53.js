@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-17 10:45:11
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-17 14:26:55
+ * @LastEditTime: 2020-04-17 14:31:01
  */
 
 import _ from 'lodash';
@@ -29,8 +29,10 @@ const getMoveLocation = (hero, allHeroes, rangeNum = 1) => {
  * 技能伤害: 250 / 350 / 800
  * PS：首先将眩晕和击飞记为1S，所有会有2S的控制时间；目前结构有限，所以无法控制别的友军来攻击
  * 首先就是找到最远的敌人，之后判断机器人身边有无空位，有空位随便选取一个空位，没有空位扩大范围继续寻找，找到位置
- * @param {type} 
- * @return: 
+ * @param {object} hero 释放技能的英雄-蒸汽机器人
+ * @param {object[]} allHeroes 所有英雄
+ * @param {object} paramTargetHero 目标英雄
+ * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero);

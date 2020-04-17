@@ -1,9 +1,9 @@
 /**
  * @Description: 英雄技能-皮城女警-凯特琳-caitlyn-51
- * @Author: Rex Zheng <rex.zheng@nequal.com>
+ * @Author: Rex Zheng
  * @Date: 2020-04-13 15:20:51
- * @LastEditor: Rex Zheng <rex.zheng@nequal.com>
- * @LastEditTime: 2020-04-14 13:14:48
+ * @LastEditor: Rex Zheng
+ * @LastEditTime: 2020-04-17 14:50:45
  */
 import _ from 'lodash';
 
