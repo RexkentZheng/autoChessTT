@@ -11,6 +11,8 @@ class BattleStore extends Base {
   @observable damageHeroes = {};
   @observable timer = null;
 
+  @observable skillMoveHeroes = [];
+
   // 给线用的数据
   @observable skillItems = [];
 
@@ -128,7 +130,7 @@ class BattleStore extends Base {
       hero = this.updateHeroBuffsAndNerfs(hero)
       // 判断是否需要释放技能
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 37) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 53) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -407,11 +409,11 @@ class BattleStore extends Base {
   roundBattle() {
     this.timer = setInterval(() => {
       this.round += 1;
+      this.skillMoveHeroes = [];
       const allDps = this.newGetAllDps();
       console.log(toJS(allDps))
       this.allHeroes = this.allHeroes.map((hero) => {
         if (hero) {
-          // console.log(toJS(hero))
           // 释放技能前摇时判断何种状态 status字段:'invincible'无敌
           if (hero.skill && hero.skill.timeLeft >= 0) {
             if (hero.skill.status === 'invincible') {
@@ -421,7 +423,8 @@ class BattleStore extends Base {
           hero = this.updateHeroCtrlAndBlind(hero, allDps[hero.uniqId]);
           hero = this.addHeroBuffsAndNerfs(hero, allDps[hero.uniqId]);
           // 计算英雄伤害（护盾和生命值）
-          hero = this.getLeftHealth(allDps, hero);
+          hero = this.getLeftHealth(hero, allDps[hero.uniqId]);
+          console.log(toJS(hero))
           // if (hero.leftMagic >= +hero.magic && +hero.magic !== 0) {
           //   // Notification('success', 'Success', `【${hero.title}-${hero.displayName}】已施放技能`);
           //   hero.leftMagic = 0;
@@ -433,6 +436,13 @@ class BattleStore extends Base {
           }
         }
         return hero;
+      })
+      // 对因为技能进行位移的英雄进行位移操作
+      _.map(this.skillMoveHeroes, (item) => {
+        if (this.allHeroes[item.locationId - 1] && this.allHeroes[item.locationId - 1].leftLife > 0) {
+          this.allHeroes[item.locationId - 1] = null;
+          this.allHeroes[item.newLocationsId - 1] = item;            
+        }
       })
       this.judgeBattle();
     }, 1000)
@@ -464,21 +474,25 @@ class BattleStore extends Base {
    * @param {Object} hero 当前Hero
    * @return: 英雄剩余生命值
    */
-  getLeftHealth(dps, heroItem) {
+  getLeftHealth(heroItem, dpsItem) {
     let hero = heroItem;
     let { leftLife, shield } = hero;
-    if (dps[hero.uniqId]) {
-      _.map(dps[hero.uniqId], (item) => {
+    if (dpsItem) {
+      _.map(dpsItem, (item) => {
+        // 计算护盾变更
         const damage = item.damage || 0;
         if (item.shield && item.shield > 0) {
           shield += +item.shield;
         }
+        // 计算治疗量
         if (_.isNumber(item.heal) && item.heal > 0) {
           leftLife = (leftLife + item.heal) > +hero.lifeData.split('/')[hero.grade - 1] ? +hero.lifeData.split('/')[hero.grade - 1] : leftLife + item.heal;
         }
+        // 计算移除所有Buff
         if (item.clearNerfs) {
           hero.nerfs = [];
         }
+        // 计算伤害
         if (shield > 0) {
           if (shield >= damage) {
             shield = shield - damage;
@@ -488,6 +502,15 @@ class BattleStore extends Base {
           }
         } else {
           leftLife -= damage;
+        }
+        // 计算位置变更
+        if (item.moveLocation && _.isNumber(item.moveLocation)) {
+          this.skillMoveHeroes.push({
+            ...hero,
+            leftLife,
+            shield,
+            newLocationsId: item.moveLocation
+          })
         }
       })
     }
