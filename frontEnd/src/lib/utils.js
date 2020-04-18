@@ -178,6 +178,9 @@ export const getLocationFuc = (index) => {
  */
 export const getAwayHero = (hero, allHeroes, type) => {
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
+  if (enemies.length === 0) {
+    return null;
+  }
   const { x: ox, y: oy } = getLength(getLocation(hero.locationId));
   let targetInfo = {
     distance: 0,
@@ -200,4 +203,16 @@ export const getAwayHero = (hero, allHeroes, type) => {
     }
   })
   return targetInfo.hero;
+}
+
+/**
+ * @description: 计算两点之间的斜率
+ * @param {number} x1 初始点x坐标
+ * @param {number} y1 初始点y坐标
+ * @param {number} x2 目标点x坐标
+ * @param {number} y2 目标点y坐标
+ * @return {number} 二者的距离
+ */
+export const calSlope = (x1, y1, x2, y2) => {
+  return +(Math.abs(y2 - y1) / Math.abs(x2 - x1)).toFixed(1);
 }
