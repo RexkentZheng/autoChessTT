@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-17 14:28:53
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-17 16:13:22
+ * @LastEditTime: 2020-04-18 20:51:25
  */
 
 import _ from 'lodash';
@@ -27,7 +27,7 @@ export default (hero, allHeroes, paramTargetHero, updateHero) => {
   const damage = +allSkillInfo[1].match(/\d+.+/)[0].split('/')[hero.grade - 1];
   const shield = +allSkillInfo[2].match(/\d+.+/)[0].split('/')[hero.grade - 1];
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
-  const damageRange = culAttackWidth(hero.locationId, 1, 49);
+  const damageRange = culAttackWidth(hero.locationId, 2, 49);
   const targetHeros = _.compact(_.map(enemies, (enemy) => {
     if (_.indexOf(damageRange, enemy.locationId) >= 0) {
       return enemy;

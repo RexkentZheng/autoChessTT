@@ -72,6 +72,7 @@ class BattleStore extends Base {
       originLocation: origin.locationId,
       targetLocation: target.locationId,
       damage: damage >= 0 ? damage : 0,
+      type: 'attack'
     };
   }
 
@@ -136,9 +137,17 @@ class BattleStore extends Base {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, null, false); 
         }
       }
-      // 判断是否需要释放技能
+      // 腰子的特殊情况
+      if (+hero.chessId === 98) {
+        if (hero.timeLasting > 0) {
+          hero.skill = skills[hero.chessId](hero, this.allHeroes, null, true);
+        } else if (+hero.leftMagic >= +hero.magic) {
+          hero.skill = skills[hero.chessId](hero, this.allHeroes, null, false); 
+        }
+      }
+      // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 82) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 98) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -198,6 +207,8 @@ class BattleStore extends Base {
    */
   updateHeroSkills(hero) {
     let newSkill = hero.skill;
+    // 技能持续时间
+    const timeLasting = (newSkill.timeLasting || hero.timeLasting || 0) - 1;
     if (newSkill.timeLeft -1 <= 0) {
       // 如果是需要二次计算的英雄，则重新计算目标英雄（会阻挡）
       if (_.indexOf(skills.reCalTargetHeroes, +hero.chessId) >= 0) {
@@ -220,6 +231,7 @@ class BattleStore extends Base {
     }
     return {
       ...hero,
+      timeLasting,
       skill: newSkill
     };
   }
@@ -262,7 +274,8 @@ class BattleStore extends Base {
         originId: origin.uniqId,
         originLocation: origin.locationId,
         targetLocation: target.locationId,
-        ..._.omit(dmgInfo, ['target', 'role', 'locationId'])
+        ..._.omit(dmgInfo, ['target', 'role', 'locationId']),
+        type: 'skills',
       })
     }
   }
@@ -476,6 +489,18 @@ class BattleStore extends Base {
     }
   }
 
+  getHeroAttackDefence(hero) {
+    let attackDefence = false;
+    if (hero.buffs) {
+      _.map(hero.buffs, (buff) =>{
+        if (buff.attackDefence) {
+          attackDefence = true
+        }
+      })
+    }
+    return attackDefence;
+  }
+
   /**
    * @description: 获取英雄剩余生命值
    * 如果buffs里有护盾值，则加上护盾值
@@ -489,10 +514,17 @@ class BattleStore extends Base {
   getLeftHealth(heroItem, dpsItem) {
     let hero = heroItem;
     let { leftLife, shield } = hero;
+    const attackDefence = this.getHeroAttackDefence(hero);
     if (dpsItem) {
       _.map(dpsItem, (item) => {
+        // 计算伤害
+        let damage = 0;
+        if (item.type === 'attack') {
+          damage = attackDefence ? 0 : (item.damage || 0); 
+        } else {
+          damage = item.damage || 0;
+        }
         // 计算护盾变更
-        const damage = item.damage || 0;
         if (item.shield && item.shield > 0) {
           shield += +item.shield;
         }

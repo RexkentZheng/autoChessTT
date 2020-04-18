@@ -47,7 +47,7 @@ class HomeStore extends Base {
         return {
           ...hero,
           leftLife: +hero.life,
-          leftMagic: +hero.chessId === 82 ? +hero.magic - 10 : +hero.startMagic,
+          leftMagic: +hero.chessId === 98 ? +hero.magic - 10 : +hero.startMagic,
           shield: 0,
           blind: 0,
           ctrl: 0,

@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 10:31:23
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-17 16:08:00
+ * @LastEditTime: 2020-04-17 17:08:20
  */
 
 import skill_1   from './skills/1';
@@ -22,6 +22,7 @@ import skill_59  from './skills/59';
 import skill_78  from './skills/78';
 import skill_82  from './skills/82';
 import skill_89  from './skills/89';
+import skill_98  from './skills/98';
 
 export default {
   reCalTargetHeroes: [51],
@@ -41,5 +42,6 @@ export default {
   1: skill_1,
   37: skill_37,
   53: skill_53,
-  82: skill_82
+  82: skill_82,
+  98: skill_98
 }
