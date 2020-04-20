@@ -145,7 +145,7 @@ class BattleStore extends Base {
       }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 157) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 236) {
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
         }
@@ -511,7 +511,7 @@ class BattleStore extends Base {
    */
   getLeftHealth(heroItem, dpsItem) {
     let hero = heroItem;
-    let { leftLife, shield } = hero;
+    let { leftLife, shield, locationId } = hero;
     const attackDefence = this.getHeroAttackDefence(hero);
     if (dpsItem) {
       _.map(dpsItem, (item) => {
@@ -547,6 +547,7 @@ class BattleStore extends Base {
         }
         // 计算位置变更
         if (item.moveLocation && _.isNumber(item.moveLocation)) {
+          locationId = item.moveLocation
           this.skillMoveHeroes.push({
             ...hero,
             leftLife,
@@ -559,7 +560,8 @@ class BattleStore extends Base {
     return {
       ...hero,
       leftLife,
-      shield
+      shield,
+      locationId
     };
   }
 
