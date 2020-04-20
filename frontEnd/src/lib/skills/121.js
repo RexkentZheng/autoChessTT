@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-14 15:36:34
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-14 16:49:09
+ * @LastEditTime: 2020-04-20 11:12:35
  */
 
 import _ from 'lodash';
@@ -28,6 +28,9 @@ export default (hero, allHeroes, paramTargetHero) => {
   const aloneDamage = +allSkillInfo[2].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
 
   const targetHero = paramTargetHero || getAwayHero(hero, allHeroes, 'near');
+  if (!targetHero) {
+    return null;
+  }
   const targetRanges = culAttackWidth(targetHero.locationId, 1, 49);
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
   const isAlone = _.map(enemies, (enemy) => _.indexOf(targetRanges, enemy.locationId) >= 0).length === 1;
