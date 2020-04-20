@@ -122,9 +122,9 @@ export const drawCurvePath = ( ctx, start, end, curveness, percent ) => {
 export const getSkillDamages = (hero) => {
   const skillDetail = hero.skillDetail.split(/\r\n|[\r\n]/);
   if (skillDetail.length > 1) {
-    return +skillDetail[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
+    return skillDetail[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
   } else {
-    return +skillDetail[0].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
+    return skillDetail[0].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
   }
 }
 
