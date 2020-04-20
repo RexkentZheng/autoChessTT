@@ -199,7 +199,7 @@ class BattleStore extends Base {
 
   /**
    * @description: 更新英雄技能信息
-   * 英雄技能前摇-1<=0即可释放技能，否则继续等待
+   * 英雄技能前摇-1 <= 0即可释放技能，否则继续等待
    * 释放技能时更新英雄受伤信息
    * 前摇时更新前摇时间
    * @param {object} hero 英雄信息 
