@@ -216,3 +216,13 @@ export const getAwayHero = (hero, allHeroes, type) => {
 export const calSlope = (x1, y1, x2, y2) => {
   return +(Math.abs(y2 - y1) / Math.abs(x2 - x1)).toFixed(1);
 }
+
+/**
+ * @description: 获取所有地方英雄
+ * @param {object} hero 初始英雄 
+ * @param {object[]} allHeroes 所有英雄
+ * @return {object[]} 所有地方英雄
+ */
+export const getEnemies = (hero, allHeroes) => {
+  return _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
+}
