@@ -146,7 +146,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 11) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 126) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
