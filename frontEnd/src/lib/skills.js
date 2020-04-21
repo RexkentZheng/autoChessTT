@@ -3,12 +3,13 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-08 10:31:23
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-21 11:25:16
+ * @LastEditTime: 2020-04-21 14:49:23
  */
 
 import skill_1   from './skills/1';
 import skill_103 from './skills/103';
 import skill_104 from './skills/104';
+import skill_11  from './skills/11';
 import skill_114 from './skills/114';
 import skill_115 from './skills/115';
 import skill_121 from './skills/121';
@@ -59,5 +60,6 @@ export default {
   236: skill_236,
   497: skill_497,
   5: skill_5,
-  22: skill_22
+  22: skill_22,
+  11: skill_11,
 }
