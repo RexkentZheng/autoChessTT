@@ -3,7 +3,7 @@
  * @Author: Rex Zheng
  * @Date: 2020-04-14 17:03:36
  * @LastEditor: Rex Zheng
- * @LastEditTime: 2020-04-14 17:12:38
+ * @LastEditTime: 2020-04-21 11:21:46
  */
 
 import _ from 'lodash';
@@ -35,7 +35,7 @@ const getMoveLocation = (hero, allHeroes, rangeNum = 1) => {
  */
 export default (hero, allHeroes, paramTargetHero) => {
   const damage = +getSkillDamages(hero);
-  const rangeIds = culAttackWidth(hero.locationId, 9, 49);
+  const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
   const targetHero = paramTargetHero || getTargetHero(_.compact(allHeroes), hero, rangeIds);
   const enemies = getEnemies(hero, allHeroes);
 
