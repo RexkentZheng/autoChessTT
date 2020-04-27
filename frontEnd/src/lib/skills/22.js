@@ -53,7 +53,7 @@ export default (hero, allHeroes) => {
     if (tmpDistance < targetInfo.distance &&
       (originSlope === newSlope) &&
       (x > ox === tx > ox) &&
-      (y > oy === ty > oy) 
+      (y > oy === ty > oy)
       ) {
       targetInfo = {
         distance: tmpDistance,

@@ -8,7 +8,7 @@
 
 import _ from 'lodash';
 
-import { culAttackWidth, getSkillDamages } from './../utils';
+import { culAttackWidth, getSkillDamages, getTargetHero } from './../utils';
 
 /**
  * @description: 皇子的技能方法

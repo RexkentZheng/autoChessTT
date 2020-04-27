@@ -1,6 +1,5 @@
 import { drawCurvePath } from 'lib/utils';
 import _ from 'lodash';
-import { toJS } from 'mobx';
 import { inject, observer }     from 'mobx-react';
 import React from 'react';
 

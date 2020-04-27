@@ -8,7 +8,7 @@
 
 import _ from 'lodash';
 
-import { calLength, culAttackWidth, getLocationFuc } from './../utils';
+import { calLength, culAttackWidth, getLocationFuc, getTargetHero } from './../utils';
 
 /**
  * @description: 安妮的英雄技能

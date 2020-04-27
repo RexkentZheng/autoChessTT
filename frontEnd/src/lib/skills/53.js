@@ -68,7 +68,7 @@ export default (hero, allHeroes) => {
       target: targetInfo.hero,
       ctrl: 2,
       damage,
-      moveLocation,
+      moveLocation
     }]
   }
 }

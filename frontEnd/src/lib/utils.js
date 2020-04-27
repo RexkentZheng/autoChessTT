@@ -218,8 +218,8 @@ export const calSlope = (x1, y1, x2, y2) => {
 }
 
 /**
- * @description: 获取所有地方英雄
- * @param {object} hero 初始英雄 
+ * @description: 获取所有敌方英雄
+ * @param {object} hero 初始英雄
  * @param {object[]} allHeroes 所有英雄
  * @return {object[]} 所有地方英雄
  */

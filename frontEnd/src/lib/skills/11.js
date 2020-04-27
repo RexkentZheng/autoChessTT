@@ -6,6 +6,8 @@
  * @LastEditTime: 2020-04-21 14:55:55
  */
 
+import _ from 'lodash';
+
 import { culAttackWidth, getTargetHero } from './../utils';
 
 /**
@@ -16,7 +18,7 @@ import { culAttackWidth, getTargetHero } from './../utils';
  * PS：此处普攻造成真实伤害，在此系统中为1S普攻一次，所以勉强认为是技能伤害
  * @param {object} hero 释放技能的英雄-无极剑圣
  * @param {object[]} allHeroes 所有英雄
- * @param {object} paramTargetHero 目标英雄 
+ * @param {object} paramTargetHero 目标英雄
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes, paramTargetHero) => {
@@ -35,7 +37,7 @@ export default (hero, allHeroes, paramTargetHero) => {
     timeLasting: 5,
     effect: [{
       target: hero,
-      heal: hero.life * heal,
+      heal: hero.life * heal
     }, {
       target: targetHero,
       damage: realDamage * +hero.attackSpeed

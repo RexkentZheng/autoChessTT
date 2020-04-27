@@ -17,7 +17,7 @@ import { culAttackWidth, getEnemies, getSkillDamages, getTargetHero } from './..
  * 以自身位置为AOE目标
  * @param {object} hero 释放技能的英雄-未来守护者
  * @param {object[]} allHeroes 所有英雄
- * @param {object} paramTargetHero 目标英雄 
+ * @param {object} paramTargetHero 目标英雄
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes, paramTargetHero) => {

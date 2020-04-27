@@ -25,7 +25,7 @@ import { calLength, culAttackWidth, getLocationFuc, getSkillDamages, getTargetHe
 export default (hero, allHeroes, paramTargetHero) => {
   const damage = +getSkillDamages(hero);
   const moveRanges = _.filter(culAttackWidth(hero.locationId, 2, 49), item => item !== hero.locationId);
-
+  const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
   const targetHero = paramTargetHero || getTargetHero(_.compact(allHeroes), hero, rangeIds);
 
   if (!targetHero) {
@@ -34,7 +34,7 @@ export default (hero, allHeroes, paramTargetHero) => {
 
   let targetLocation = {
     id: null,
-    distance: 0,
+    distance: 0
   }
 
   const { x: tx, y: ty } =  getLocationFuc(targetHero.locationId);
@@ -48,7 +48,7 @@ export default (hero, allHeroes, paramTargetHero) => {
         targetLocation = {
           id: locationId,
           distance: tmpDistance
-        }          
+        }
       }
     }
   })

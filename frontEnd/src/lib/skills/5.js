@@ -8,7 +8,7 @@
 
 import _ from 'lodash';
 
-import { getTargetHero } from './../utils';
+import { culAttackWidth, getTargetHero } from './../utils';
 
 /**
  * @description: 赵信的英雄技能
@@ -18,11 +18,12 @@ import { getTargetHero } from './../utils';
  * PS：此处默认击飞为1秒
  * @param {object} hero 释放技能的英雄-圣枪游侠
  * @param {object[]} allHeroes 所有英雄
- * @param {object} paramTargetHero 目标英雄 
+ * @param {object} paramTargetHero 目标英雄
  * @return {object} 格式参见4.js
  */
 export default (hero, allHeroes, paramTargetHero) => {
   const damage = +hero.skillDetail.split(/\r\n|[\r\n]/)[1].match(/\d+.+/)[0].split('/')[hero.grade - 1];
+  const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
   const target = paramTargetHero || getTargetHero(_.compact(allHeroes), hero, rangeIds);
 
   if (!target) {

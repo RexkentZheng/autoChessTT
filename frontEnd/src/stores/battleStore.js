@@ -146,7 +146,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 518) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 35) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
@@ -251,12 +251,10 @@ class BattleStore extends Base {
         //  如果将要移动的位置已有英雄存在，位置+1，以此类推，是一个递归
         const locationId = this.getLoopLocation(this.allHeroes, hero.locationId + xMove + yMove * 7);
         this.allHeroes[hero.locationId - 1] = null;
-        this.allHeroes[locationId - 1] = _.extend(
-          hero,
-          {
-            locationId
-          }
-        );
+        this.allHeroes[locationId - 1] = {
+          ...hero,
+          locationId
+        }
       }
     })
   }
@@ -466,7 +464,10 @@ class BattleStore extends Base {
       _.map(this.skillMoveHeroes, (item) => {
         if (this.allHeroes[item.locationId - 1] && this.allHeroes[item.locationId - 1].leftLife > 0) {
           this.allHeroes[item.locationId - 1] = null;
-          this.allHeroes[item.newLocationsId - 1] = item;            
+          this.allHeroes[item.newLocationsId - 1] = _.omit({
+            ...item,
+            locationId: item.newLocationsId
+          }, 'newLocationsId'); 
         }
       })
       this.judgeBattle();

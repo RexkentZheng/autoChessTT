@@ -33,7 +33,7 @@ export default (hero, allHeroes, paramTargetHero, updateHero) => {
       return enemy;
     }
     return null;
-  }));;
+  }));
 
   if (updateHero) {
     if (hero.shield > 0) {

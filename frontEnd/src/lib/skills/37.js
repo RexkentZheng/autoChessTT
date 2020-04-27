@@ -37,7 +37,7 @@ export default (hero, allHeroes) => {
     effect: _.map(targetHeroes, (target) => ({
       target,
       heal,
-      clearNerfs: true,
+      clearNerfs: true
     }))
   }
 }
