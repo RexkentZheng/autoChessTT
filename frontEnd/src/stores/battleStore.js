@@ -61,12 +61,16 @@ class BattleStore extends Base {
 
   /**
    * @description: 计算单个英雄伤害（目前由于伤害太低，默认2倍攻击力）
+   * 致盲可以普攻但没有伤害
    * @param {object} targetHero 目标英雄
    * @param {object} hero 始发英雄
    * @return { damage: Number } 返回目标受到的伤害
    */
   calDamage(target, origin) {
-    const damage = +origin.attack * this.calHeroAttr(origin, 'attackSpeed') * 2 - +target.armor - this.calHeroAttr(target, 'mitigation');
+    let damage = +origin.attack * this.calHeroAttr(origin, 'attackSpeed') * 2 - +target.armor - this.calHeroAttr(target, 'mitigation');
+    if (origin.blind && origin.blind > 0) {
+      damage = 0;
+    }
     return {
       originId: origin.uniqId,
       originLocation: origin.locationId,
@@ -124,7 +128,7 @@ class BattleStore extends Base {
       if (!hero) {
         return hero;
       }
-      // 计算致盲和控制
+      // 计算致盲和控制 这块的位置有点问题，被致盲和缴械其实可以释放技能，致盲也可以平A，放这里不合理
       if (this.judgeHeroStatus(hero)) {
         return this.updateHeroStatus(hero);
       }
@@ -146,7 +150,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 35) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 38) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
@@ -164,11 +168,13 @@ class BattleStore extends Base {
         let targetHero =this.getTargetHero(this.cleanAllHeroes, hero, rangeIds);
         if (targetHero) {
           this.tmpTargets[hero.uniqId] = targetHero;
-          this.updateDamageHeroesWrapper(targetHero.uniqId, this.calDamage(targetHero, hero));
+          if (this.judgeNormalAttack(hero)) {
+            this.updateDamageHeroesWrapper(targetHero.uniqId, this.calDamage(targetHero, hero));
+          }
         } else {
           moveHeroes.push(hero);
         }
-        // 某些的特殊情况，既能释放技能，又能普通（铁男）
+        // 某些的特殊情况，既能释放技能，又能普攻（铁男）
         if (_.indexOf(skills.skillAndAttack, +hero.chessId) >= 0 && hero.skill) {
           return this.updateHeroSkills(hero);
         }
@@ -177,6 +183,16 @@ class BattleStore extends Base {
     });
     this.moveHeroes(moveHeroes);
     return this.damageHeroes;
+  }
+
+  judgeNormalAttack(hero) {
+    if (hero.ctrl && hero.ctrl > 0) {
+      return false;
+    }
+    if (hero.disarm && hero.disarm > 0) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -309,33 +325,28 @@ class BattleStore extends Base {
    * @return: 是否被控制
    */
   judgeHeroStatus(hero) {
-    return this.judgeHeroStatusSingle(hero, 'ctrl') || this.judgeHeroStatusSingle(hero, 'blind');
+    return this.judgeHeroStatusSingle(hero, 'ctrl') || this.judgeHeroStatusSingle(hero, 'blind') || this.judgeHeroStatusSingle(hero, 'disarm');
   }
 
   /**
-   * @description: 更新英雄的控制和致盲状态，共三种情况
-   * 1. 致盲但不控制 更新致盲时间，加10点蓝量
-   * 2. 致盲又控制，更新致盲和控制时间
-   * 3. 控制单不致盲，更新控制时间
+   * @description: 更新英雄的控制、致盲、缴械状态
+   * 1. 控制，无法平A，无法释放技能
+   * 2. 缴械，无法平A，可释放技能
+   * 3. 致盲，可平A，无法命中，可释放技能
    * @param {object} hero 英雄信息
    * @return: 更新后的英雄信息
    */
   updateHeroStatus(hero) {
-    let res = {};
-    if (this.judgeHeroStatusSingle(hero, 'blind') && !this.judgeHeroStatusSingle(hero, 'ctrl')) {
-      res = {
-        blind: hero.blind - 1 >= 0 ? hero.blind -= 1 : 0,
-        leftMagic: hero.leftMagic += 10
-      };
-    } else if (this.judgeHeroStatusSingle(hero, 'blind') && this.judgeHeroStatusSingle(hero, 'ctrl')) {
-      res = {
-        blind: hero.blind - 1 >= 0 ? hero.blind -= 1 : 0,
-        ctrl: hero.ctrl - 1 >= 0 ? hero.ctrl -= 1 : 0
-      };
-    } else {
-      res = {
-        ctrl: hero.ctrl - 1 >= 0 ? hero.ctrl -= 1 : 0
-      };
+    let res = {
+      ctrl: hero.ctrl ? hero.ctrl - 1 : 0,
+      blind: hero.blind ? hero.blind - 1 : 0,
+      disarm: hero.disarm ? hero.disarm - 1 : 0,
+    }
+    if (!this.judgeHeroStatusSingle(hero, 'ctrl') &&
+      !this.judgeHeroStatusSingle(hero, 'disarm') &&
+      this.judgeHeroStatusSingle(hero, 'blind')
+    ) {
+      res.leftMagic = hero.leftMagic += 10;
     }
     return {
       ...hero,
@@ -350,7 +361,7 @@ class BattleStore extends Base {
    * @return: 更新状态后的hero
    */
   updateHeroCtrlAndBlind(hero, dpsItem = null) {
-    let { ctrl, blind } = hero;
+    let { ctrl, blind, disarm } = hero;
     if (!dpsItem) {
       return hero;
     } else {
@@ -361,12 +372,16 @@ class BattleStore extends Base {
         if (item.blind && item.blind > 0) {
           blind += item.blind;
         }
+        if (item.disarm && item.disarm > 0) {
+          blind += item.disarm;
+        }
       })
     }
     return {
       ...hero,
       ctrl,
-      blind
+      blind,
+      disarm
     }
   }
 
