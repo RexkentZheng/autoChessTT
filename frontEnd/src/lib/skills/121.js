@@ -8,7 +8,7 @@
 
 import _ from 'lodash';
 
-import { culAttackWidth, getAwayHero } from './../utils';
+import { culAttackWidth, getAwayEnemy } from './../utils';
 
 /**
  * @description: 螳螂的技能方法
@@ -27,7 +27,7 @@ export default (hero, allHeroes, paramTargetHero) => {
   const damage = +allSkillInfo[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
   const aloneDamage = +allSkillInfo[2].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
 
-  const targetHero = paramTargetHero || getAwayHero(hero, allHeroes, 'near');
+  const targetHero = paramTargetHero || getAwayEnemy(hero, allHeroes, 'near');
   if (!targetHero) {
     return null;
   }

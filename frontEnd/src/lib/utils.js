@@ -170,40 +170,55 @@ export const getLocationFuc = (index) => {
 };
 
 /**
- * @description: 获取到最远或者最近的敌方英雄
+ * @description: 获取到最远或者最近的敌方英雄，一个小柯理化
+ * 外层函数的参数用来判断时敌军还是友军
+ * 内层函数用来计算距离
+ * @param {string} role 目标角色
  * @param {object} hero 英雄信息
  * @param {object[]} allHeroes 全部英雄
  * @param {string} type 最近还是最远
  * @return: 目标英雄
  */
-export const getAwayHero = (hero, allHeroes, type) => {
-  const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
-  if (enemies.length === 0) {
-    return null;
-  }
-  const { x: ox, y: oy } = getLength(getLocation(hero.locationId));
-  let targetInfo = {
-    distance: 0,
-    hero: null
-  }
-  _.map(enemies, (item) => {
-    const { x, y } = getLength(getLocation(item.locationId));
-    const tmpDistance = Math.sqrt((Math.pow(Math.abs(x - ox), 2) + Math.pow(Math.abs(y - oy), 2)));
-    if (type === 'far' && tmpDistance > targetInfo.distance) {
-      targetInfo = {
-        distance: tmpDistance,
-        hero: item
-      }
+const getAwayHero = (role) => {
+  return (hero, allHeroes, type) => {
+    const targetHeros = _.filter(_.compact(allHeroes), (item) => item.role === role && item.uniqId !== hero.uniqId);
+    if (targetHeros.length === 0) {
+      return null;
     }
-    if (type === 'near' && tmpDistance < targetInfo.distance) {
-      targetInfo = {
-        distance: tmpDistance,
-        hero: item
-      }
+    const { x: ox, y: oy } = getLength(getLocation(hero.locationId));
+    let targetInfo = {
+      distance: 0,
+      hero: null
     }
-  })
-  return targetInfo.hero;
+    _.map(targetHeros, (item) => {
+      const { x, y } = getLength(getLocation(item.locationId));
+      const tmpDistance = Math.sqrt((Math.pow(Math.abs(x - ox), 2) + Math.pow(Math.abs(y - oy), 2)));
+      if (type === 'far' && tmpDistance > targetInfo.distance) {
+        targetInfo = {
+          distance: tmpDistance,
+          hero: item
+        }
+      }
+      if (type === 'near' && (tmpDistance < targetInfo.distance || targetInfo.distance === 0)) {
+        targetInfo = {
+          distance: tmpDistance,
+          hero: item
+        }
+      }
+    })
+    return targetInfo.hero;
+  }
 }
+
+/**
+ * @description: 获取最近或者最远的敌方英雄
+ */
+export const getAwayEnemy = getAwayHero('enemy');
+
+/**
+ * @description: 获取最近或者最远的友方英雄
+ */
+export const getAwayArmy = getAwayHero('army');
 
 /**
  * @description: 计算两点之间的斜率

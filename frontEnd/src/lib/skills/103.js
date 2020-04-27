@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 import {
   calSlope,
-  getAwayHero,
+  getAwayEnemy,
   getLocationFuc,
   getSkillDamages
 } from './../utils';
@@ -31,7 +31,7 @@ import {
  */
 export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero);
-  const targetHero = getAwayHero(hero, allHeroes, 'far');
+  const targetHero = getAwayEnemy(hero, allHeroes, 'far');
   const enemies = _.filter(_.compact(allHeroes), (item) => item.role !== hero.role);
 
   if (!targetHero) {

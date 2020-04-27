@@ -12,7 +12,7 @@ import {
   calLength,
   calSlope,
   culAttackWidth,
-  getAwayHero,
+  getAwayEnemy,
   getEnemies,
   getLocationFuc,
   getSkillDamages
@@ -30,7 +30,7 @@ import {
  */
 export default (hero, allHeroes) => {
   const damage = +getSkillDamages(hero);
-  const targetHero = getAwayHero(hero, allHeroes, 'far');
+  const targetHero = getAwayEnemy(hero, allHeroes, 'far');
   const enemies = getEnemies(hero, allHeroes);
 
   if (!targetHero) {

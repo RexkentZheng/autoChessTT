@@ -6,7 +6,7 @@
  * @LastEditTime: 2020-04-20 17:50:10
  */
 
-import { culAttackWidth, getAwayHero, getSkillDamages } from 'lib/utils';
+import { culAttackWidth, getAwayEnemy, getSkillDamages } from 'lib/utils';
 import _ from 'lodash';
 
 const getMoveLocation = (hero, allHeroes, rangeNum = 1) => {
@@ -33,7 +33,7 @@ const getMoveLocation = (hero, allHeroes, rangeNum = 1) => {
  */
 export default (hero, allHeroes) => {
   const attackTimes = +getSkillDamages(hero);
-  const target = getAwayHero(hero, allHeroes, 'far');
+  const target = getAwayEnemy(hero, allHeroes, 'far');
 
   if (!target) {
     return null;
