@@ -147,7 +147,7 @@ class BattleStore extends Base {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, null, false); 
         }
       }
-      // 腰子、诺手的技能持续情况
+      // 腰子、诺手、兰博的技能持续情况
       if (hero.timeLasting > 0) {
         hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds), true);
       }
@@ -156,7 +156,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 43) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 68) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
