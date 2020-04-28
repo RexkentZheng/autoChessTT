@@ -39,6 +39,7 @@ import skill_81  from './skills/81';
 import skill_82  from './skills/82';
 import skill_89  from './skills/89';
 import skill_98  from './skills/98';
+import skill_99  from './skills/99';
 
 export default {
   reCalTargetHeroes: [51],
@@ -75,5 +76,6 @@ export default {
   38: skill_38,
   43: skill_43,
   68: skill_68,
-  81: skill_81
+  81: skill_81,
+  99: skill_99
 }
