@@ -75,7 +75,7 @@ const getRealRandomHeroes = async (ctx, next) => {
       const star = getRateResult(rateArr);
       pickResult.push(_.sample(heroes[`hero${star}`]))
     }
-    const special = _.find(config.heroes, (item) => +item.chessId === 68)
+    const special = _.find(config.heroes, (item) => +item.chessId === 81)
     console.log(pickResult)
     pickResult[0] = special;
     ctx.response.body = resBeautiful.set(_.map(pickResult, (hero) => ({
