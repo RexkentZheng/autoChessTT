@@ -156,7 +156,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 99) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 254) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
@@ -620,6 +620,8 @@ class BattleStore extends Base {
 
   /**
    * @description: 获取目标英雄
+   * 先判断tmpTargets中有无对象，若有对象，判断对象是否存在并且位移
+   * 若无位移且存在，则选定，否则重现选择对象进行攻击
    * 没有rangeIds参数意味着当前英雄的攻击范围内没有敌方Hero，需选定距离最近的敌方Hero返回
    * 有rangeIds参数需先判断攻击范围内有无敌方Hero，有则返回敌方Hero，没有则返回null
    * @param {Array<Object>} targets 目标Hero列表
@@ -628,8 +630,9 @@ class BattleStore extends Base {
    * @return: 目标Hero或者null
    */
   getTargetHero(targets, hero, rangeIds = null) {
-    if (this.tmpTargets[hero.uniqId]) {
-      const tmpTarget = _.find(_.compact(targets), (item) => item.uniqId === this.tmpTargets[hero.uniqId].uniqId)
+    const tmpTargetOrigin = this.tmpTargets[hero.uniqId];
+    if (tmpTargetOrigin) {
+      const tmpTarget = _.find(_.compact(targets), (item) => item.uniqId === tmpTargetOrigin.uniqId && item.locationId === tmpTargetOrigin.locationId)
       if (tmpTarget) {
         return tmpTarget;
       }
