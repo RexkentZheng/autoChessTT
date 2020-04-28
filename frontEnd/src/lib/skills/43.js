@@ -39,10 +39,8 @@ export default (hero, allHeroes) => {
 
   return {
     timeLeft: 0,
+    aimArmy,
     effect: [{
-      target: hero,
-      aimArmy
-    }, {
       target: aimArmy,
       shield,
       buffs: {

@@ -43,6 +43,9 @@ class BattleStore extends Base {
         if (+hero.chessId === 43) {
           hero.aimArmy = getAwayArmy(hero, armyHeroes, 'near');
         }
+        if (+hero.chessId === 134) {
+          hero.balls = 0;
+        }
       }
       return hero;
     });
@@ -52,6 +55,9 @@ class BattleStore extends Base {
         hero.uniqId = `${hero.role}${index}`
         if (+hero.chessId === 43) {
           hero.aimArmy = getAwayEnemy(hero, enemyHeroes, 'near');
+        }
+        if (+hero.chessId === 134) {
+          hero.balls = 0;
         }
       }
       return hero;
@@ -156,7 +162,7 @@ class BattleStore extends Base {
       // }
       // 判断是否需要释放技能(后面需要更改一下，铁男、腰子需要提出来)
       const rangeIds = culAttackWidth(hero.locationId, +hero.attackRange, 49);
-      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 254) {
+      if (+hero.leftMagic >= +hero.magic && +hero.magic !== 0 && +hero.chessId === 134) {
         hero.leftMagic = 0;
         if (!hero.skill) {
           hero.skill = skills[hero.chessId](hero, this.allHeroes, this.getTargetHero(this.cleanAllHeroes, hero, rangeIds));
@@ -230,6 +236,7 @@ class BattleStore extends Base {
   updateHeroSkills(hero) {
     let newSkill = hero.skill;
     const aimArmy = newSkill.aimArmy || null;
+    const balls = newSkill.balls || null;
     // 技能持续时间
     const timeLasting = (newSkill.timeLasting || hero.timeLasting || 0) - 1;
     if (newSkill.timeLeft -1 <= 0) {
@@ -256,6 +263,7 @@ class BattleStore extends Base {
       ...hero,
       timeLasting,
       aimArmy,
+      balls,
       skill: newSkill
     };
   }

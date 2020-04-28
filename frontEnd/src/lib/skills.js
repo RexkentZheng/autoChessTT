@@ -15,6 +15,7 @@ import skill_115 from './skills/115';
 import skill_121 from './skills/121';
 import skill_122 from './skills/122';
 import skill_126 from './skills/126';
+import skill_134 from './skills/134';
 import skill_142 from './skills/142';
 import skill_145 from './skills/145';
 import skill_157 from './skills/157';
@@ -79,5 +80,6 @@ export default {
   68: skill_68,
   81: skill_81,
   99: skill_99,
-  254: skill_254
+  254: skill_254,
+  134: skill_134
 }
