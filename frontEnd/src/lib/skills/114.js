@@ -5,6 +5,7 @@
  * @LastEditor: Rex Zheng
  * @LastEditTime: 2020-04-13 11:37:01
  */
+
 import _ from 'lodash';
 
 import { culAttackWidth, getSkillDamages, getTargetHero } from './../utils';
@@ -38,9 +39,6 @@ export default (hero, allHeroes, paramTargetHero = null) => {
       target: `location:${targetHero.locationId}`,
       damage,
       ctrl: 1.5,
-      blind: 0,
-      buffs: null,
-      nerfs: null
     }]
   }
 }
