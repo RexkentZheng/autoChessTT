@@ -8,6 +8,8 @@
 
 import _ from 'lodash';
 
+import { getArmies } from './../utils';
+
 /**
  * @description: 琴女的英雄技能
  * 内容：娑娜为受伤的友军们提供治疗效果并移除他们身上的所有负面效果
@@ -22,7 +24,7 @@ export default (hero, allHeroes) => {
   const allSkillInfo = hero.skillDetail.split(/\r\n|[\r\n]/)
   const heal = +allSkillInfo[1].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
   let number = +allSkillInfo[2].match(/\d+.+/)[0].split(' / ')[hero.grade - 1];
-  const armies = _.filter(_.compact(allHeroes), (item) => item.role === hero.role);
+  const armies = getArmies(hero, allHeroes);
 
   const targetHeroes = _.compact(_.map(armies, (army) => {
     if (army.leftLife < army.lifeData.split('/')[hero.grade - 1] && number > 0) {

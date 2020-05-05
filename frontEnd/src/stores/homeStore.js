@@ -6,7 +6,7 @@ import { autorun, observable } from 'mobx'
 import Base from './base';
 
 class HomeStore extends Base {
-  @observable level = 1;
+  @observable level = 9;
   @observable heroList = _.map(_.range(5), () => null);;
   @observable heroWaitting = _.map(_.range(9), () => null);
   @observable heroTable = _.map(_.range(28), () => null);
@@ -47,7 +47,7 @@ class HomeStore extends Base {
         return {
           ...hero,
           leftLife: +hero.life,
-          leftMagic: +hero.chessId === 10 ? +hero.magic - 10 : +hero.startMagic,
+          leftMagic: +hero.chessId === 16 ? +hero.magic - 10 : +hero.startMagic,
           shield: 0,
           blind: 0,
           ctrl: 0,
