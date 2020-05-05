@@ -38,7 +38,7 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     effect: [{
       target: `location:${targetHero.locationId}`,
       damage,
-      ctrl: 1.5,
+      ctrl: 1.5
     }]
   }
 }

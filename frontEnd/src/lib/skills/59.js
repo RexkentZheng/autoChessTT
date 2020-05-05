@@ -48,7 +48,7 @@ export default (hero, allHeroes, paramTargetHero = null) => {
       buffs: {
         time: 6,
         attackSpeed: buffPercent
-      },
+      }
     }))
   }
 

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-05-05 10:13:01
+ * @LastEditTime: 2020-05-05 12:09:53
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \autoChessTT\frontEnd\src\lib\skills\498.js
+ */
 /**
  * @Description: 英雄技能-逆羽-霞-498
  * @Author: Rex Zheng
@@ -26,7 +34,7 @@ export default (hero) => {
       buffs: {
         time: duration,
         attackSpeed: 1
-      },
+      }
     }]
   }
 }

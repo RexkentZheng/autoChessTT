@@ -6,8 +6,6 @@
  * @LastEditTime: 2020-05-05 10:12:38
  */
 
-import _ from 'lodash';
-
 import { getSkillDamages } from './../utils';
 
 /**
@@ -28,7 +26,7 @@ export default (hero) => {
       buffs: {
         name: 'skill',
         time: 999,
-        extraDamage: damage,
+        extraDamage: damage
       }
     }]
   }
