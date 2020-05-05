@@ -23,12 +23,10 @@ export default (hero) => {
     timeLeft: 0,
     effect: [{
       target: hero,
-      damage: 0,
       buffs: {
         time: duration,
         attackSpeed: 1
       },
-      nerfs: null
     }]
   }
 }

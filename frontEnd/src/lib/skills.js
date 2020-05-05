@@ -7,6 +7,7 @@
  */
 
 import skill_1   from './skills/1';
+import skill_10  from './skills/10';
 import skill_103 from './skills/103';
 import skill_104 from './skills/104';
 import skill_11  from './skills/11';
@@ -81,5 +82,6 @@ export default {
   81: skill_81,
   99: skill_99,
   254: skill_254,
-  134: skill_134
+  134: skill_134,
+  10: skill_10
 }

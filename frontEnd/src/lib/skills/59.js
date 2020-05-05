@@ -45,12 +45,10 @@ export default (hero, allHeroes, paramTargetHero = null) => {
     timeLeft: 0,
     effect: _.map(targetHeroes, (item) => ({
       target: item,
-      damage: 0,
       buffs: {
         time: 6,
         attackSpeed: buffPercent
       },
-      nerfs: null
     }))
   }
 
