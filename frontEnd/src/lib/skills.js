@@ -10,6 +10,7 @@ import skill_1   from './skills/1';
 import skill_10  from './skills/10';
 import skill_103 from './skills/103';
 import skill_104 from './skills/104';
+import skill_105 from './skills/105';
 import skill_11  from './skills/11';
 import skill_114 from './skills/114';
 import skill_115 from './skills/115';
@@ -50,7 +51,7 @@ import skill_99  from './skills/99';
 
 export default {
   reCalTargetHeroes: [51],
-  skillAndAttack: [82],
+  skillAndAttack: [82, 105],
   4: skill_4,
   104: skill_104,
   115: skill_115,
@@ -91,5 +92,6 @@ export default {
   16: skill_16,
   31: skill_31,
   39: skill_39,
-  62: skill_62
+  62: skill_62,
+  105: skill_105
 }
